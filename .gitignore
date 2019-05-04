@@ -1,0 +1,20 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+# webstorm configuration data
+.idea
+
+# macos DS Store
+.DS_Store
+
+# build output
+dist
+zip
+
+# npm/yarn
+node_modules
+npm-debug.log
+package-lock.json
+*.lock
+
+# log file
+*.log
