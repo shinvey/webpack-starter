@@ -7,7 +7,6 @@
 ## 命令行工具
 1. webpack(模块打包)
 1. npm/yarn(包管理)
-1. prettier(代码格式化)
 
 ## 编程语言
 1. TypeScript(静态类型检查)
@@ -16,17 +15,32 @@
 ## 代码检查
 1. ESLint/TSLint
 
+## 代码格式化
+1. prettier(代码格式化)
+
 ## CSS预处理器
 1. SASS/SCSS
 
 ## UI构建
 1. React
 
+## 状态管理
+1. Redux
+
 ## 响应式编程
 1. redux-observable(RxJS与React结合的中间件)
 
 ## 单页应用路由
 1. React-Router
+
+## 工具函数库
+1. lodash
+
+## 通用IDE配置
+
+
+## 同步测试
+1. Webpack dev server/Browsersync
 
 ## 网页加载性能监控
 1. lighthouse
@@ -36,6 +50,26 @@
 
 ## 已经弃用或停止维护的
 1. typings
+
+# 环境搭建
+## 配置npm
+生成[package.json](package.json)
+```bash
+npm init -y
+```
+将npm项目设置为私有，修改package.json添加以下属性
+```json
+{
+  "private": true
+}
+```
+[为什么要设为私有？](https://docs.npmjs.com/files/package.json#private)
+
+## 配置Webpack
+```bash
+npm install webpack --save-dev
+npm install webpack-cli --save-dev
+```
 
 ## 启动本地开发环境（Develoment）
 
