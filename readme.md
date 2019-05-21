@@ -37,7 +37,7 @@
 1. lodash
 
 ## 通用IDE配置
-
+1. editorconfig
 
 ## 同步测试
 1. Webpack dev server/Browsersync
@@ -66,10 +66,33 @@ npm init -y
 [为什么要设为私有？](https://docs.npmjs.com/files/package.json#private)
 
 ## 配置Webpack
+安装webpack所需的两个npm package
 ```bash
 npm install webpack --save-dev
 npm install webpack-cli --save-dev
 ```
+添加在npm script中添加命令快捷方式
+```json
+{
+  "scripts": {
+    "build:development": "webpack --mode development -d",
+    "build:production": "webpack --mode production"
+  }
+}
+```
+```diff
+public class Hello1
+{
+   public static void Main()
+   {
+-      System.Console.WriteLine("Hello, World!");
++      System.Console.WriteLine("Rock all night long!");
+   }
+}
+```
+
+# To be continue
+https://survivejs.com/webpack/developing/getting-started/
 
 ## 启动本地开发环境（Develoment）
 

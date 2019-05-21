@@ -4,7 +4,7 @@
   "description": "> 项目描述",
   "private": true,
   "scripts": {
-    "build:development": "webpack --mode development",
+    "build:development": "webpack --mode development -d",
     "build:production": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
