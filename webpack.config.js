@@ -28,6 +28,14 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    /**
+     * You would inspect if tree shaking works as normal.
+     * See https://webpack.js.org/configuration/optimization/#optimizationusedexports
+     * optimization.usedExports is enabled in production mode and disabled elsewise.
+     */
+    usedExports: true
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/pages/home/index.html'
