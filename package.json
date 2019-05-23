@@ -4,9 +4,10 @@
   "description": "项目描述",
   "private": true,
   "scripts": {
-    "build:development": "webpack --mode development",
+    "build:development": "webpack --mode development -d",
     "build:production": "webpack --mode production",
     "build:source": "webpack --mode development --devtool none",
+    "serve": "ws --compress --open --directory dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,7 +20,8 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "local-web-server": "^2.6.1"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
