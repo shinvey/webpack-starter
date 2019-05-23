@@ -1,3 +1,3 @@
-import component from '../../components/hello-world';
+import component from '../../components/hello-world'
 
-document.body.appendChild(component());
+document.body.appendChild(component())
