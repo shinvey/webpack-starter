@@ -4,15 +4,15 @@
   "description": "项目描述",
   "private": true,
   "scripts": {
-    "build:development": "webpack --mode development -d --devtool eval-cheap-module-source-map",
-    "build:production": "webpack --mode production -p",
+    "build:development": "webpack --mode development",
+    "build:production": "webpack --mode production",
+    "build:source": "webpack --mode development --devtool none",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "shinvey@qq.com",
   "license": "ISC",
   "devDependencies": {
-    "@webpack-cli/init": "^0.1.5",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",
