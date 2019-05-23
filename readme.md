@@ -127,7 +127,17 @@ module.exports = {
   // 转义ES6代码到ES5
   presets: ['@babel/preset-env']
 }
-
+```
+解决问题：Babel is injecting helpers into each file and bloating my code!
+```bash
+npm install @babel/plugin-transform-runtime @babel/runtime
+```
+```js
+// babel.config.js
+module.exports = {
+  // ...
+  plugins: ['@babel/plugin-transform-runtime']
+}
 ```
 
 # To be continue

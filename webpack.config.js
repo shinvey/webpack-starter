@@ -1,4 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
+
+// 将被loader处理的源码目录白名单
+const directoryWhiteList = [
+  path.resolve(__dirname, 'src')
+]
 
 module.exports = {
   entry: {
@@ -8,8 +14,7 @@ module.exports = {
     rules: [
       {
         test: /\.m?js$/,
-        // 编译文件跳过node_modules下的模块
-        exclude: /node_modules/,
+        include: directoryWhiteList,
         use: {
           loader: 'babel-loader',
           options: {

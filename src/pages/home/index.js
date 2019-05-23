@@ -1,4 +1,4 @@
-import component from '../../components/hello-world'
+import component, { Animal } from '../../components/hello-world'
 
 class Person {
   static say (word) {
@@ -9,3 +9,4 @@ class Person {
 document.body.appendChild(component())
 
 Person.say('hello world')
+Animal.run()
