@@ -6,6 +6,7 @@
   "scripts": {
     "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
+    "build:production:sourcemap": "webpack --mode production --devtool source-map",
     "build:inspect:browser": "webpack --mode development -d",
     "build:inspect:code": "webpack --mode development --devtool none",
     "serve": "ws --compress --open --directory dist",
