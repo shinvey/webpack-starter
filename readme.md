@@ -66,30 +66,27 @@ npm init -y
 [为什么要设为私有？](https://docs.npmjs.com/files/package.json#private)
 
 ## 配置Webpack
-安装webpack所需的两个npm package
 ```bash
-npm install webpack --save-dev
-npm install webpack-cli --save-dev
+npm install webpack webpack-cli -S
+npm i @webpack-cli/init -D
+npx webpack-cli init
 ```
 添加在npm script中添加命令快捷方式
 ```json
 {
   "scripts": {
     "build:development": "webpack --mode development -d",
-    "build:production": "webpack --mode production"
+    "build:production": "webpack --mode production -p"
   }
 }
 ```
-```diff
-public class Hello1
-{
-   public static void Main()
-   {
--      System.Console.WriteLine("Hello, World!");
-+      System.Console.WriteLine("Rock all night long!");
-   }
-}
-```
+
+# 添加eslint
+npm i eslint -D
+npx eslint --init
+
+# 添加babel loader
+npm i @babel/core babel-loader -S
 
 # To be continue
 https://survivejs.com/webpack/developing/getting-started/

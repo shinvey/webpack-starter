@@ -1,26 +1,39 @@
 {
   "name": "webpack-spa-react",
   "version": "1.0.0",
-  "description": "> 项目描述",
+  "description": "项目描述",
   "private": true,
   "scripts": {
-    "build:development": "webpack --mode development -d",
-    "build:production": "webpack --mode production",
+    "build:development": "webpack --mode development -d --devtool eval-cheap-module-source-map",
+    "build:production": "webpack --mode production -p",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "shinvey@qq.com",
   "license": "ISC",
   "devDependencies": {
+    "@webpack-cli/init": "^0.1.5",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "dependencies": {
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1"
-  }
+    "webpack-cli": "^3.3.1",
+    "@babel/core": "^7.4.5",
+    "babel-loader": "^8.0.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/shinvey/webpack-spa-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shinvey/webpack-spa-react/issues"
+  },
+  "homepage": "https://github.com/shinvey/webpack-spa-react#readme"
 }
