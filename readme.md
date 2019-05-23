@@ -81,12 +81,54 @@ npx webpack-cli init
 }
 ```
 
-# 添加eslint
+## 添加eslint
 npm i eslint -D
 npx eslint --init
 
-# 添加babel loader
+## 添加babel loader
+```bash
 npm i @babel/core babel-loader -S
+```
+```js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        // 编译文件跳过node_modules下的模块
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            // presets: ['@babel/preset-env']
+
+            // see https://github.com/babel/babel-loader#options
+            // 缓存babel编译结果，加快下次编译速度
+            cacheDirectory: true,
+            // 缓存时是否压缩缓存。如果编译的文件非常多，不压缩虽然能提升编译性能，但是增加了磁盘空间占用率。
+            cacheCompression: false
+          }
+        }
+      }
+    ]
+  },
+  // ...
+}
+
+```
+支持将es6转换成es5
+```bash
+npm install @babel/preset-env --save
+```
+```js
+// babel.config.js
+module.exports = {
+  // 转义ES6代码到ES5
+  presets: ['@babel/preset-env']
+}
+
+```
 
 # To be continue
 https://survivejs.com/webpack/developing/getting-started/

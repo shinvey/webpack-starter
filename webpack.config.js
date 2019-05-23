@@ -7,14 +7,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.m?js$/,
         // 编译文件跳过node_modules下的模块
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            // presets: ['@babel/preset-env']
-
             // see https://github.com/babel/babel-loader#options
             // 缓存babel编译结果，加快下次编译速度
             cacheDirectory: true,
