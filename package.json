@@ -4,9 +4,10 @@
   "description": "项目描述",
   "private": true,
   "scripts": {
-    "build:development": "webpack --mode development -d",
+    "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
-    "build:source": "webpack --mode development --devtool none",
+    "build:inspect:browser": "webpack --mode development -d",
+    "build:inspect:code": "webpack --mode development --devtool none",
     "serve": "ws --compress --open --directory dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
