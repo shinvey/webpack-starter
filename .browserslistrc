@@ -1,0 +1,8 @@
+# Browsers that we support. see https://github.com/browserslist/browserslist
+
+[production staging]
+# https://github.com/browserslist/browserslist#full-list
+defaults
+
+[development]
+last 1 chrome version
