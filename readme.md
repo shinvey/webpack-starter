@@ -140,6 +140,44 @@ module.exports = {
 }
 ```
 
+## 添加scss支持
+## css module支持
+## 添加react支持
+
+## 开发调试支持
+js sourcemap
+css sourcemap
+
+# 兼容性处理
+## modernizer
+## css autoprefix
+## polyfill支持
+## 可选支持webp
+
+# 工程优化
+## 基本静态资源优化
+HTML压缩
+CSS压缩
+JS压缩
+图像优化
+
+## 首屏加载性能优化
+骨架HTML
+关键CSS
+代码分离和长效缓存
+响应式图片
+滚动懒加载
+预加载
+
+## 工程编译性能优化
+提升编译性能
+
+## 工程监控
+bundle大小监控
+
+# todo用例
+带网络请求的
+
 # To be continue
 https://survivejs.com/webpack/developing/getting-started/
 
