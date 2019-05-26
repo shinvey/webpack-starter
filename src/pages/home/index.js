@@ -1,4 +1,5 @@
 import component, { Animal } from '../../components/hello-world'
+import './example.pcss'
 
 class Person {
   static say (word) {

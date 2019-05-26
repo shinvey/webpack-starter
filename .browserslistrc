@@ -1,8 +1,11 @@
 # Browsers that we support. see https://github.com/browserslist/browserslist
+Android >= 4.4
+iOS >= 8
 
-[production staging]
+# 看实际情况是否需要区分环境。更新的版本，需要转义的内容也更少，变异速度相对更快
+# [production staging]
 # https://github.com/browserslist/browserslist#full-list
-defaults
-
-[development]
-last 1 chrome version
+# defaults
+# [development]
+# last 1 chrome version
+# Chrome latest

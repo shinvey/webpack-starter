@@ -154,6 +154,7 @@ mini-css-extract-plugin
 # 兼容性处理
 ## modernizer
 ## css autoprefix
+## browserlist
 ## polyfill支持
 ## 可选支持webp
 
