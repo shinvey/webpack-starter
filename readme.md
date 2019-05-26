@@ -147,6 +147,9 @@ module.exports = {
 ## 开发调试支持
 js sourcemap
 css sourcemap
+对比以下两个plugin的使用场景
+extract-css-chunks-webpack-plugin
+mini-css-extract-plugin
 
 # 兼容性处理
 ## modernizer
