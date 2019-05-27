@@ -1,4 +1,5 @@
 const path = require('path')
+const cssPreprocessor = require('./build/css-processor')
 
 // 将被loader处理的源码目录白名单
 const directoryWhiteList = [
@@ -16,12 +17,27 @@ plugins.push(
   })
 )
 
-// 样式文件处理
-const styleLoader = {
-  // Adds CSS to the DOM by injecting a <style> tag see https://github.com/webpack-contrib/style-loader
-  loader: 'style-loader'
-  // options useable使用场景是手动控制css挂载/卸载 see https://juejin.im/post/5a2668996fb9a0450b663f20#heading-9
-}
+/**
+ * 样式文件处理
+ */
+const styleLoader = cssPreprocessor.styleLoader()
+const postcssLoader = cssPreprocessor.postcssLoader()
+const cssPreprocessors = [
+  styleLoader,
+  cssPreprocessor.cssLoader({
+    importLoaders: 1
+  }),
+  postcssLoader
+]
+// const scssPreprocessors = [
+//   styleLoader,
+//   cssPreprocessor.cssLoader({
+//     importLoaders: 2,
+//     modules: true
+//   }),
+//   postcssLoader,
+//   cssPreprocessor.scssLoader()
+// ]
 
 // 抽离css https://github.com/webpack-contrib/mini-css-extract-plugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -39,7 +55,9 @@ module.exports = {
   entry: {
     home: './src/pages/home/index.js'
   },
+  // see https://webpack.js.org/configuration/module
   module: {
+    // see https://webpack.js.org/configuration/module#modulerules
     rules: [
       {
         test: /\.m?js$/,
@@ -59,27 +77,7 @@ module.exports = {
       {
         test: /\.p?css$/,
         include: directoryWhiteList,
-        use: [
-          styleLoader,
-          {
-            // The css-loader interprets @import and url() like import/require() and will resolve them.
-            // see https://github.com/webpack-contrib/css-loader
-            loader: 'css-loader',
-            options: {
-              // 告诉 css-loader，在被处理之前有多少个loader也会处理 @import and url()
-              // see https://github.com/webpack-contrib/css-loader#importloaders
-              importLoaders: 1
-              // 启用css module特性 https://github.com/webpack-contrib/css-loader#modules
-              // modules: true,
-            }
-          },
-          {
-            // PostCSS is a tool for transforming styles with JS plugins
-            // see https://github.com/postcss/postcss
-            // postcss-loader see https://github.com/postcss/postcss-loader
-            loader: 'postcss-loader'
-          }
-        ]
+        use: cssPreprocessors
       }
     ]
   },
