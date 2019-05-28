@@ -1,4 +1,5 @@
 @custom-media --viewport-medium (width <= 50rem);
+
 @custom-selector :--heading h1, h2, h3, h4, h5, h6;
 
 :root {
@@ -9,6 +10,18 @@
 
 html {
   overflow: hidden auto;
+}
+
+div {
+  height: 100%;
+  width: 12px;
+  position: absolute;
+  top: 1px;
+  font-size: 12rem;
+}
+
+#id {
+  color: pink !important;
 }
 
 @media (--viewport-medium) {

@@ -23,7 +23,9 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-standard": "^4.0.0",
-    "local-web-server": "^2.6.1"
+    "local-web-server": "^2.6.1",
+    "stylelint": "^10.0.1",
+    "stylelint-config-standard": "^18.3.0"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",

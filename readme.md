@@ -144,6 +144,20 @@ module.exports = {
 ## css module支持
 ## 添加react支持
 
+## 编码规范
+eslint
+```bash
+npm i -D eslint
+```
+stylelint
+```bash
+npm i -D stylelint stylelint-config-standard
+```
+配置IDE支持
+vs code
+WebStorm
+
+
 ## 开发调试支持
 js sourcemap
 css sourcemap
