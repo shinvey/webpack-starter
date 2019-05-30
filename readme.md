@@ -170,7 +170,8 @@ __持续保持书写规范 prettier__
 1. [How to integrate Prettier with ESLint and stylelint](https://www.freecodecamp.org/news/integrating-prettier-with-eslint-and-stylelint-99e74fede33f/)
 
 ### 编译时检查
-
+### 提交时检查
+[lint-staged](https://github.com/okonet/lint-staged)
 ### 配置IDE支持
 __vs code__
 
@@ -191,6 +192,8 @@ mini-css-extract-plugin
 ## browserlist
 ## polyfill支持
 ## 可选支持webp
+## caniuse tools
+1. [doiuse](http://doiuse.herokuapp.com/)
 
 # 工程优化
 ## 基本静态资源优化
