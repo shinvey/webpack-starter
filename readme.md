@@ -141,24 +141,34 @@ module.exports = {
 ```
 
 ## 添加scss支持
-## css module支持
+## css module支持或组件级样式书写方案
+1. css-loader
+1. [styled-jsx](https://github.com/zeit/styled-jsx)
+## postcss支持
+1. postcss preset env
+1. PostCSS Utility Library
+    1. postcss-utilities
+
 ## 添加react支持
 
 ## 编码规范
-eslint
+__js代码书写规范 eslint__
 ```bash
 npm i -D eslint
 ```
-stylelint
+__样式书写规范 stylelint__
 ```bash
 npm i -D stylelint stylelint-config-standard
 ```
+__样式属性排列顺序__
+IDE对此项特性支持不太广泛
+
 ### 编译时检查
 
 ### 配置IDE支持
-vs code
-WebStorm
-
+__vs code__
+__WebStorm__
+webstorm stylelint fix
 
 ## 开发调试支持
 js sourcemap
