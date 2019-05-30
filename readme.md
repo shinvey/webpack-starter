@@ -161,8 +161,7 @@ __样式书写规范 stylelint__
 npm i -D stylelint stylelint-config-standard
 ```
 __样式属性排列顺序__
-
-IDE对此项特性支持不太广泛
+1. [stylelint-order](https://github.com/hudochenkov/stylelint-order)
 
 __持续保持书写规范 prettier__
 
