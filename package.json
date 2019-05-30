@@ -10,6 +10,7 @@
     "build:inspect:browser": "webpack --mode development -d",
     "build:inspect:code": "webpack --mode development --devtool none",
     "serve": "ws --compress --open --directory dist",
+    "lint": "eslint . && stylelint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

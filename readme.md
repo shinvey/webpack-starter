@@ -153,7 +153,9 @@ stylelint
 ```bash
 npm i -D stylelint stylelint-config-standard
 ```
-配置IDE支持
+### 编译时检查
+
+### 配置IDE支持
 vs code
 WebStorm
 

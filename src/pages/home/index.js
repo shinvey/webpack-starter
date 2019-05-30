@@ -10,4 +10,4 @@ class Person {
 document.body.appendChild(component())
 
 Person.say('hello world')
-// Animal.run()
+Animal.run()
