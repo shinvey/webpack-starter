@@ -193,6 +193,7 @@ mini-css-extract-plugin
 ## 可选支持webp
 ## caniuse tools
 1. [doiuse](http://doiuse.herokuapp.com/)
+2. [stylelint-no-unsupported-browser-features](https://github.com/ismay/stylelint-no-unsupported-browser-features)
 
 # 工程优化
 ## 基本静态资源优化
