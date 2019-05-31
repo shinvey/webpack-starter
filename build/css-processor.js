@@ -30,6 +30,6 @@ exports.postcssLoader = () => ({
   loader: 'postcss-loader'
 })
 
-exports.scssLoader = () => ({
-  loader: 'scss-loader'
+exports.sassLoader = () => ({
+  loader: 'sass-loader'
 })

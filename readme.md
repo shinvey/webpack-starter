@@ -141,6 +141,9 @@ module.exports = {
 ```
 
 ## 添加scss支持
+```bash
+npm install sass-loader node-sass
+```
 ## css module支持或组件级样式书写方案
 1. css-loader
 1. [styled-jsx](https://github.com/zeit/styled-jsx)
@@ -159,6 +162,8 @@ npm i -D eslint
 __样式书写规范 stylelint__
 ```bash
 npm i -D stylelint stylelint-config-standard
+# 支持scss语法
+npm i stylelint-scss -D
 ```
 __样式属性排列顺序__
 1. [stylelint-order](https://github.com/hudochenkov/stylelint-order)

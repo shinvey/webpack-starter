@@ -22,6 +22,7 @@ plugins.push(
  */
 const styleLoader = cssPreprocessor.styleLoader()
 const postcssLoader = cssPreprocessor.postcssLoader()
+// css or pcss
 const cssPreprocessors = [
   styleLoader,
   cssPreprocessor.cssLoader({
@@ -29,15 +30,16 @@ const cssPreprocessors = [
   }),
   postcssLoader
 ]
-// const scssPreprocessors = [
-//   styleLoader,
-//   cssPreprocessor.cssLoader({
-//     importLoaders: 2,
-//     modules: true
-//   }),
-//   postcssLoader,
-//   cssPreprocessor.scssLoader()
-// ]
+// sass or scss
+const sassPreprocessors = [
+  styleLoader,
+  cssPreprocessor.cssLoader({
+    importLoaders: 2
+    // modules: true
+  }),
+  postcssLoader,
+  cssPreprocessor.sassLoader()
+]
 
 // 抽离css https://github.com/webpack-contrib/mini-css-extract-plugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -73,11 +75,17 @@ module.exports = {
           }
         }
       },
-      // 添加scss支持
+      // 添加pcss支持
       {
         test: /\.p?css$/,
         include: directoryWhiteList,
         use: cssPreprocessors
+      },
+      // 添加scss支持
+      {
+        test: /\.s[ca]ss$/,
+        include: directoryWhiteList,
+        use: sassPreprocessors
       }
     ]
   },
