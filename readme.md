@@ -203,8 +203,17 @@ mini-css-extract-plugin
 # 工程优化
 ## 基本静态资源优化
 HTML压缩
-CSS压缩
-JS压缩
+
+__CSS压缩__
+css minimizer
+```bash
+npm install optimize-css-assets-webpack-plugin
+```
+
+1. [Eliminating unused CSS](https://github.com/FullHuman/purgecss-webpack-plugin)
+
+__JS压缩__
+
 图像优化
 
 ## 首屏加载性能优化
