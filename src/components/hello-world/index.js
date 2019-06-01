@@ -23,6 +23,7 @@ export default (text = 'Hello world', ...args) => {
 
   Promise.resolve(args).then(val => console.log('args ', val))
 
+  element.classList.add('box')
   element.innerHTML = text
 
   return element

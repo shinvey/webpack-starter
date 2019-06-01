@@ -9,6 +9,8 @@ module.exports = {
   'extends': 'stylelint-config-standard',
   plugins: [
     // support scss. See https://github.com/kristerkari/stylelint-scss
+    // why doesn't support .sass syntax, see https://github.com/kristerkari/stylelint-scss/issues/104
+    // and no plugin especially for .sass file, see https://stylelint.io/user-guide/plugins/
     'stylelint-scss'
   ],
   'rules': {

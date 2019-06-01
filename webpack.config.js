@@ -7,23 +7,12 @@
  */
 module.exports = (env, args) => {
   const path = require('path')
-  const cssPreprocessor = require('./build/css-processor')
+  const cssPreprocessor = require('./build/css-processor')(env, args)
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
     path.resolve(__dirname, 'src')
   ]
-
-  // 插件管理
-  const plugins = []
-
-  // 处理HTML
-  const HtmlWebpackPlugin = require('html-webpack-plugin')
-  plugins.push(
-    new HtmlWebpackPlugin({
-      template: './src/pages/home/index.html'
-    })
-  )
 
   /**
    * 样式文件处理
@@ -49,6 +38,17 @@ module.exports = (env, args) => {
     cssPreprocessor.sassLoader()
   ]
 
+  // 插件管理
+  const plugins = []
+
+  // 处理HTML
+  const HtmlWebpackPlugin = require('html-webpack-plugin')
+  plugins.push(
+    new HtmlWebpackPlugin({
+      template: './src/pages/home/index.html'
+    })
+  )
+
   // 抽离css https://github.com/webpack-contrib/mini-css-extract-plugin
   const MiniCssExtractPlugin = require('mini-css-extract-plugin')
   plugins.push(
@@ -59,25 +59,30 @@ module.exports = (env, args) => {
       chunkFilename: '[id].css'
     })
   )
+  // 替换style loader就可以抽离css文件了
   styleLoader.loader = MiniCssExtractPlugin.loader
+
+  // souce map配置
+  // todo 解决production输出source map路径不对问题
+  // if (args.devtool) {
+  //   const webpack = require('webpack')
+  //   plugins.push(new webpack.SourceMapDevToolPlugin({
+  //     publicPath: 'https://example.com/project/'
+  //   }))
+  // }
 
   /**
    * 生产环境配置
    */
-  // css minimizer
-  // let minimizer = []
-  if (args.mode === 'production') {
-    const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-    plugins.push(new OptimizeCSSAssetsPlugin())
-    // minimizer.push(new OptimizeCSSAssetsPlugin())
-    // const TerserJSPlugin = require('terser-webpack-plugin')
-    // minimizer.push(new TerserJSPlugin({}))
-  }
+  let minimizer = require('./build/minimizer')(env, args)
 
   // webpack 一般配置
   return {
     entry: {
       home: './src/pages/home/index.js'
+    },
+    output: {
+      // publicPath: ''
     },
     // see https://webpack.js.org/configuration/module
     module: {
@@ -111,8 +116,9 @@ module.exports = (env, args) => {
         }
       ]
     },
+    // devtool: false,
     optimization: {
-      // minimizer: minimizer,
+      minimizer: minimizer,
       /**
        * You would inspect if tree shaking works as normal.
        * See https://webpack.js.org/configuration/optimization/#optimizationusedexports

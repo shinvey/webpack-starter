@@ -7,7 +7,8 @@
     "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
     "build:production:sourcemap": "webpack --mode production --devtool source-map",
-    "build:inspect:browser": "webpack --mode development -d",
+    "build:production:inline-sourcemap": "webpack --mode production --devtool inline-source-map",
+    "build:inspect:browser": "webpack --mode development -d --devtool source-map",
     "build:inspect:code": "webpack --mode development --devtool none",
     "serve": "ws --compress --open --directory dist",
     "lint": "eslint . && stylelint src",
@@ -43,7 +44,8 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.1"
+    "webpack-cli": "^3.3.1",
+    "terser-webpack-plugin": "latest"
   },
   "repository": {
     "type": "git",

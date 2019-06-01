@@ -165,6 +165,7 @@ npm i -D stylelint stylelint-config-standard
 # 支持scss语法
 npm i stylelint-scss -D
 ```
+stylelint plugin中 暂无sass语法的支持
 __样式属性排列顺序__
 1. [stylelint-order](https://github.com/hudochenkov/stylelint-order)
 
