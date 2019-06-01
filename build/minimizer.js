@@ -8,6 +8,7 @@
 module.exports = (env, args) => {
   let minimizer = []
 
+  // 如果是非生产环境不使用minimizer
   if (args.mode !== 'production') {
     return minimizer
   }
