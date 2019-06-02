@@ -126,6 +126,9 @@ module.exports = (env, args) => {
              * 在启用cache-loader后，第二次编译你会发现，已经不再输出被responsive-loader
              * 处理的图像资源了。如果你需要重新处理图像可以选择删除cache-loader的缓存。
              * cache-loader缓存位置请查看cacheDirectory选项
+             *
+             * 相关问题
+             * Cache loader? https://github.com/herrstucki/responsive-loader/issues/52
              */
             assetProcessor.cacheLoader(),
             assetProcessor.urlLoader({

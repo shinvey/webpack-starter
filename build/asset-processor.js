@@ -24,6 +24,9 @@ module.exports = (env, args) => {
        * It's also important that you can specify size limit for url-loader.
        * It will automatically fall back to file-loader for all files beyond this size:
        * see https://github.com/webpack-contrib/url-loader
+       *
+       * 相关问题
+       * Images and css-loader Source Map Gotcha https://survivejs.com/webpack/loading/images/#images-and-css-loader-source-map-gotcha
        */
       loader: 'url-loader',
       options: {
