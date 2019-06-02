@@ -1,6 +1,6 @@
 /**
  * 样式文件处理
- * npm i style-loader css-loader postcss-loader
+ * npm i style-loader css-loader postcss-loader sass-loader node-sass
  */
 module.exports = (env, args) => {
   const _options = {
@@ -12,6 +12,7 @@ module.exports = (env, args) => {
       loader: 'style-loader',
       // options useable使用场景是手动控制css挂载/卸载 see https://juejin.im/post/5a2668996fb9a0450b663f20#heading-9
       options: {
+        // source map see https://github.com/webpack-contrib/style-loader#sourcemap
         ..._options
       }
     }),
@@ -21,6 +22,7 @@ module.exports = (env, args) => {
       // see https://github.com/webpack-contrib/css-loader
       loader: 'css-loader',
       options: {
+        // source map see https://github.com/webpack-contrib/css-loader#sourcemap
         ..._options,
         ...opts
 
@@ -40,10 +42,21 @@ module.exports = (env, args) => {
       // postcss-loader see https://github.com/postcss/postcss-loader
       loader: 'postcss-loader',
       options: {
-        // ..._options
+        // source map see https://github.com/postcss/postcss-loader#sourcemap
         sourceMap: args.devtool
           ? (/inline/i.test(args.devtool) ? 'inline' : true)
-          : false
+          : false,
+
+        // postcss loader config. See https://github.com/postcss/postcss-loader#config
+        config: {
+          // postcss-loader exposes context ctx to the config file, making your postcss.config.js dynamic, so can use it to do some real magic
+          // see https://github.com/postcss/postcss-loader#context-ctx
+          ctx: {
+            // 将env, args两个环境变量传递给postcss.config.js
+            env,
+            args
+          }
+        }
       }
     }),
 
@@ -52,6 +65,7 @@ module.exports = (env, args) => {
       // see https://github.com/webpack-contrib/sass-loader
       loader: 'sass-loader',
       options: {
+        // source map see https://github.com/webpack-contrib/sass-loader#source-maps
         ..._options
       }
     })

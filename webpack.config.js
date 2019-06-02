@@ -62,19 +62,9 @@ module.exports = (env, args) => {
   // 替换style loader就可以抽离css文件了
   styleLoader.loader = MiniCssExtractPlugin.loader
 
-  // souce map配置
-  // todo 解决production输出source map路径不对问题
-  // if (args.devtool) {
-  //   const webpack = require('webpack')
-  //   plugins.push(new webpack.SourceMapDevToolPlugin({
-  //     publicPath: 'https://example.com/project/'
-  //   }))
-  // }
-
   /**
    * 生产环境配置
    */
-  let minimizer = require('./build/minimizer')(env, args)
 
   // webpack 一般配置
   return {
@@ -116,13 +106,16 @@ module.exports = (env, args) => {
         }
       ]
     },
-    // devtool: false,
     optimization: {
-      minimizer: minimizer,
       /**
        * You would inspect if tree shaking works as normal.
        * See https://webpack.js.org/configuration/optimization/#optimizationusedexports
        * optimization.usedExports is enabled in production mode and disabled elsewise.
+       *
+       * 如果你启用usedExports选项审查编译后的代码，如果能够看到类似unused harmony export字样
+       * 就说明该块代码能够被正常tree shaking
+       *
+       * 对应的cli 选项是 --display-used-exports，截至webpack 4.30版本，该选项似乎并不凑效
        */
       usedExports: true
     },

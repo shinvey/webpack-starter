@@ -1,5 +1,5 @@
 import component, { Animal } from '../../components/hello-world'
-import './example.pcss'
+import './example1.pcss'
 import './example.scss'
 
 class Person {
@@ -11,4 +11,4 @@ class Person {
 document.body.appendChild(component())
 
 Person.say('hello world')
-Animal.run()
+// Animal.run()
