@@ -1,4 +1,5 @@
 /*! license */
+@import "../../components/hello-world/style";
 @mixin transform($property) {
   -webkit-transform: $property;
   -ms-transform: $property;

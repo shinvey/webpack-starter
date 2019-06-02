@@ -72,7 +72,7 @@ module.exports = (env, args) => {
       home: './src/pages/home/index.js'
     },
     output: {
-      // publicPath: ''
+      // publicPath: 'https://example.com/'
     },
     // see https://webpack.js.org/configuration/module
     module: {

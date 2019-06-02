@@ -8,7 +8,7 @@ class Person {
   }
 }
 
-// document.body.appendChild(component())
+document.body.appendChild(component())
 document.body.appendChild(lostGrid())
 
 Person.say('hello world')
