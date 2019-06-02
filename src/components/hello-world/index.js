@@ -38,3 +38,13 @@ export function lostGrid () {
     '  <div>4</div>'
   return element
 }
+
+export function ResponsiveImage () {
+  const img = new Image()
+  import('./Paris.jpg').then((module) => {
+    const ResponsiveImage = module.default
+    img.src = ResponsiveImage.src
+    img.srcset = ResponsiveImage.srcSet
+  })
+  return img
+}

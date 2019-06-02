@@ -222,12 +222,46 @@ npm install optimize-css-assets-webpack-plugin
 
 __JS压缩__
 
-图像优化
+__图像优化___
+```bash
+npm i url-loader file-loader
+```
+url-loader 内嵌小于8k的小图像
+file-loader 当图像大于8k时，将图像资源输出到制定目录中
+
+使用responsive-loader
+```bash
+npm install responsive-loader sharp
+```
+
+未responsive-loader做缓存
+```bash
+npm i cache-loader
+```
+
+从一组srcset中，浏览器如何选择合适的src？
+[With srcset, the browser does the work of figuring out which image is best](https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/#article-header-id-0)
 
 ## 首屏加载性能优化
 骨架HTML
 关键CSS
-代码分离和长效缓存
+
+__代码分离和长效缓存__
+eslint支持import()
+```bash
+npm install babel-eslint
+```
+.eslintrc.js
+```js
+module.exports = {
+  parser: "babel-eslint",
+};
+```
+babel支持import()
+```bash
+npm i @babel/plugin-syntax-dynamic-import
+```
+
 响应式图片
 滚动懒加载
 预加载

@@ -15,5 +15,8 @@ module.exports = {
      * npm i @babel/plugin-transform-runtime @babel/runtime
      */
     // '@babel/plugin-transform-runtime'
+
+    // 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
+    '@babel/plugin-syntax-dynamic-import'
   ]
 }

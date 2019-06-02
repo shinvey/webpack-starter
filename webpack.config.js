@@ -7,7 +7,6 @@
  */
 module.exports = (env, args) => {
   const path = require('path')
-  const cssPreprocessor = require('./build/css-processor')(env, args)
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
@@ -17,6 +16,7 @@ module.exports = (env, args) => {
   /**
    * 样式文件处理
    */
+  const cssPreprocessor = require('./build/css-processor')(env, args)
   const styleLoader = cssPreprocessor.styleLoader()
   const postcssLoader = cssPreprocessor.postcssLoader()
   // css or pcss
@@ -37,6 +37,9 @@ module.exports = (env, args) => {
     postcssLoader,
     cssPreprocessor.sassLoader()
   ]
+
+  // 媒体资源处理
+  const assetProcessor = require('./build/asset-processor')(env, args)
 
   // 插件管理
   const plugins = []
@@ -104,18 +107,49 @@ module.exports = (env, args) => {
           include: directoryWhiteList,
           use: sassPreprocessors
         },
-        /**
-         * url loader, A loader for webpack which transforms files into base64 URIs
-         * It's also important that you can specify size limit for url-loader.
-         * It will automatically fall back to file-loader for all files beyond this size:
-         * see https://github.com/webpack-contrib/url-loader
-         */
+        // 小于8k的小资源内嵌
         {
-          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          loader: 'url-loader',
-          options: {
-            limit: 8192
-          }
+          test: /\.(gif|svg|eot|ttf|woff|woff2)$/,
+          include: directoryWhiteList,
+          use: [
+            assetProcessor.urlLoader()
+          ]
+        },
+        // Responsive Images 工程化实践配置
+        {
+          test: /\.(jpe?g|png)$/i,
+          include: directoryWhiteList,
+          use: [
+            /**
+             * 在Responsive Image场景下编译实践会较长，
+             * 这里有选择性的使用cache-loader来缓存编译结果。
+             * 在启用cache-loader后，第二次编译你会发现，已经不再输出被responsive-loader
+             * 处理的图像资源了。如果你需要重新处理图像可以选择删除cache-loader的缓存。
+             * cache-loader缓存位置请查看cacheDirectory选项
+             */
+            assetProcessor.cacheLoader(),
+            assetProcessor.urlLoader({
+              // 如果图像大小大于8k则使用responsive-loader来处理，此处的options下的配置会全部传给responsive-loader
+              fallback: 'responsive-loader',
+              // Using responsive-loader options, see https://github.com/herrstucki/responsive-loader
+              adapter: require('responsive-loader/sharp'),
+              /**
+               * sizes 在使用前应做好终端屏幕尺寸分布情况的数据分析，确定好一组适配的分辨率后，
+               * 就可以定好使用sizes定好一组图像宽度，在代码中引用图像时就不必再次声明
+               * 用例可以查阅 https://github.com/herrstucki/responsive-loader#usage
+               * 从一组srcset中，浏览器如何选择合适的src？ 答案是DPR，请看浏览器的算法 https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/#article-header-id-0
+               */
+              sizes: [300, 600, 1200, 2000]
+              /**
+               * placeholder 是否使用占位图像功能
+               * 该场景适用于我们没有自己的placeholder图像，也不是非常在意placeholder图像的款式
+               * 那么就可以选用responsive-loader为我们准备的placeholder功能
+               * 用例可以查看placeholder部分 https://github.com/herrstucki/responsive-loader#usage
+               */
+              // placeholder: true,
+              // placeholderSize: 50
+            })
+          ]
         }
       ]
     },
