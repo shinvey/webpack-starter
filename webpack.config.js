@@ -103,6 +103,19 @@ module.exports = (env, args) => {
           test: /\.s[ca]ss$/,
           include: directoryWhiteList,
           use: sassPreprocessors
+        },
+        /**
+         * url loader, A loader for webpack which transforms files into base64 URIs
+         * It's also important that you can specify size limit for url-loader.
+         * It will automatically fall back to file-loader for all files beyond this size:
+         * see https://github.com/webpack-contrib/url-loader
+         */
+        {
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
+          loader: 'url-loader',
+          options: {
+            limit: 8192
+          }
         }
       ]
     },
