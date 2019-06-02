@@ -151,6 +151,7 @@ npm install sass-loader node-sass
 1. postcss preset env
 1. PostCSS Utility Library
     1. postcss-utilities
+## LostGrid栅格系统支持
 
 ## 添加react支持
 
@@ -185,8 +186,14 @@ __WebStorm__
 [webstorm stylelint fix](https://stackoverflow.com/questions/54304313/stylelint-fix-in-webstorm)
 
 ## 开发调试支持
-js sourcemap
-css sourcemap
+[x] js sourcemap
+[x] css sourcemap
+
+[x] webpack dev server
+```bash
+npm install webpack-dev-server --save-dev
+```
+
 对比以下两个plugin的使用场景
 extract-css-chunks-webpack-plugin
 mini-css-extract-plugin

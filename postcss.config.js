@@ -33,7 +33,13 @@ module.exports = ({ options }) => {
             removeAll: true
           }
         }]
-      } : false
+      } : false,
+
+      /**
+       * LostGrid makes use of calc() to create stunning grids based on fractions you define without having to pass a lot of options.
+       * see https://github.com/peterramsing/lost
+       */
+      'lost': {}
     }
   }
 }

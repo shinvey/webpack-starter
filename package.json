@@ -4,6 +4,7 @@
   "description": "项目描述",
   "private": true,
   "scripts": {
+    "start": "webpack-dev-server --open --devtool source-map",
     "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
     "build:production:sourcemap": "webpack --mode production --devtool source-map",
@@ -28,7 +29,8 @@
     "local-web-server": "^2.6.1",
     "stylelint": "^10.0.1",
     "stylelint-config-standard": "^18.3.0",
-    "stylelint-scss": "^3.7.0"
+    "stylelint-scss": "^3.7.0",
+    "webpack-dev-server": "^3.5.1"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -37,6 +39,7 @@
     "css-loader": "^2.1.1",
     "cssnano": "^4.1.10",
     "html-webpack-plugin": "^3.2.0",
+    "lost": "^8.3.1",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",

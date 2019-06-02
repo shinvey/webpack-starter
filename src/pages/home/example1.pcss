@@ -13,14 +13,6 @@ html {
   overflow: hidden auto;
 }
 
-div {
-  height: 100%;
-  width: 12px;
-  position: absolute;
-  top: 1px;
-  font-size: 12rem;
-}
-
 #id {
   color: pink !important;
 }
@@ -50,4 +42,13 @@ a {
   &:hover {
     color: rebeccapurple;
   }
+}
+
+/* lostGrid system, basic example */
+section {
+  lost-utility: clearfix;
+}
+
+div {
+  lost-column: 1/2;
 }

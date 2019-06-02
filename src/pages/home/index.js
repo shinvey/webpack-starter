@@ -1,4 +1,4 @@
-import component, { Animal } from '../../components/hello-world'
+import component, { lostGrid, Animal } from '../../components/hello-world'
 import './example1.pcss'
 import './example.scss'
 
@@ -8,7 +8,8 @@ class Person {
   }
 }
 
-document.body.appendChild(component())
+// document.body.appendChild(component())
+document.body.appendChild(lostGrid())
 
 Person.say('hello world')
 // Animal.run()
