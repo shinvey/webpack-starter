@@ -4,7 +4,8 @@
   "description": "项目描述",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --open --devtool source-map",
+    "start": "webpack-dev-server --devtool source-map",
+    "start:open": "webpack-dev-server --open --devtool source-map",
     "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
     "build:production:sourcemap": "webpack --mode production --devtool source-map",
