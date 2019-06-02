@@ -194,6 +194,9 @@ __WebStorm__
 npm install webpack-dev-server --save-dev
 ```
 
+## 环境变量支持
+webpack define plugin
+
 对比以下两个plugin的使用场景
 extract-css-chunks-webpack-plugin
 mini-css-extract-plugin
@@ -241,6 +244,16 @@ npm i cache-loader
 
 从一组srcset中，浏览器如何选择合适的src？
 [With srcset, the browser does the work of figuring out which image is best](https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/#article-header-id-0)
+
+__缓存清理__
+```bash
+npm install clean-webpack-plugin
+```
+
+__文件目录管理__
+删除目录
+
+创建zip包
 
 ## 首屏加载性能优化
 骨架HTML

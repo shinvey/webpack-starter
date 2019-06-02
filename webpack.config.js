@@ -5,13 +5,20 @@
  * @param args 命令行参数列表
  * @returns Object
  */
-module.exports = (env, args) => {
+module.exports = (env = {}, args) => {
   const path = require('path')
+  const merge = require('webpack-merge')
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
     path.resolve(__dirname, 'src')
   ]
+
+  // output configuration
+  const output = {
+    path: path.resolve(__dirname, 'dist')
+    // publicPath: 'https://example.com/'
+  }
 
   /**
    * 样式文件处理
@@ -66,6 +73,29 @@ module.exports = (env, args) => {
   styleLoader.loader = MiniCssExtractPlugin.loader
 
   /**
+   * 工程文件管理
+   */
+  let fileManagerOptions = {}
+  // 缓存清理
+  if (env.clean) {
+    fileManagerOptions = merge(fileManagerOptions, {
+      onStart: {
+        delete: []
+      }
+    })
+    // 清理webpack output
+    fileManagerOptions.onStart.delete.push(output.path)
+    // 清理cache-loader缓存
+    fileManagerOptions.onStart.delete.push(assetProcessor.cacheLoader().options.cacheDirectory)
+  }
+  if (['clean', 'zip'].some(cliOpt => cliOpt in env)) {
+    const FileManagerPlugin = require('filemanager-webpack-plugin')
+    plugins.push(
+      new FileManagerPlugin(fileManagerOptions)
+    )
+  }
+
+  /**
    * 生产环境配置
    */
 
@@ -74,9 +104,7 @@ module.exports = (env, args) => {
     entry: {
       home: './src/pages/home/index.js'
     },
-    output: {
-      // publicPath: 'https://example.com/'
-    },
+    output: output,
     // see https://webpack.js.org/configuration/module
     module: {
       // see https://webpack.js.org/configuration/module#modulerules
