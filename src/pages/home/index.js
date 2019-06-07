@@ -13,4 +13,4 @@ document.body.appendChild(lostGrid())
 document.body.appendChild(ResponsiveImage())
 
 Person.say('hello world')
-// Animal.run()
+Animal.run()

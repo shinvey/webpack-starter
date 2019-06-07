@@ -1,12 +1,15 @@
 /*! license */
 @import "../../components/hello-world/style";
+
 @mixin transform($property) {
   -webkit-transform: $property;
   -ms-transform: $property;
   transform: $property;
 }
+
 .box {
   @include transform(rotate(0deg));
+
   border: solid 1px;
-  color:red;
+  color: red;
 }

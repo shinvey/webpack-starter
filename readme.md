@@ -154,7 +154,9 @@ npm install sass-loader node-sass
 ## LostGrid栅格系统支持
 ```bash
 npm i lost
+npm install stylelint-config-lost --save-dev
 ```
+
 ## 添加react支持
 
 ## 编码规范
@@ -208,6 +210,10 @@ mini-css-extract-plugin
 ## css autoprefix
 ## browserlist
 ## polyfill支持
+__兼容性检查__
+如果你不打算polyfill你的项目，你或许要开启eslint-plugin-compat对浏览器兼容性的检查
+https://github.com/amilajack/eslint-plugin-compat
+__polyfill service__
 ## 可选支持webp
 ## caniuse tools
 1. [doiuse](http://doiuse.herokuapp.com/)

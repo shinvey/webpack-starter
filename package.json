@@ -15,14 +15,12 @@
     "build:inspect:code": "webpack --mode development -d --devtool none",
     "serve": "ws --compress --open --directory dist",
     "lint": "eslint . && stylelint src",
-    "lint:compatibility": "doiuse dist/home.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "shinvey@qq.com",
   "license": "ISC",
   "devDependencies": {
-    "doiuse": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",
@@ -32,7 +30,9 @@
     "eslint-plugin-standard": "^4.0.0",
     "local-web-server": "^2.6.1",
     "stylelint": "^10.0.1",
+    "stylelint-config-lost": "0.0.3",
     "stylelint-config-standard": "^18.3.0",
+    "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-scss": "^3.7.0",
     "webpack-dev-server": "^3.5.1"
   },

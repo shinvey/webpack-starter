@@ -1,2 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 dist
+# A bug for stylelint which checks images
+*.jpg
