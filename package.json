@@ -15,12 +15,14 @@
     "build:inspect:code": "webpack --mode development -d --devtool none",
     "serve": "ws --compress --open --directory dist",
     "lint": "eslint . && stylelint src",
+    "lint:compatibility": "doiuse dist/home.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "shinvey@qq.com",
   "license": "ISC",
   "devDependencies": {
+    "doiuse": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",

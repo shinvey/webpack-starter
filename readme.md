@@ -152,7 +152,9 @@ npm install sass-loader node-sass
 1. PostCSS Utility Library
     1. postcss-utilities
 ## LostGrid栅格系统支持
-
+```bash
+npm i lost
+```
 ## 添加react支持
 
 ## 编码规范
