@@ -4,15 +4,15 @@
   "description": "项目描述",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --hot --devtool source-map --env.clean",
+    "start": "webpack-dev-server --hot --devtool source-map --env.clean --env.lint",
     "start:open": "webpack-dev-server --open --devtool source-map",
     "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
     "build:production:clean": "webpack --mode production --env.clean",
     "build:production:sourcemap": "webpack --mode production --devtool source-map",
     "build:production:inline-sourcemap": "webpack --mode production --devtool inline-source-map",
-    "build:inspect:browser": "webpack --mode development -d --devtool source-map",
-    "build:inspect:code": "webpack --mode development -d --devtool none",
+    "build:inspect:browser": "webpack --mode development -d --devtool source-map --env.lint",
+    "build:inspect:code": "webpack --mode development -d --devtool none --env.lint",
     "serve": "ws --compress --open --directory dist",
     "lint": "eslint . && stylelint src",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +20,12 @@
   "keywords": [],
   "author": "shinvey@qq.com",
   "license": "ISC",
+  "browserslist": [
+    "Android >= 4.4",
+    "iOS >= 8"
+  ],
   "devDependencies": {
+    "doiuse": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.2",

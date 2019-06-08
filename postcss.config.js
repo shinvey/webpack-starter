@@ -1,6 +1,17 @@
 // see https://github.com/postcss/postcss-loader#configuration
 module.exports = ({ options }) => {
   const { args } = options
+  const env = args.env || {}
+  const plugins = {}
+
+  // 如果开启了--env.lint则开启检查
+  if (env.lint) {
+    // css兼容性检查 https://github.com/anandthakker/doiuse
+    plugins.doiuse = {
+      browsers: require('./package').browserslist
+    }
+  }
+
   return {
     plugins: {
       /**
@@ -38,7 +49,9 @@ module.exports = ({ options }) => {
             removeAll: true
           }
         }]
-      } : false
+      } : false,
+
+      ...plugins
     }
   }
 }
