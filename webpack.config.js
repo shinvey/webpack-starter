@@ -59,18 +59,24 @@ module.exports = (env = {}, args) => {
     })
   )
 
-  // 抽离css https://github.com/webpack-contrib/mini-css-extract-plugin
-  const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+  // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
+  // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
+  const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
   plugins.push(
-    new MiniCssExtractPlugin({
+    new ExtractCssChunks({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: '[name].css',
-      chunkFilename: '[id].css'
+      chunkFilename: '[id].css',
+      orderWarning: true // Disable to remove warnings about conflicting order between imports
     })
   )
   // 替换style loader就可以抽离css文件了
-  styleLoader.loader = MiniCssExtractPlugin.loader
+  styleLoader.loader = ExtractCssChunks.loader
+  styleLoader.options = merge(styleLoader.options, {
+    hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
+    reloadAll: true // when desperation kicks in - this is a brute force HMR flag
+  })
 
   /**
    * 工程文件管理
@@ -197,6 +203,9 @@ module.exports = (env = {}, args) => {
        */
       usedExports: true
     },
-    plugins: plugins
+    plugins: plugins,
+    devServer: {
+      host: '0.0.0.0'
+    }
   }
 }
