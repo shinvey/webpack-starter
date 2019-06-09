@@ -73,10 +73,12 @@ module.exports = (env = {}, args) => {
   )
   // 替换style loader就可以抽离css文件了
   styleLoader.loader = ExtractCssChunks.loader
-  styleLoader.options = merge(styleLoader.options, {
-    hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
-    reloadAll: true // when desperation kicks in - this is a brute force HMR flag
-  })
+  if (args.hot) {
+    styleLoader.options = merge(styleLoader.options, {
+      hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
+      reloadAll: true // when desperation kicks in - this is a brute force HMR flag
+    })
+  }
 
   /**
    * 工程文件管理
