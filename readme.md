@@ -159,6 +159,8 @@ npm install stylelint-config-lost --save-dev
 
 ## 添加react支持
 
+react css modules [babel-plugin-react-css-modules](https://github.com/gajus/babel-plugin-react-css-modules)
+
 ## 编码规范
 __js代码书写规范 eslint__
 ```bash
@@ -202,14 +204,14 @@ npm install webpack-dev-server --save-dev
 webpack define plugin
 
 对比以下两个plugin的使用场景
-extract-css-chunks-webpack-plugin
-mini-css-extract-plugin
+extract-css-chunks-webpack-plugin, 对css HMR支持更好
+mini-css-extract-plugin，对css HMR没有想象中那么好
 
 # 兼容性处理
 ## modernizer
-## css autoprefix
-## browserlist
-## polyfill支持
+[x] css autoprefix
+[x] browserlist
+[x] polyfill支持, polyfill service
 __兼容性检查__
 如果你不打算polyfill你的项目，你或许要开启eslint-plugin-compat对浏览器兼容性的检查
 https://github.com/amilajack/eslint-plugin-compat
