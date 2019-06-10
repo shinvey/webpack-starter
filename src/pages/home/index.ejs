@@ -14,5 +14,13 @@
 <body>
 <!-- polyfill 支持， feature default -->
 <script src="//polyfill.io/v3/polyfill.min.js"></script>
+<!--
+Webpack cli parameters
+--env <%= JSON.stringify(args.env) %>
+--mode <%= args.mode %>
+
+更多内置可访问对象见 https://github.com/jantimon/html-webpack-plugin#writing-your-own-templates
+更多用例见 https://github.com/jaketrent/html-webpack-template
+-->
 </body>
 </html>

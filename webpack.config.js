@@ -62,7 +62,12 @@ module.exports = (env = {}, args) => {
   const HtmlWebpackPlugin = require('html-webpack-plugin')
   plugins.push(
     new HtmlWebpackPlugin({
-      template: './src/pages/home/index.html'
+      // More options see https://github.com/jantimon/html-webpack-plugin#options
+      // cache: true, // cache默认启用
+      template: './src/pages/home/index.ejs',
+      templateParameters: {
+        args
+      }
     })
   )
 
