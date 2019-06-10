@@ -17,6 +17,10 @@ module.exports = (env = {}, args) => {
   // output configuration
   const output = {
     path: path.resolve(__dirname, 'dist')
+    // filename: '[name].js',
+    // Note the use of chunkFilename, which determines the name of non-entry chunk files.
+    // https://webpack.js.org/configuration/output/#output-chunkfilename
+    // chunkFilename: '[name].bundle.js'
     // publicPath: 'https://example.com/'
   }
 

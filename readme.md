@@ -280,8 +280,19 @@ __文件目录管理__
 创建zip包
 
 ## 首屏加载性能优化
-骨架HTML
-关键CSS
+[ ] todo 使用split chunk配置去配合script-ext和style-ext分离出critical resource
+__骨架HTML(bare-bones HTML)__
+index/bare-bones.html
+
+__关键CSS__
+naming convention: xxx.critical.css
+Enhances html-webpack-plugin functionality with different deployment options for your scripts including 'async', 'preload', 'prefetch', 'defer', 'module', custom attributes, and inlining.
+[style-ext-html-webpack-plugin](https://github.com/numical/style-ext-html-webpack-plugin)
+
+__关键js__
+nameing convention: xxx.critical.js
+Enhances html-webpack-plugin functionality by enabling internal ('in-line') styles.
+[script-ext-html-webpack-plugin](https://github.com/numical/script-ext-html-webpack-plugin)
 
 __代码分离和长效缓存__
 eslint支持import()
@@ -299,9 +310,10 @@ babel支持import()
 npm i @babel/plugin-syntax-dynamic-import
 ```
 
-响应式图片
-滚动懒加载
-预加载
+[x] 响应式图片
+[x] 滚动懒加载
+[x] 预加载
+prefech/preload resource hint
 
 ## 工程编译性能优化
 提升编译性能
