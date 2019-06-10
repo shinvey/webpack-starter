@@ -58,6 +58,7 @@ module.exports = (env = {}, args) => {
   const plugins = []
 
   // 处理HTML
+  // see https://github.com/jantimon/html-webpack-plugin
   const HtmlWebpackPlugin = require('html-webpack-plugin')
   plugins.push(
     new HtmlWebpackPlugin({
