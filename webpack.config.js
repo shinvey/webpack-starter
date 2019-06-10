@@ -20,6 +20,12 @@ module.exports = (env = {}, args) => {
     // publicPath: 'https://example.com/'
   }
 
+  let fileManagerOptions = {
+    onStart: {
+      delete: []
+    }
+  }
+
   /**
    * 样式文件处理
    */
@@ -81,16 +87,98 @@ module.exports = (env = {}, args) => {
   }
 
   /**
+   * 生产环境配置
+   */
+  if (args.mode === 'production') {
+    /**
+     * 图像处理
+     */
+    // --env.clean开启则删除缓存
+    env.clean && fileManagerOptions.onStart.delete.push('./node_modules/.cache/imagemin-webpack')
+    // see https://github.com/itgalaxy/imagemin-webpack
+    // Note: Make sure that plugin place after any plugins that add images or other assets which you want to optimized.
+    const ImageminPlugin = require('imagemin-webpack')
+
+    // Before importing imagemin plugin make sure you add it in `package.json` (`dependencies`) and install
+    const imageminGifsicle = require('imagemin-gifsicle')
+    const imageminSvgo = require('imagemin-svgo')
+
+    // 无损压缩模式
+    // const imageminJpegtran = require('imagemin-jpegtran')
+    // const imageminOptipng = require('imagemin-optipng')
+
+    // 有损压缩模式
+    const imageminMozjpeg = require('imagemin-mozjpeg')
+    const imageminPngquant = require('imagemin-pngquant')
+
+    plugins.push(
+      // Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
+      new ImageminPlugin({
+        bail: false, // Ignore errors on corrupted images
+        // cache option see https://github.com/itgalaxy/imagemin-webpack#cache
+        cache: !env.clean, // 如果--env.clean开关开启，则不启用cache
+        include: directoryWhiteList,
+        // 过滤responsiveLoader使用场景
+        exclude: assetProcessor.responsiveLoader.test,
+        imageminOptions: {
+          // Lossless optimization with custom option
+          // Feel free to expirement with options for better result for you
+          // progressive and interlaced rendering的差异 see https://blog.codinghorror.com/progressive-image-rendering/
+          plugins: [
+            // see https://github.com/imagemin/imagemin-gifsicle
+            imageminGifsicle({
+              // see https://github.com/imagemin/imagemin-gifsicle#interlaced
+              interlaced: true
+            }),
+            imageminSvgo({
+              // What is viewBox?
+              // See https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
+              // See https://blog.csdn.net/userkang/article/details/84770843
+              removeViewBox: true
+            }),
+
+            // 有损压缩模式
+            /**
+             * jpg以填充色方式存储图像，每块像素都存储着色值
+             * see https://github.com/imagemin/imagemin-mozjpeg
+             */
+            imageminMozjpeg({
+              // Compression quality, in range 0 (worst) to 100 (perfect).
+              // see https://github.com/imagemin/imagemin-mozjpeg#quality
+              // 注意：quality值如果大于原图像quality的值，输出的图像反而会比原图像更大
+              quality: 65
+            }),
+            /**
+             * png以索引色方式存储，索引色好比色板，画布上每块像素记录着颜色的索引
+             * see https://github.com/imagemin/imagemin-pngquant
+             */
+            imageminPngquant({
+              /**
+               * Instructs pngquant to use the least amount of colors required to meet or exceed the max quality. If conversion results in quality below the min quality the image won't be saved.
+               * Min and max are numbers in range 0 (worst) to 1 (perfect), similar to JPEG.
+               * 定义索引色数量的阈值，分为最低和最高，原始图片低于最低则不处理，高于最高则缩减到0.8
+               * see https://github.com/imagemin/imagemin-pngquant#quality
+               */
+              quality: [0.65, 0.8]
+            })
+
+            // 无损压缩模式
+            // imageminJpegtran({
+            //   progressive: true
+            // }),
+            // imageminOptipng({
+            //   optimizationLevel: 5
+            // }),
+          ]
+        }
+      }))
+  }
+
+  /**
    * 工程文件管理
    */
-  let fileManagerOptions = {}
   // 缓存清理
   if (env.clean) {
-    fileManagerOptions = merge(fileManagerOptions, {
-      onStart: {
-        delete: []
-      }
-    })
     // 清理webpack output
     fileManagerOptions.onStart.delete.push(output.path)
     // 清理cache-loader缓存
@@ -102,10 +190,6 @@ module.exports = (env = {}, args) => {
       new FileManagerPlugin(fileManagerOptions)
     )
   }
-
-  /**
-   * 生产环境配置
-   */
 
   // webpack 一般配置
   return {
@@ -143,9 +227,11 @@ module.exports = (env = {}, args) => {
           include: directoryWhiteList,
           use: sassPreprocessors
         },
-        // 小于8k的小资源内嵌
+        // 小于8k的小资源内嵌，反之则返回图像路径
         {
-          test: /\.(gif|svg|eot|ttf|woff|woff2)$/,
+          test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/,
+          // 排除Responsive Images使用场景的命名模式
+          exclude: assetProcessor.responsiveLoader.test,
           include: directoryWhiteList,
           use: [
             assetProcessor.urlLoader()
@@ -153,7 +239,8 @@ module.exports = (env = {}, args) => {
         },
         // Responsive Images 工程化实践配置
         {
-          test: /\.(jpe?g|png)$/i,
+          // 匹配xxx.srcset.jpg xxx.srcset.png
+          test: assetProcessor.responsiveLoader.test,
           include: directoryWhiteList,
           use: [
             /**
@@ -167,27 +254,9 @@ module.exports = (env = {}, args) => {
              * Cache loader? https://github.com/herrstucki/responsive-loader/issues/52
              */
             assetProcessor.cacheLoader(),
-            assetProcessor.urlLoader({
-              // 如果图像大小大于8k则使用responsive-loader来处理，此处的options下的配置会全部传给responsive-loader
-              fallback: 'responsive-loader',
-              // Using responsive-loader options, see https://github.com/herrstucki/responsive-loader
-              adapter: require('responsive-loader/sharp'),
-              /**
-               * sizes 在使用前应做好终端屏幕尺寸分布情况的数据分析，确定好一组适配的分辨率后，
-               * 就可以定好使用sizes定好一组图像宽度，在代码中引用图像时就不必再次声明
-               * 用例可以查阅 https://github.com/herrstucki/responsive-loader#usage
-               * 从一组srcset中，浏览器如何选择合适的src？ 答案是DPR，请看浏览器的算法 https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/#article-header-id-0
-               */
-              sizes: [300, 600, 1200, 2000]
-              /**
-               * placeholder 是否使用占位图像功能
-               * 该场景适用于我们没有自己的placeholder图像，也不是非常在意placeholder图像的款式
-               * 那么就可以选用responsive-loader为我们准备的placeholder功能
-               * 用例可以查看placeholder部分 https://github.com/herrstucki/responsive-loader#usage
-               */
-              // placeholder: true,
-              // placeholderSize: 50
-            })
+            assetProcessor.urlLoader(
+              assetProcessor.responsiveLoader()
+            )
           ]
         }
       ]

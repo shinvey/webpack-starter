@@ -159,8 +159,9 @@ npm install stylelint-config-lost --save-dev
 
 ## 添加react支持
 
-react css modules [babel-plugin-react-css-modules](https://github.com/gajus/babel-plugin-react-css-modules)
-
+1. react css modules [babel-plugin-react-css-modules](https://github.com/gajus/babel-plugin-react-css-modules)
+2. react-ideal-image
+    * I need React component to asynchronously load images, which will adapt based on network, which will allow a user to control, which image to load.
 ## 编码规范
 __js代码书写规范 eslint__
 ```bash
@@ -242,12 +243,25 @@ npm i url-loader file-loader
 url-loader 内嵌小于8k的小图像
 file-loader 当图像大于8k时，将图像资源输出到制定目录中
 
+你或许考虑使用[imagemin-webpack](https://github.com/itgalaxy/imagemin-webpack)，来做图像优化
+Images can be optimized in two modes:
+* Lossless (without loss of quality).
+* Lossy (with loss of quality).
+```bash
+npm install imagemin-webpack
+# Recommended basic imagemin plugins for lossless optimization
+npm install imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo
+# Recommended basic imagemin plugins for lossy optimization
+npm install imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo
+```
+
+在移动Web使用responsive images可以根据用户屏幕尺寸下载合适尺寸的图像
 使用responsive-loader
 ```bash
 npm install responsive-loader sharp
 ```
 
-未responsive-loader做缓存
+为responsive-loader做缓存
 ```bash
 npm i cache-loader
 ```

@@ -39,12 +39,31 @@ export function lostGrid () {
   return element
 }
 
+/**
+ * Responsive Images使用场景
+ * 图像会被生成多个大小不同尺寸的图像
+ * @returns {HTMLImageElement}
+ * @constructor
+ */
 export function ResponsiveImage () {
   const img = new Image()
-  import('./Paris.jpg').then((module) => {
+  import('./Paris.srcset.jpg').then((module) => {
     const ResponsiveImage = module.default
     img.src = ResponsiveImage.src
     img.srcset = ResponsiveImage.srcSet
+  })
+  return img
+}
+
+/**
+ * 普通图片使用场景
+ * 默认会被压缩优化
+ * @returns {HTMLImageElement}
+ */
+export function loadImage () {
+  const img = new Image()
+  import('./blue-rose.jpeg').then((module) => {
+    img.src = module.default
   })
   return img
 }
