@@ -269,6 +269,21 @@ npm i cache-loader
 从一组srcset中，浏览器如何选择合适的src？
 [With srcset, the browser does the work of figuring out which image is best](https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/#article-header-id-0)
 
+在css中使用responsive images
+```scss
+/* Responsive Images */
+// postcss会将如下写法转义成兼容性代码
+// postcss-preset-env插件image-set()文档 https://preset-env.cssdb.org/features#image-set-function
+// image-set()具体转义内容请查阅 https://github.com/jonathantneal/postcss-image-set-function
+.img {
+  background: image-set(
+      url(../images/icon_red_packet_small.png) 1x,
+      url(../images/icon_red_packet_small@2x.png) 2x,
+      url(../images/icon_red_packet_small@3x.png) 3x
+  ) no-repeat center;
+}
+```
+
 __缓存清理__
 ```bash
 npm install clean-webpack-plugin
