@@ -209,7 +209,7 @@ extract-css-chunks-webpack-plugin, 对css HMR支持更好
 mini-css-extract-plugin，对css HMR没有想象中那么好
 
 # 兼容性处理
-## modernizer
+[ ] modernizer, 系统检查却分android和ios
 [x] css autoprefix
 [x] browserlist
 [x] polyfill支持, polyfill service
