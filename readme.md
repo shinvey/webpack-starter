@@ -210,6 +210,7 @@ mini-css-extract-plugin，对css HMR没有想象中那么好
 
 # 兼容性处理
 [ ] modernizer, 系统检查却分android和ios
+[ ] [使用vw实现移动端适配](https://juejin.im/entry/5aa09c3351882555602077ca)
 [x] css autoprefix
 [x] browserlist
 [x] polyfill支持, polyfill service
