@@ -417,7 +417,7 @@ Webstorm默认寻找项目根路径下的webpack.config.js中resolve.alias配置
 
 为什么要组件化开发？可以看看 [前端工程——基础篇](https://github.com/fouber/blog/issues/10)的“第一件事：组件化开发”部分。
 
-```bash
+```text
 ├── src  # 源码目录
 │   ├── assets # 公共静态资源目录
 │   │   ├── img # 公共图像资源，通常情况下，UI组件自己管理自己的图像资源
@@ -451,7 +451,7 @@ Webstorm默认寻找项目根路径下的webpack.config.js中resolve.alias配置
 ## 编译后的资源目录结构（Dist Folder Structure）
 该目录下的资源用于部署或发布
 
-```bash
+```text
 │  favicon.ico
 │  index.html
 │
@@ -532,7 +532,7 @@ vue为此提供了[style scoped](https://vue-loader-v14.vuejs.org/zh-cn/features
 * 使用行内样式
 ```html
 <div class="vux-slider">
-  <a class="vux-indicator" style="bottom: 10px"></>
+  <a class="vux-indicator" style="bottom: 10px"></a>
 </div>
 ```
 
