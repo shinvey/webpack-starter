@@ -211,6 +211,8 @@ mini-css-extract-plugin，对css HMR没有想象中那么好
 # 兼容性处理
 [ ] modernizer, 系统检查却分android和ios
 [ ] [使用vw实现移动端适配](https://juejin.im/entry/5aa09c3351882555602077ca)
+  1. [postcss-adaptive](https://github.com/songsiqi/postcss-adaptive)
+
 [x] css autoprefix
 [x] browserlist
 [x] polyfill支持, polyfill service
@@ -327,7 +329,12 @@ npm i @babel/plugin-syntax-dynamic-import
 ```
 
 [x] 响应式图片
+  1. img, srcset
+  2. css, image-set()
+
 [x] 滚动懒加载
+  1. [可视区域懒加载组件](https://github.com/amfe/amfe-appear)
+
 [x] 预加载
 prefech/preload resource hint
 
