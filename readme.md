@@ -300,7 +300,7 @@ __文件目录管理__
 创建zip包
 
 ## 首屏加载性能优化
-[ ] todo 使用split chunk配置去配合script-ext和style-ext分离出critical resource
+[ ] 使用split chunk配置去配合script-ext和style-ext分离出critical resource
 __骨架HTML(bare-bones HTML)__
 index/bare-bones.html
 
@@ -401,16 +401,16 @@ The build size with basic requirement on Chrome 66
 * webpack + vue + vux + lodash ~94k
 
 #### 编译后的包大小分析（Analysis bundle size）
-``` bash
+```bash
 npm run build:profile
 ```
 
-## Webstorm无法对import中的别名路径进行解析
-Webstorm默认寻找项目根路径下的webpack.config.js中resolve.alias配置，但是当前工程配置相对复杂，
+## WebStorm无法对import中的别名路径进行解析
+WebStorm默认寻找项目根路径下的webpack.config.js中resolve.alias配置，但是当前工程配置相对复杂，
 已将他们全部移动build/下面，并将alias配置单独提取出来为webpack.resolver.js。
 
 ### 配置建议
-依次打开Webstorm设置，找到Settings | Languages & Frameworks | JavaScript | Webpack，并将webpack configuration file路径指向webpack.alias.js文件
+依次打开WebStorm设置，找到Settings | Languages & Frameworks | JavaScript | Webpack，并将webpack configuration file路径指向webpack.alias.js文件
 
 可选方案可以查看 [Path aliases for imports in WebStorm](https://stackoverflow.com/questions/34943631/path-aliases-for-imports-in-webstorm)
 

@@ -7,12 +7,6 @@ export function stringify (obj) {
   return obj.toString()
 }
 
-export class Animal {
-  static run () {
-    console.info('Running')
-  }
-}
-
 export async function msg () {
   let val = await Promise.resolve('ok')
   return val + ' yes'

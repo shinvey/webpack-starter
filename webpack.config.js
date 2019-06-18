@@ -8,19 +8,56 @@
 module.exports = (env = {}, args) => {
   const path = require('path')
   const merge = require('webpack-merge')
+  const webpack = require('webpack')
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
     path.resolve(__dirname, 'src')
   ]
+  // 插件管理
+  const plugins = []
+
+  /**
+   * 静态资源优化策略
+   */
+  const optimization = {
+    // Extracting Boilerplate. See https://webpack.js.org/guides/caching/#extracting-boilerplate
+    runtimeChunk: 'single',
+    // Chunk splitting see https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-2
+    splitChunks: {
+      cacheGroups: {
+        // 默认配置
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'initial'
+        }
+        // 还可以根据加载性能优化策略，定义更合理的分离配置
+        // critical: {
+        //   test: /critical/i,
+        //   chunks: 'initial'
+        // }
+      }
+    }
+  }
+  /**
+   * Caching. See https://webpack.js.org/guides/caching/
+   */
+  // js、css等静态资源
+  const filenamePattern = 'assets/[name].[contenthash:4]'
+  const chunkFilenamePattern = 'assets/[name].[contenthash:4].chunk'
+  // 图像、字体等静态资源
+  const assetFilenamePattern = 'assets/[name].[hash:4]'
+  // 避免chunk里的module ID因某个module更新ID发生连锁变化反应
+  // Module Identifiers. See https://webpack.js.org/guides/caching/#module-identifiers
+  plugins.push(new webpack.HashedModuleIdsPlugin())
 
   // output configuration
   const output = {
-    path: path.resolve(__dirname, 'dist')
-    // filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: `${filenamePattern}.js`,
     // Note the use of chunkFilename, which determines the name of non-entry chunk files.
     // https://webpack.js.org/configuration/output/#output-chunkfilename
-    // chunkFilename: '[name].bundle.js'
+    chunkFilename: `${chunkFilenamePattern}.js`
     // publicPath: 'https://example.com/'
   }
 
@@ -58,9 +95,6 @@ module.exports = (env = {}, args) => {
   // 媒体资源处理
   const assetProcessor = require('./build/asset-processor')(env, args)
 
-  // 插件管理
-  const plugins = []
-
   // 处理HTML
   // see https://github.com/jantimon/html-webpack-plugin
   const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -82,8 +116,8 @@ module.exports = (env = {}, args) => {
     new ExtractCssChunks({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: `${filenamePattern}.css`,
+      chunkFilename: `${chunkFilenamePattern}.css`,
       orderWarning: true // Disable to remove warnings about conflicting order between imports
     })
   )
@@ -202,7 +236,6 @@ module.exports = (env = {}, args) => {
   }
 
   // 环境变量注入
-  const webpack = require('webpack')
   const packageJSON = require('./package.json')
   plugins.push(
     new webpack.DefinePlugin({
@@ -257,7 +290,9 @@ module.exports = (env = {}, args) => {
           exclude: assetProcessor.responsiveLoader.test,
           include: directoryWhiteList,
           use: [
-            assetProcessor.urlLoader()
+            assetProcessor.urlLoader({
+              name: `${assetFilenamePattern}.[ext]`
+            })
           ]
         },
         // Responsive Images 工程化实践配置
@@ -278,7 +313,9 @@ module.exports = (env = {}, args) => {
              */
             assetProcessor.cacheLoader(),
             assetProcessor.urlLoader(
-              assetProcessor.responsiveLoader()
+              assetProcessor.responsiveLoader({
+                name: `${assetFilenamePattern}-[width].[ext]`
+              })
             )
           ]
         }
@@ -295,7 +332,9 @@ module.exports = (env = {}, args) => {
        *
        * 对应的cli 选项是 --display-used-exports，截至webpack 4.30版本，该选项似乎并不凑效
        */
-      usedExports: true
+      usedExports: true,
+
+      ...optimization
     },
     plugins: plugins,
     devServer: {
