@@ -201,6 +201,19 @@ module.exports = (env = {}, args) => {
     )
   }
 
+  // 环境变量注入
+  const webpack = require('webpack')
+  const packageJSON = require('./package.json')
+  plugins.push(
+    new webpack.DefinePlugin({
+      env: {
+        APP_VERSION: JSON.stringify(packageJSON.version),
+        // webpack cli可以设置--env.SVC_ENV选项
+        SVC_ENV: JSON.stringify(env.SVC_ENV || process.env.NODE_ENV || args.mode)
+      }
+    })
+  )
+
   // webpack 一般配置
   return {
     entry: {

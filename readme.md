@@ -189,7 +189,7 @@ __持续保持书写规范 prettier__
 __vs code__
 
 __WebStorm__
-
+stylelint没有像eslint那样在右键快捷菜单中有Fix Problems的选项
 [webstorm stylelint fix](https://stackoverflow.com/questions/54304313/stylelint-fix-in-webstorm)
 
 ## 开发调试支持
@@ -202,7 +202,7 @@ npm install webpack-dev-server --save-dev
 ```
 
 ## 环境变量支持
-webpack define plugin
+[ ] webpack define plugin
 
 对比以下两个plugin的使用场景
 extract-css-chunks-webpack-plugin, 对css HMR支持更好
@@ -212,6 +212,8 @@ mini-css-extract-plugin，对css HMR没有想象中那么好
 [ ] modernizer, 系统检查却分android和ios
 [ ] [使用vw实现移动端适配](https://juejin.im/entry/5aa09c3351882555602077ca)
   1. [postcss-adaptive](https://github.com/songsiqi/postcss-adaptive)
+[ ] [使用基于rem的可伸缩布局方案](https://github.com/shinvey/rem-flexible)
+  2. [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
 
 [x] css autoprefix
 [x] browserlist

@@ -4,9 +4,12 @@ module.exports = {
     'es6': true
   },
   'extends': 'standard',
+  // define some global variables. See https://eslint.org/docs/user-guide/configuring#specifying-globals
   'globals': {
     'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly'
+    'SharedArrayBuffer': 'readonly',
+    // env is injected by webpack define plugin. See webpack.config.js
+    'env': 'readonly'
   },
   // babel-eslint see https://github.com/babel/babel-eslint
   'parser': "babel-eslint",

@@ -7,6 +7,7 @@
     "start": "webpack-dev-server --hot --devtool source-map --env.clean --env.lint",
     "start:open": "webpack-dev-server --open --devtool source-map",
     "build:development": "webpack --mode development",
+    "build:staging": "webpack --mode production --env.SVC_ENV=staging",
     "build:production": "webpack --mode production",
     "build:production:clean": "webpack --mode production --env.clean",
     "build:production:sourcemap": "webpack --mode production --devtool source-map",
