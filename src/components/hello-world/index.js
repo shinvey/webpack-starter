@@ -47,9 +47,9 @@ export function lostGrid () {
  */
 export function ResponsiveImage () {
   const img = new Image()
-  import('./Paris.srcset.jpg').then(({ default: ResponsiveImage }) => {
-    img.src = ResponsiveImage.src
-    img.srcset = ResponsiveImage.srcSet
+  import('./Paris.srcset.jpg').then(({ default: responsiveImage }) => {
+    img.src = responsiveImage.src
+    img.srcset = responsiveImage.srcSet
   })
   return img
 }
