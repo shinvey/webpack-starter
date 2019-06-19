@@ -22,21 +22,12 @@ module.exports = (env = {}, args) => {
    */
   const optimization = {
     // Extracting Boilerplate. See https://webpack.js.org/guides/caching/#extracting-boilerplate
-    runtimeChunk: 'single',
+    // 如果是多页应用，可以考虑分离runtime，在多个entry之间共享runtime
+    // runtimeChunk: 'single',
+
     // Chunk splitting see https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-2
     splitChunks: {
-      cacheGroups: {
-        // 默认配置
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'initial'
-        }
-        // 还可以根据加载性能优化策略，定义更合理的分离配置
-        // critical: {
-        //   test: /critical/i,
-        //   chunks: 'initial'
-        // }
-      }
+      cacheGroups: require('./build/cache-groups')(env, args)
     }
   }
   /**
@@ -250,7 +241,7 @@ module.exports = (env = {}, args) => {
   // webpack 一般配置
   return {
     entry: {
-      home: './src/pages/home/index.js'
+      'home-entry': './src/pages/home/index.js'
     },
     output: output,
     // see https://webpack.js.org/configuration/module

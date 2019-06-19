@@ -202,7 +202,7 @@ npm install webpack-dev-server --save-dev
 ```
 
 ## 环境变量支持
-[ ] webpack define plugin
+[x] webpack define plugin
 
 对比以下两个plugin的使用场景
 extract-css-chunks-webpack-plugin, 对css HMR支持更好

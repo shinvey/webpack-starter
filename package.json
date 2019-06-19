@@ -13,7 +13,7 @@
     "build:production:sourcemap": "webpack --mode production --devtool source-map",
     "build:production:inline-sourcemap": "webpack --mode production --devtool inline-source-map",
     "build:inspect:browser": "webpack --mode development -d --devtool source-map --env.lint",
-    "build:inspect:code": "webpack --mode development -d --devtool none --env.lint",
+    "build:inspect:code": "webpack --mode development -d --devtool none --env.lint --env.clean",
     "serve": "ws --compress --open --directory dist",
     "lint": "eslint . && stylelint src",
     "test": "echo \"Error: no test specified\" && exit 1"

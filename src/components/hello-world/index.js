@@ -3,6 +3,9 @@
  * @param {Object} obj
  * @returns {string}
  */
+import { plus } from '../shared/util'
+import blueRose from './blue-rose.jpeg'
+
 export function stringify (obj) {
   return obj.toString()
 }
@@ -55,8 +58,13 @@ export function ResponsiveImage () {
  */
 export function loadImage () {
   const img = new Image()
-  import('./blue-rose.jpeg').then(({ default: src }) => {
-    img.src = src
-  })
+  // import('./blue-rose.critical.jpeg').then(({ default: src }) => {
+  //   img.src = src
+  // })
+  img.src = blueRose
   return img
+}
+
+export function combine () {
+  return plus(1, 2)
 }

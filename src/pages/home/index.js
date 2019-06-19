@@ -1,12 +1,8 @@
-import component, { lostGrid, ResponsiveImage, loadImage } from '../../components/hello-world'
+import component, { lostGrid, ResponsiveImage, loadImage, combine } from '../../components/hello-world'
 import './example1.pcss'
-import './example.critical.scss'
-
-class Person {
-  static say (word) {
-    console.info(word)
-  }
-}
+import Person from '../../components/critical/Person'
+import { plus } from '../../components/shared/util'
+// import isArray from 'lodash/isArray'
 
 document.body.appendChild(component())
 document.body.appendChild(lostGrid())
@@ -15,10 +11,15 @@ document.body.appendChild(ResponsiveImage())
 
 Person.say('hello world')
 
-import('../../components/hello-world/Animal').then(({ default: Animal }) => {
+import('./Animal').then(({ default: Animal }) => {
   Animal.run()
 })
 
 // 打印webpack注入的环境变量
 console.debug('APP_VERSION', env.APP_VERSION)
 console.debug('SVC_ENV', env.SVC_ENV)
+
+console.debug(plus('a', 'b'))
+console.debug(combine())
+
+// console.debug(isArray({ a: 1 }))
