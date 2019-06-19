@@ -9,6 +9,7 @@ module.exports = (env = {}, args) => {
   const path = require('path')
   const merge = require('webpack-merge')
   const webpack = require('webpack')
+  const isDev = require('./build/env')
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
@@ -33,9 +34,11 @@ module.exports = (env = {}, args) => {
   /**
    * Caching. See https://webpack.js.org/guides/caching/
    */
+  // web dev server 用hash
+  const hashType = args.mode === 'development' ? 'hash' : 'contenthash'
   // js、css等静态资源
-  const filenamePattern = 'assets/[name].[contenthash:4]'
-  const chunkFilenamePattern = 'assets/[name].[contenthash:4].chunk'
+  const filenamePattern = `assets/[name].[${hashType}:4]`
+  const chunkFilenamePattern = `assets/[name].[${hashType}:4].chunk`
   // 图像、字体等静态资源
   const assetFilenamePattern = 'assets/[name].[hash:4]'
   // 避免chunk里的module ID因某个module更新ID发生连锁变化反应
@@ -107,6 +110,7 @@ module.exports = (env = {}, args) => {
     // 这个插件对内嵌的资源，没有执行清理，依然存在资源输出目录
     new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
   )
+  // args.mode !==
 
   // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
   // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin

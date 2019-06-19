@@ -348,6 +348,7 @@ npm i @babel/plugin-syntax-dynamic-import
 
 [x] 滚动懒加载
   1. [可视区域懒加载组件](https://github.com/amfe/amfe-appear)
+  2. [lazyload](https://github.com/verlok/lazyload)
 
 [x] 预加载
 prefech/preload resource hint
