@@ -5,10 +5,14 @@
  * @param args 命令行参数列表
  * @returns Object
  */
-module.exports = (env = {}, args) => {
+module.exports = (env, args) => {
+  env = env || {}
+
   const path = require('path')
   const merge = require('webpack-merge')
   const webpack = require('webpack')
+  const { isDev, isPrd, svcEnv } = require('./build/env')
+  const SVC_ENV = svcEnv(args)
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
@@ -33,9 +37,11 @@ module.exports = (env = {}, args) => {
   /**
    * Caching. See https://webpack.js.org/guides/caching/
    */
+  // web dev server 只能用hash
+  const hashType = isDev(args.mode) ? 'hash' : 'contenthash'
   // js、css等静态资源
-  const filenamePattern = 'assets/[name].[contenthash:4]'
-  const chunkFilenamePattern = 'assets/[name].[contenthash:4].chunk'
+  const filenamePattern = `assets/[name].[${hashType}:4]`
+  const chunkFilenamePattern = `assets/[name].[${hashType}:4].chunk`
   // 图像、字体等静态资源
   const assetFilenamePattern = 'assets/[name].[hash:4]'
   // 避免chunk里的module ID因某个module更新ID发生连锁变化反应
@@ -87,8 +93,6 @@ module.exports = (env = {}, args) => {
   const assetProcessor = require('./build/asset-processor')(env, args)
 
   // 处理入口HTML模板，生成入口html文件
-  // see https://github.com/jantimon/html-webpack-plugin
-  const HtmlWebpackPlugin = require('html-webpack-plugin')
   const htmlWebpackPluginOptions = {
     // More options see https://github.com/jantimon/html-webpack-plugin#options
     // cache: true, // cache默认启用
@@ -97,16 +101,23 @@ module.exports = (env = {}, args) => {
       args
     }
   }
+  // see https://github.com/jantimon/html-webpack-plugin
+  const HtmlWebpackPlugin = require('html-webpack-plugin')
   // 内嵌关键js和css。See https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2#basic-usage
-  const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
   htmlWebpackPluginOptions.inlineSource = /(runtime|critical|inline|entry).*\.(js|css)$/.source
   plugins.push(
-    new HtmlWebpackPlugin(htmlWebpackPluginOptions),
-    // The order is important - the plugin must come after HtmlWebpackPlugin.
-    // see https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2
-    // 这个插件对内嵌的资源，没有执行清理，依然存在资源输出目录
-    new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
+    new HtmlWebpackPlugin(htmlWebpackPluginOptions)
   )
+  // 只在production mode采用inline，不影响web dev server调试
+  if (isPrd(args.mode)) {
+    const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
+    plugins.push(
+      // The order is important - the plugin must come after HtmlWebpackPlugin.
+      // see https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2
+      // 这个插件对内嵌的资源，没有执行清理，依然存在资源输出目录
+      new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
+    )
+  }
 
   // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
   // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
@@ -132,7 +143,7 @@ module.exports = (env = {}, args) => {
   /**
    * 生产环境配置
    */
-  if (args.mode === 'production') {
+  if (isPrd(args.mode)) {
     /**
      * 图像处理
      */
@@ -241,7 +252,7 @@ module.exports = (env = {}, args) => {
       env: {
         APP_VERSION: JSON.stringify(packageJSON.version),
         // webpack cli可以设置--env.SVC_ENV选项
-        SVC_ENV: JSON.stringify(env.SVC_ENV || process.env.NODE_ENV || args.mode)
+        SVC_ENV: JSON.stringify(SVC_ENV)
       }
     })
   )

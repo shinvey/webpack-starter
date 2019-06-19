@@ -1,5 +1,5 @@
 export default class Animal {
   static run () {
-    console.info('Running')
+    console.info('Animal is Running')
   }
 }

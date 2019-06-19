@@ -4,11 +4,24 @@ import './example.scss'
 import Person from '../../components/critical/Person'
 import { plus } from '../../components/shared/util'
 // import isArray from 'lodash/isArray'
+import LazyLoad from 'vanilla-lazyload'
 
 document.body.appendChild(component())
 document.body.appendChild(lostGrid())
 document.body.appendChild(loadImage())
 document.body.appendChild(ResponsiveImage())
+
+// The "lazyLazy" instance of lazyload is used (kinda improperly)
+// to check when the .horzContainer divs enter the viewport
+const lazyLazy = new LazyLoad({
+  // container: document.querySelector('section'),
+  elements_selector: 'section > div',
+  // When the .horzContainer div enters the viewport...
+  callback_enter: function (el) {
+    console.debug('You are entered ', el)
+  }
+})
+console.debug('lazyLazy ', lazyLazy)
 
 Person.say('hello world')
 
