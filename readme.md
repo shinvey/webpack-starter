@@ -35,6 +35,8 @@
 
 ## 工具函数库
 1. lodash
+    1. [Lodash-es vs individual Lodash utilities: Size comparison](https://itnext.io/lodash-es-vs-individual-lodash-utilities-size-comparison-676f14b07568)
+    2. [lodash替代方案](https://github.com/angus-c/just)
 
 ## 通用IDE配置
 1. editorconfig
@@ -307,11 +309,21 @@ index/bare-bones.html
 __关键CSS__
 naming convention: xxx.critical.css
 Enhances html-webpack-plugin functionality with different deployment options for your scripts including 'async', 'preload', 'prefetch', 'defer', 'module', custom attributes, and inlining.
-[style-ext-html-webpack-plugin](https://github.com/numical/style-ext-html-webpack-plugin)
 
 __关键js__
 nameing convention: xxx.critical.js
 Enhances html-webpack-plugin functionality by enabling internal ('in-line') styles.
+
+__内嵌js/css__
+style-ext-html-webpack-plugin和script-ext-html-webpack-plugin对sourcemap的问题没有处理好
+考虑使用html-webpack-inline-source-plugin@beta替代，但是该插件不完美的地方是，内嵌的资源，没有清理，依然存在资源输出目录
+```bash
+# https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2
+npm i html-webpack-inline-source-plugin@beta
+```
+
+__调整资源加载优先级__
+[style-ext-html-webpack-plugin](https://github.com/numical/style-ext-html-webpack-plugin)
 [script-ext-html-webpack-plugin](https://github.com/numical/script-ext-html-webpack-plugin)
 
 __代码分离和长效缓存__

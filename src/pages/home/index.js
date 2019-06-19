@@ -1,5 +1,6 @@
 import component, { lostGrid, ResponsiveImage, loadImage, combine } from '../../components/hello-world'
 import './example1.pcss'
+import './example.scss'
 import Person from '../../components/critical/Person'
 import { plus } from '../../components/shared/util'
 // import isArray from 'lodash/isArray'

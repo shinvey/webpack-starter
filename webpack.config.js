@@ -86,18 +86,26 @@ module.exports = (env = {}, args) => {
   // 媒体资源处理
   const assetProcessor = require('./build/asset-processor')(env, args)
 
-  // 处理HTML
+  // 处理入口HTML模板，生成入口html文件
   // see https://github.com/jantimon/html-webpack-plugin
   const HtmlWebpackPlugin = require('html-webpack-plugin')
+  const htmlWebpackPluginOptions = {
+    // More options see https://github.com/jantimon/html-webpack-plugin#options
+    // cache: true, // cache默认启用
+    template: './src/pages/home/index.ejs',
+    templateParameters: {
+      args
+    }
+  }
+  // 内嵌关键js和css。See https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2#basic-usage
+  const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
+  htmlWebpackPluginOptions.inlineSource = /(runtime|critical|inline|entry).*\.(js|css)$/.source
   plugins.push(
-    new HtmlWebpackPlugin({
-      // More options see https://github.com/jantimon/html-webpack-plugin#options
-      // cache: true, // cache默认启用
-      template: './src/pages/home/index.ejs',
-      templateParameters: {
-        args
-      }
-    })
+    new HtmlWebpackPlugin(htmlWebpackPluginOptions),
+    // The order is important - the plugin must come after HtmlWebpackPlugin.
+    // see https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2
+    // 这个插件对内嵌的资源，没有执行清理，依然存在资源输出目录
+    new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
   )
 
   // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
