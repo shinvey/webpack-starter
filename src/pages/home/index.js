@@ -11,20 +11,17 @@ document.body.appendChild(lostGrid())
 document.body.appendChild(loadImage())
 document.body.appendChild(ResponsiveImage())
 
-document.addEventListener('DOMContentLoaded', () => {
-  // The "lazyLazy" instance of lazyload is used (kinda improperly)
-  // to check when the .horzContainer divs enter the viewport
-  const lazyLazy = new LazyLoad({
-    // container: document.querySelector('section'),
-    elements_selector: 'section > div',
-    // When the .horzContainer div enters the viewport...
-    callback_enter: function (el) {
-      // ...instantiate a new LazyLoad on it
-      console.debug('You are entered ', el)
-    }
-  })
-  console.debug('lazyLazy ', lazyLazy)
+// The "lazyLazy" instance of lazyload is used (kinda improperly)
+// to check when the .horzContainer divs enter the viewport
+const lazyLazy = new LazyLoad({
+  // container: document.querySelector('section'),
+  elements_selector: 'section > div',
+  // When the .horzContainer div enters the viewport...
+  callback_enter: function (el) {
+    console.debug('You are entered ', el)
+  }
 })
+console.debug('lazyLazy ', lazyLazy)
 
 Person.say('hello world')
 
