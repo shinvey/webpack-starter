@@ -1,7 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 
 # webstorm configuration data
-.idea
+.idea*
 
 # macos DS Store
 .DS_Store
