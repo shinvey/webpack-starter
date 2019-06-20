@@ -1,4 +1,9 @@
-import component, { lostGrid, ResponsiveImage, loadImage, combine } from '../../components/hello-world'
+import component, {
+  lostGrid,
+  ResponsiveImage,
+  loadImage,
+  combine
+} from '../../components/hello-world'
 import './example1.pcss'
 import './example.scss'
 import Person from '../../components/critical/Person'
@@ -18,19 +23,20 @@ const lazyLazy = new LazyLoad({
   // container: document.querySelector('section'),
   elements_selector: 'section > div',
   // When the .horzContainer div enters the viewport...
-  callback_enter: function (el) {
+  callback_enter: function(el) {
     console.debug('You are entered ', el)
   }
 })
 console.debug('lazyLazy ', lazyLazy)
 
 // Use case for device detection
-import(/* webpackChunkName: "Modernizr" */ '../../utils/modernizr.custom').then(() => {
-  // see https://modernizr.com/docs#modernizr-addtest
-  window.Modernizr.addTest({
-    iOS: /iPhone/i.test(navigator.userAgent),
-    Android: /Android/i.test(navigator.userAgent)
-  })
+import(/* webpackChunkName: "Modernizr" */ '../../utils/modernizr.custom').then(
+  () => {
+    // see https://modernizr.com/docs#modernizr-addtest
+    window.Modernizr.addTest({
+      iOS: /iPhone/i.test(navigator.userAgent),
+      Android: /Android/i.test(navigator.userAgent)
+    })
 })
 
 Person.say('hello world!')
