@@ -37,7 +37,8 @@ import(/* webpackChunkName: "Modernizr" */ '../../utils/modernizr.custom').then(
       iOS: /iPhone/i.test(navigator.userAgent),
       Android: /Android/i.test(navigator.userAgent)
     })
-})
+  }
+)
 
 Person.say('hello world!')
 

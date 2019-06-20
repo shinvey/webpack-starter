@@ -1,5 +1,5 @@
 /*! license */
-@import "../../components/hello-world/style";
+@import '../../components/hello-world/style';
 
 @mixin transform($property) {
   -webkit-transform: $property;
@@ -19,7 +19,6 @@
     color: red;
   }
 }
-
 .ios {
   .box {
     color: green;
