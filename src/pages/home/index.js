@@ -23,13 +23,12 @@ const lazyLazy = new LazyLoad({
 })
 console.debug('lazyLazy ', lazyLazy)
 
-Person.say('hello world')
+Person.say('hello world!')
 
 import('./Animal').then(({ default: Animal }) => {
   Animal.run()
 })
 
-// 打印webpack注入的环境变量
 console.debug('APP_VERSION', env.APP_VERSION)
 console.debug('SVC_ENV', env.SVC_ENV)
 

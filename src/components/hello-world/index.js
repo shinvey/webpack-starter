@@ -40,7 +40,6 @@ export function lostGrid () {
  * Responsive Images使用场景
  * 图像会被生成多个大小不同尺寸的图像
  * @returns {HTMLImageElement}
- * @constructor
  */
 export function ResponsiveImage () {
   const img = new Image()
@@ -58,9 +57,9 @@ export function ResponsiveImage () {
  */
 export function loadImage () {
   const img = new Image()
-  // import('./blue-rose.critical.jpeg').then(({ default: src }) => {
-  //   img.src = src
-  // })
+  import('./blue-rose.jpeg').then(({ default: src }) => {
+    img.src = src
+  })
   img.src = blueRose
   return img
 }

@@ -196,6 +196,8 @@ stylelint没有像eslint那样在右键快捷菜单中有Fix Problems的选项
 
 ## 开发调试支持
 [x] js sourcemap
+* sourcemap如果不能被chrome浏览器通过workspace功能映射到源码文件，说明代码中有中文
+
 [x] css sourcemap
 
 [x] webpack dev server

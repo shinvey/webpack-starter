@@ -46,7 +46,7 @@ module.exports = (env, args) => {
   const assetFilenamePattern = 'assets/[name].[hash:4]'
   // 避免chunk里的module ID因某个module更新ID发生连锁变化反应
   // Module Identifiers. See https://webpack.js.org/guides/caching/#module-identifiers
-  plugins.push(new webpack.HashedModuleIdsPlugin())
+  isPrd(args.mode) && plugins.push(new webpack.HashedModuleIdsPlugin())
 
   // output configuration
   const output = {
