@@ -6,7 +6,7 @@ module.exports = (env, args) => {
   const _options = {
     sourceMap: !!args.devtool
   }
-  return {
+  const processors = {
     styleLoader: () => ({
       // Adds CSS to the DOM by injecting a <style> tag see https://github.com/webpack-contrib/style-loader
       loader: 'style-loader',
@@ -70,4 +70,9 @@ module.exports = (env, args) => {
       }
     })
   }
+
+  processors.sassLoader.test = /\.s[ca]ss$/
+  processors.sassLoader.moduleTest = /module\.s[ca]ss$/
+
+  return processors
 }

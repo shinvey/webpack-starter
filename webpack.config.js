@@ -83,11 +83,15 @@ module.exports = (env, args) => {
     styleLoader,
     cssPreprocessor.cssLoader({
       importLoaders: 2
-      // modules: true
     }),
     postcssLoader,
     cssPreprocessor.sassLoader()
   ]
+  const sassModulePreprocessors = Array.from(sassPreprocessors)
+  sassModulePreprocessors[1] = cssPreprocessor.cssLoader({
+    importLoaders: 2,
+    modules: true
+  })
 
   // 媒体资源处理
   const assetProcessor = require('./build/asset-processor')(env, args)
@@ -289,9 +293,16 @@ module.exports = (env, args) => {
         },
         // 添加scss支持
         {
-          test: /\.s[ca]ss$/,
+          test: cssPreprocessor.sassLoader.test,
+          exclude: cssPreprocessor.sassLoader.moduleTest,
           include: directoryWhiteList,
           use: sassPreprocessors
+        },
+        // 添加scss module支持
+        {
+          test: cssPreprocessor.sassLoader.moduleTest,
+          include: directoryWhiteList,
+          use: sassModulePreprocessors
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
         {

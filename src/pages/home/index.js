@@ -3,8 +3,9 @@ import './example1.pcss'
 import './example.scss'
 import Person from '../../components/critical/Person'
 import { plus } from '../../components/shared/util'
-// import isArray from 'lodash/isArray'
 import LazyLoad from 'vanilla-lazyload'
+import style from './example.module.scss'
+// import isArray from 'lodash/isArray'
 
 document.body.appendChild(component())
 document.body.appendChild(lostGrid())
@@ -45,3 +46,6 @@ console.debug(plus('a', 'b'))
 console.debug(combine())
 
 // console.debug(isArray({ a: 1 }))
+
+// print style object of the css module
+console.debug(style)
