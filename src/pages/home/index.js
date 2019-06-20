@@ -23,6 +23,15 @@ const lazyLazy = new LazyLoad({
 })
 console.debug('lazyLazy ', lazyLazy)
 
+// Use case for device detection
+import(/* webpackChunkName: "Modernizr" */ '../../utils/modernizr.custom').then(() => {
+  // see https://modernizr.com/docs#modernizr-addtest
+  window.Modernizr.addTest({
+    iOS: /iPhone/i.test(navigator.userAgent),
+    Android: /Android/i.test(navigator.userAgent)
+  })
+})
+
 Person.say('hello world!')
 
 import('./Animal').then(({ default: Animal }) => {

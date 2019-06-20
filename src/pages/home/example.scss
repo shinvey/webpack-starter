@@ -11,5 +11,17 @@
   @include transform(rotate(0deg));
 
   border: solid 1px;
-  color: red;
+}
+
+// 配合Modernizr的addTest API增加设备检测，并把检测结果放在html元素的class属性中
+.android {
+  .box {
+    color: red;
+  }
+}
+
+.ios {
+  .box {
+    color: green;
+  }
 }

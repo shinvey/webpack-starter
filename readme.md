@@ -213,7 +213,70 @@ extract-css-chunks-webpack-plugin, 对css HMR支持更好
 mini-css-extract-plugin，对css HMR没有想象中那么好
 
 # 兼容性处理
-[ ] modernizer, 系统检查却分android和ios
+[ ] modernizer, 是浏览器特性检测库，可以借用addTest来支持设备检测区分android和ios
+增加命令行编译配置文件`modernizr-config.json`
+```json
+{
+  "options": [
+    "addTest"
+  ],
+  "feature-detects": []
+}
+```
+在`package.json`增加npm scripts
+```json
+{
+  "scripts": {
+      "build:modernizr": "modernizr --config modernizr-config.json --dest src/utils/modernizr.custom.js",
+      "build:modernizr:uglify": "modernizr --config modernizr-config.json --dest src/utils/modernizr.custom.min.js --uglify"
+  }
+}
+```
+编译输出custom build到src/utils/modernizr.custom.js
+在`.eslintrc.js`中增加全局变量Modernizr
+```js
+module.exports = {
+  globals: {
+    'Modernizr': 'readonly'
+  }
+}
+```
+在`.eslintignore`增加custom build忽略规则
+```text
+# 忽略custom build
+src/utils/*.custom.*
+```
+
+Modernizr设备检测用例
+```js
+import('../../utils/modernizr.custom').then(() => {
+  // see https://modernizr.com/docs#modernizr-addtest
+  Modernizr.addTest({
+    iOS: /iPhone/i.test(navigator.userAgent),
+    Android: /Android/i.test(navigator.userAgent)
+  })
+})
+```
+```scss
+// 配合Modernizr的addTest API增加设备检测，并把检测结果放在html元素的class属性中
+.android {
+  .box {
+    color: red;
+  }
+}
+
+.ios {
+  .box {
+    color: green;
+  }
+}
+```
+
+[ ] 设备检测
+mobile-detect.js https://github.com/hgoebl/mobile-detect.js
+current-device https://github.com/matthewhudson/current-device
+device.js https://github.com/binnng/device.js
+
 [ ] [使用vw实现移动端适配](https://juejin.im/entry/5aa09c3351882555602077ca)
   1. [postcss-adaptive](https://github.com/songsiqi/postcss-adaptive)
 [ ] [使用基于rem的可伸缩布局方案](https://github.com/shinvey/rem-flexible)
