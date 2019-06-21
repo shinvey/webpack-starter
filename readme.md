@@ -293,7 +293,7 @@ https://github.com/amilajack/eslint-plugin-compat
 __polyfill service__
 
 ## 可选支持webp
-[ ] 考虑为支持webp的设备使用输出的webp资源
+[x] 考虑为支持webp的设备使用输出的webp资源
 
 __运行时解决方案__
 配合Moodernizr addTest API，在html中增加webp特性检测。然后在css中书写webp资源引用
@@ -310,9 +310,6 @@ __实践__
 
 首先caniuse.com了解webp的浏览器支持程度，然后为支持的设备提供webp图像优化。
 * [webp图片实践之路](https://www.cnblogs.com/season-huang/p/5804884.html)
-* [webp支持完整nginx配置用例](https://github.com/uhop/grunt-tight-sprite/wiki/Recipe:-serve-WebP-with-nginx-conditionally)
-* [webp支持关键配置用例](https://www.keycdn.com/support/optimus/configuration-to-deliver-webp)
-* [集成命令行工具来支持webp，实现webp自动生成和image url重写](https://typcn.com/legacy/blog/posts/switch-to-webp.html)
 
 web server层的优化方案实现思路
 1. 根据客户端请求头accept中文件mime类型列表判断是否支持webp
@@ -321,14 +318,24 @@ web server层的优化方案实现思路
 4. 不存在生成webp文件，生成成功，执行第3步
 5. 生成失败，返回源文件
 
+nginx配置相关文章
+* [webp支持完整nginx配置用例](https://github.com/uhop/grunt-tight-sprite/wiki/Recipe:-serve-WebP-with-nginx-conditionally)
+* [webp支持关键配置用例](https://www.keycdn.com/support/optimus/configuration-to-deliver-webp)
+* [集成命令行工具来支持webp，实现webp自动生成和image url重写](https://typcn.com/legacy/blog/posts/switch-to-webp.html)
+
 前端工程解决方案
 1. 使用命令行工具进行批量转换
+    1. gulp + gulp-webp + gulp-cache
 
 视觉设计团队辅助方案
 1. sketch设计软件在导出切图时增加webp格式的图像导出
 
 __如何将图像转换为webp格式？__
 [How do I convert my images to WebP?](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/automating-image-optimization/#how-do-i-convert-to-webp)
+```bash
+# 项目中使用gulp任务来对src目录内的图像进行批量转换
+gulp webp
+```
 
 __如何在项目中使用webp？__
 [Using WebP Images](https://css-tricks.com/using-webp-images/)
