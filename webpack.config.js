@@ -172,6 +172,8 @@ module.exports = (env, args) => {
     plugins.push(
       // Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
       new ImageminPlugin({
+        // 默认处理以下图像格式
+        // test: /\.(jpe?g|png|gif|svg)$/i,
         bail: false, // Ignore errors on corrupted images
         // cache option see https://github.com/itgalaxy/imagemin-webpack#cache
         cache: !env.clean, // 如果--env.clean开关开启，则不启用cache
