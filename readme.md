@@ -191,7 +191,7 @@ __持续保持书写规范 prettier__
 优点是不影响编译速度
 [lint-staged](https://github.com/okonet/lint-staged)
 ```bash
-npm i mrm lint-staged -D
+npx mrm lint-staged
 ```
 ### 配置IDE支持
 __vs code__

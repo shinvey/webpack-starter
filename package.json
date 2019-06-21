@@ -41,6 +41,7 @@
     "gulp": "^4.0.2",
     "gulp-cache": "^1.1.2",
     "gulp-webp": "^4.0.1",
+    "husky": "^2.4.1",
     "lint-staged": "^8.2.1",
     "local-web-server": "^2.6.1",
     "modernizr": "^3.7.1",
