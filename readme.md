@@ -295,10 +295,10 @@ __polyfill service__
 ## 可选支持webp
 [x] 考虑为支持webp的设备使用输出的webp资源
 
-__运行时解决方案__
+__运行时支持__
 配合Moodernizr addTest API，在html中增加webp特性检测。然后在css中书写webp资源引用
 
-__重定向方案__
+__资源重定向支持__
 编译时输出两套资源，一个传统jpg，png，一个webp，判断客户端是否支持，然后采用重定向方式
 * 客户端，可以编译出两套代码，一套传统，一套指向webp
 * 服务器端或cdn开启webp支持，实现的技术是采用[uri rewrite](https://www.tezify.com/how-to/using_webp_images/)技术
@@ -323,21 +323,23 @@ nginx配置相关文章
 * [webp支持关键配置用例](https://www.keycdn.com/support/optimus/configuration-to-deliver-webp)
 * [集成命令行工具来支持webp，实现webp自动生成和image url重写](https://typcn.com/legacy/blog/posts/switch-to-webp.html)
 
-前端工程解决方案
+前端工程输出webp
 1. 使用命令行工具进行批量转换
     1. gulp + gulp-webp + gulp-cache
 
-视觉设计团队辅助方案
-1. sketch设计软件在导出切图时增加webp格式的图像导出
+如何将图像转换为webp格式？
 
-__如何将图像转换为webp格式？__
 [How do I convert my images to WebP?](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/automating-image-optimization/#how-do-i-convert-to-webp)
 ```bash
 # 项目中使用gulp任务来对src目录内的图像进行批量转换
 gulp webp
 ```
 
+视觉设计团队输出webp
+1. sketch设计软件在导出切图时增加webp格式的图像导出
+
 __如何在项目中使用webp？__
+
 [Using WebP Images](https://css-tricks.com/using-webp-images/)
 
 ## caniuse tools
