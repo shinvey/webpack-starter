@@ -10,7 +10,7 @@ import style from './example.module.scss'
 document.body.appendChild(component())
 document.body.appendChild(lostGrid())
 document.body.appendChild(loadImage())
-document.body.appendChild(ResponsiveImage())
+document.body.appendChild(ResponsiveImage());
 
 // The "lazyLazy" instance of lazyload is used (kinda improperly)
 // to check when the .horzContainer divs enter the viewport

@@ -186,9 +186,13 @@ __持续保持书写规范 prettier__
 1. [How to integrate Prettier with ESLint and stylelint](https://www.freecodecamp.org/news/integrating-prettier-with-eslint-and-stylelint-99e74fede33f/)
 
 ### 编译时检查
-
+缺点是影响编译速度
 ### 提交时检查
+优点是不影响编译速度
 [lint-staged](https://github.com/okonet/lint-staged)
+```bash
+npm i mrm lint-staged -D
+```
 ### 配置IDE支持
 __vs code__
 
@@ -407,11 +411,11 @@ npm i cache-loader
 ```
 
 __缓存清理__
-```bash
-npm install clean-webpack-plugin
-```
+* clean-webpack-plugin
 
 __文件目录管理__
+* filemanager-webpack-plugin
+
 删除目录
 
 创建zip包
@@ -461,12 +465,12 @@ npm i @babel/plugin-syntax-dynamic-import
   1. img, srcset
   2. css, image-set()
 
-[x] 滚动懒加载
+[x] 懒加载解决方案
   1. [可视区域懒加载组件](https://github.com/amfe/amfe-appear)
   2. [lazyload](https://github.com/verlok/lazyload)
 
 [x] 预加载
-prefech/preload resource hint
+[prefech/preload resource hint](https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules)
 
 ## 工程编译性能优化
 提升编译性能
