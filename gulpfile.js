@@ -65,3 +65,8 @@ gulp.task('webp-lossless', () =>
 gulp.task('clear', () =>
   cache.clearAll()
 )
+/**
+ * 先清除缓存，然后在调用webp任务
+ */
+gulp.task('clear->webp', gulp.series('clear', 'webp'))
+gulp.task('clear->webp-lossless', gulp.series('clear', 'webp-lossless'))
