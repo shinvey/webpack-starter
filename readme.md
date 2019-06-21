@@ -148,6 +148,7 @@ npm install sass-loader node-sass
 ```
 ## css module支持或组件级样式书写方案
 1. css-loader
+1. [styled-component](https://www.styled-components.com/)
 1. [styled-jsx](https://github.com/zeit/styled-jsx)
 ## postcss支持
 1. postcss preset env
@@ -185,6 +186,7 @@ __持续保持书写规范 prettier__
 1. [How to integrate Prettier with ESLint and stylelint](https://www.freecodecamp.org/news/integrating-prettier-with-eslint-and-stylelint-99e74fede33f/)
 
 ### 编译时检查
+
 ### 提交时检查
 [lint-staged](https://github.com/okonet/lint-staged)
 ### 配置IDE支持
@@ -282,29 +284,68 @@ device.js https://github.com/binnng/device.js
 [ ] [使用基于rem的可伸缩布局方案](https://github.com/shinvey/rem-flexible)
   2. [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
 
-[x] css autoprefix
+[x] css autoprefix, postcss-preset-env已实现
 [x] browserlist
 [x] polyfill支持, polyfill service
 __兼容性检查__
 如果你不打算polyfill你的项目，你或许要开启eslint-plugin-compat对浏览器兼容性的检查
 https://github.com/amilajack/eslint-plugin-compat
 __polyfill service__
+
 ## 可选支持webp
+[ ] 考虑为支持webp的设备使用输出的webp资源
+
+__运行时解决方案__
+配合Moodernizr addTest API，在html中增加webp特性检测。然后在css中书写webp资源引用
+
+__重定向方案__
+编译时输出两套资源，一个传统jpg，png，一个webp，判断客户端是否支持，然后采用重定向方式
+* 客户端，可以编译出两套代码，一套传统，一套指向webp
+* 服务器端或cdn开启webp支持，实现的技术是采用[uri rewrite](https://www.tezify.com/how-to/using_webp_images/)技术
+  1. [如何通过 WebP 兼容减少图片资源大小](https://www.cnblogs.com/upyun/p/6898791.html)
+
+备注：浏览器通过html页面携带支持webp的accept头，告诉web server支持webp，接下来具体请求图片时就不用携带了
+
+__实践__
+
+首先caniuse.com了解webp的浏览器支持程度，然后为支持的设备提供webp图像优化。
+* [webp图片实践之路](https://www.cnblogs.com/season-huang/p/5804884.html)
+* [webp支持完整nginx配置用例](https://github.com/uhop/grunt-tight-sprite/wiki/Recipe:-serve-WebP-with-nginx-conditionally)
+* [webp支持关键配置用例](https://www.keycdn.com/support/optimus/configuration-to-deliver-webp)
+* [集成命令行工具来支持webp，实现webp自动生成和image url重写](https://typcn.com/legacy/blog/posts/switch-to-webp.html)
+
+web server层的优化方案实现思路
+1. 根据客户端请求头accept中文件mime类型列表判断是否支持webp
+2. 如果支持，判断webp文件是否存在
+3. 存在则进行uri rewrite到webp
+4. 不存在生成webp文件，生成成功，执行第3步
+5. 生成失败，返回源文件
+
+前端工程解决方案
+1. 使用命令行工具进行批量转换
+
+视觉设计团队辅助方案
+1. sketch设计软件在导出切图时增加webp格式的图像导出
+
+__如何将图像转换为webp格式？__
+[How do I convert my images to WebP?](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/automating-image-optimization/#how-do-i-convert-to-webp)
+
+__如何在项目中使用webp？__
+[Using WebP Images](https://css-tricks.com/using-webp-images/)
+
 ## caniuse tools
 1. [doiuse](http://doiuse.herokuapp.com/)
 2. [stylelint-no-unsupported-browser-features](https://github.com/ismay/stylelint-no-unsupported-browser-features)
 
 # 工程优化
 ## 基本静态资源优化
-HTML压缩
+[x] HTML压缩
 
 __CSS压缩__
-css minimizer
-```bash
-npm install optimize-css-assets-webpack-plugin
-```
-
-1. [Eliminating unused CSS](https://github.com/FullHuman/purgecss-webpack-plugin)
+[x] css minimizer
+  1. cssnano
+  2. optimize-css-assets-webpack-plugin
+[ ] Purgecss是根据内容（html、js）来分析css是否被使用，来实施类似tree shaking的优化
 
 __JS压缩__
 

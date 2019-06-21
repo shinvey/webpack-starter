@@ -306,7 +306,7 @@ module.exports = (env, args) => {
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
         {
-          test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/,
+          test: /\.(jpe?g|png|webp|gif|svg|eot|ttf|woff|woff2)$/,
           // 排除Responsive Images使用场景的命名模式
           exclude: assetProcessor.responsiveLoader.test,
           include: directoryWhiteList,
@@ -323,7 +323,7 @@ module.exports = (env, args) => {
           include: directoryWhiteList,
           use: [
             /**
-             * 在Responsive Image场景下编译实践会较长，
+             * 在Responsive Image场景下编译时间会较长，
              * 这里有选择性的使用cache-loader来缓存编译结果。
              * 在启用cache-loader后，第二次编译你会发现，已经不再输出被responsive-loader
              * 处理的图像资源了。如果你需要重新处理图像可以选择删除cache-loader的缓存。
