@@ -475,11 +475,10 @@ npm i @babel/plugin-syntax-dynamic-import
 ## 工程编译性能优化
 提升编译性能
 
-## 工程监控
+## 工程编译输出资源大小监控
 bundle大小监控
 
-# todo用例
-带网络请求的
+# 创建项目开发模板
 
 # To be continue
 https://survivejs.com/webpack/developing/getting-started/
