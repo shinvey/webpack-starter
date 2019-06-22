@@ -263,12 +263,33 @@ module.exports = (env, args) => {
     })
   )
 
+  // support for typescript
+  const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+  const rules = [
+    {
+      test: /\.tsx?$/,
+      include: directoryWhiteList,
+      loader: 'ts-loader',
+      options: {
+        // disable type checker - we will use it in fork plugin
+        transpileOnly: true
+      }
+    }
+  ]
+  plugins.push(new ForkTsCheckerWebpackPlugin())
+
   // webpack 一般配置
   return {
     entry: {
       'home-entry': './src/pages/home/index.js'
     },
     output: output,
+    resolve: {
+      extensions: [
+        '.js',
+        '.ts'
+      ]
+    },
     // see https://webpack.js.org/configuration/module
     module: {
       // see https://webpack.js.org/configuration/module#modulerules
@@ -341,7 +362,8 @@ module.exports = (env, args) => {
               })
             )
           ]
-        }
+        },
+        ...rules
       ]
     },
     optimization: {

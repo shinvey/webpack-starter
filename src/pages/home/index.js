@@ -5,6 +5,7 @@ import Person from '../../components/critical/Person'
 import { plus } from '../../components/shared/util'
 import LazyLoad from 'vanilla-lazyload'
 import style from './example.module.scss'
+import { inArray } from '../../utils/Array'
 // import isArray from 'lodash/isArray'
 
 document.body.appendChild(component())
@@ -49,3 +50,5 @@ console.debug(combine())
 
 // print style object of the css module
 console.debug(style)
+
+console.debug(inArray([1, 2, 3], 1))
