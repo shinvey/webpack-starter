@@ -268,7 +268,7 @@ module.exports = (env, args) => {
   // webpack 一般配置
   return {
     entry: {
-      'home-entry': './src/pages/home/index.js'
+      'home-entry': './src/pages/demo1/index.jsx'
     },
     output: output,
     resolve: {

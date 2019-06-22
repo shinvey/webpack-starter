@@ -3,7 +3,11 @@ module.exports = {
     'browser': true,
     'es6': true
   },
-  'extends': 'standard',
+  'extends': [
+    'standard',
+    // 启用react jsx lint规则
+    'plugin:react/recommended'
+  ],
   // define some global variables. See https://eslint.org/docs/user-guide/configuring#specifying-globals
   'globals': {
     'Atomics': 'readonly',
@@ -23,6 +27,15 @@ module.exports = {
   'plugins': [
     'react'
   ],
+  'settings': {
+    react: {
+      // React version. "detect" automatically picks the version you have installed.
+      // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+      // default to latest and warns if missing
+      // It will default to "detect" in the future
+      version: 'detect'
+    }
+  },
   'rules': {
   }
 }

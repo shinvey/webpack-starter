@@ -18,7 +18,7 @@
     "build:modernizr:min": "modernizr --config modernizr-config.json --dest src/utils/modernizr.custom.min.js --uglify",
     "serve": "ws --compress --directory dist",
     "serve:open": "ws --compress --open --directory dist",
-    "lint": "eslint . && stylelint src && tslint --project tsconfig.json",
+    "lint": "eslint src --ext .js,.jsx && stylelint src && tslint --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -29,6 +29,9 @@
     "iOS >= 8"
   ],
   "devDependencies": {
+    "@types/prop-types": "^15.7.1",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
     "babel-eslint": "^10.0.2",
     "doiuse": "^4.2.0",
     "eslint": "^5.16.0",
@@ -61,6 +64,7 @@
     "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "babel-loader": "^8.0.6",
     "cache-loader": "^3.0.1",
@@ -80,6 +84,9 @@
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "responsive-loader": "^1.2.0",
     "sass-loader": "^7.1.0",
     "sharp": "^0.22.1",
