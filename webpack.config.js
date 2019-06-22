@@ -369,7 +369,23 @@ module.exports = (env, args) => {
     },
     plugins: plugins,
     devServer: {
-      host: '0.0.0.0'
+      host: '0.0.0.0',
+
+      // 如果使用--open选项，则使用本机IP
+      useLocalIp: true
+
+      // Shows a full-screen overlay in the browser when there are compiler errors or warnings. Disabled by default.
+      // overlay: {
+      //   warnings: true,
+      //   errors: true
+      // },
+
+      // 可以实现一些mock功能
+      // before: function(app, server) {
+      //   app.get('/some/path', function(req, res) {
+      //     res.json({ custom: 'response' });
+      //   });
+      // }
     }
   }
 }

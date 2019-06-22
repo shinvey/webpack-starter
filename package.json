@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --devtool source-map --env.clean --env.lint",
-    "start:open": "webpack-dev-server --mode development --open --devtool source-map",
+    "start:open": "webpack-dev-server --mode development --hot --devtool source-map --env.clean --env.lint --open",
     "build:development": "webpack --mode development",
     "build:staging": "webpack --mode production --env.SVC_ENV=staging",
     "build:production": "webpack --mode production",
