@@ -2,6 +2,8 @@
  * webpack configuration exports a function
  * Environment Variables see https://webpack.js.org/guides/environment-variables
  * @param env 为args.env， see https://webpack.js.org/api/cli/#environment-options
+ * @param {boolean} env.lint 是否对代码进行lint
+ * @param {boolean} env.clean 是否清除缓存
  * @param args 命令行参数列表
  * @returns Object
  */
@@ -269,12 +271,18 @@ module.exports = (env, args) => {
       'home-entry': './src/pages/home/index.js'
     },
     output: output,
+    resolve: {
+      extensions: [
+        '.js',
+        '.ts'
+      ]
+    },
     // see https://webpack.js.org/configuration/module
     module: {
       // see https://webpack.js.org/configuration/module#modulerules
       rules: [
         {
-          test: /\.m?js$/,
+          test: /\.(m?js|ts)x?$/,
           include: directoryWhiteList,
           use: {
             loader: 'babel-loader',

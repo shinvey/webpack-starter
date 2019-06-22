@@ -18,7 +18,7 @@
     "build:modernizr:min": "modernizr --config modernizr-config.json --dest src/utils/modernizr.custom.min.js --uglify",
     "serve": "ws --compress --directory dist",
     "serve:open": "ws --compress --open --directory dist",
-    "lint": "eslint . && stylelint src",
+    "lint": "eslint . && stylelint src && tslint --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -53,12 +53,15 @@
     "stylelint-config-standard": "^18.3.0",
     "stylelint-no-unsupported-browser-features": "^3.0.2",
     "stylelint-scss": "^3.7.0",
+    "tslint": "^5.18.0",
+    "tslint-eslint-rules": "^5.4.0",
     "webpack-dev-server": "^3.5.1"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
     "babel-loader": "^8.0.6",
     "cache-loader": "^3.0.1",
     "css-loader": "^2.1.1",
@@ -81,6 +84,7 @@
     "sass-loader": "^7.1.0",
     "sharp": "^0.22.1",
     "style-loader": "^0.23.1",
+    "typescript": "^3.5.2",
     "url-loader": "^1.1.2",
     "vanilla-lazyload": "^12.0.0",
     "webpack": "^4.30.0",
