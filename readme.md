@@ -6,7 +6,7 @@
 
 ## 命令行工具
 1. webpack(模块打包)
-1. npm/yarn(包管理)
+1. npm/yarn/pnpm(包管理)
 
 ## 编程语言
 1. TypeScript(静态类型检查)
