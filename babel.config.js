@@ -1,7 +1,10 @@
 module.exports = {
   presets: [
     // 转义ES6代码到ES5
-    '@babel/preset-env'
+    '@babel/preset-env',
+    // support for typescript
+    // 转义typescript https://devblogs.microsoft.com/typescript/typescript-and-babel-7/
+    '@babel/preset-typescript'
   ],
   plugins: [
     /**

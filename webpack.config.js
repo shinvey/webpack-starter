@@ -2,6 +2,8 @@
  * webpack configuration exports a function
  * Environment Variables see https://webpack.js.org/guides/environment-variables
  * @param env 为args.env， see https://webpack.js.org/api/cli/#environment-options
+ * @param {boolean} env.lint 是否对代码进行lint
+ * @param {boolean} env.clean 是否清除缓存
  * @param args 命令行参数列表
  * @returns Object
  */
@@ -263,20 +265,12 @@ module.exports = (env, args) => {
     })
   )
 
-  // support for typescript
-  const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-  const rules = [
-    {
-      test: /\.tsx?$/,
-      include: directoryWhiteList,
-      loader: 'ts-loader',
-      options: {
-        // disable type checker - we will use it in fork plugin
-        transpileOnly: true
-      }
-    }
-  ]
-  plugins.push(new ForkTsCheckerWebpackPlugin())
+  // typescript type checking on build time https://github.com/a-tarasyuk/webpack-typescript-babel
+  if (env.lint) {
+    const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+    plugins.push(new ForkTsCheckerWebpackPlugin())
+  }
+  const extensions = ['.ts']
 
   // webpack 一般配置
   return {
@@ -287,7 +281,7 @@ module.exports = (env, args) => {
     resolve: {
       extensions: [
         '.js',
-        '.ts'
+        ...extensions
       ]
     },
     // see https://webpack.js.org/configuration/module
@@ -295,7 +289,7 @@ module.exports = (env, args) => {
       // see https://webpack.js.org/configuration/module#modulerules
       rules: [
         {
-          test: /\.m?js$/,
+          test: /\.(m?js|ts)x?$/,
           include: directoryWhiteList,
           use: {
             loader: 'babel-loader',
@@ -362,8 +356,7 @@ module.exports = (env, args) => {
               })
             )
           ]
-        },
-        ...rules
+        }
       ]
     },
     optimization: {

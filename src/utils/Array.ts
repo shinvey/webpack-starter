@@ -1,3 +1,4 @@
-export function inArray (arr: Array<any>, term: any): boolean {
+export function inArray (arr: any[], term: any): boolean {
+  console.debug(arr)
   return arr.includes(term)
 }

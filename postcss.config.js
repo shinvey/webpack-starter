@@ -4,7 +4,7 @@ module.exports = ({ options }) => {
   const env = args.env || {}
   const plugins = {}
 
-  // 如果开启了--env.lint则开启检查
+  // 如果开启了--env.lint则在编译时开启检查
   if (env.lint) {
     // css兼容性检查 https://github.com/anandthakker/doiuse
     plugins.doiuse = {
