@@ -265,13 +265,6 @@ module.exports = (env, args) => {
     })
   )
 
-  // typescript type checking on build time https://github.com/a-tarasyuk/webpack-typescript-babel
-  if (env.lint) {
-    const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-    plugins.push(new ForkTsCheckerWebpackPlugin())
-  }
-  const extensions = ['.ts']
-
   // webpack 一般配置
   return {
     entry: {
@@ -281,7 +274,7 @@ module.exports = (env, args) => {
     resolve: {
       extensions: [
         '.js',
-        ...extensions
+        '.ts'
       ]
     },
     // see https://webpack.js.org/configuration/module

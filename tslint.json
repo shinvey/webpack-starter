@@ -10,7 +10,8 @@
     "no-constant-condition": true,
     "no-console": false,
     "semicolon": [true, "never"],
-    "space-before-function-paren": true
+    "space-before-function-paren": true,
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"]
   },
   "rulesDirectory": [
     // Improve your TSLint with the missing ESLint rules
