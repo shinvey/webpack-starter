@@ -99,31 +99,8 @@ module.exports = (env, args) => {
   const assetProcessor = require('./build/asset-processor')(env, args)
 
   // 处理入口HTML模板，生成入口html文件
-  const htmlWebpackPluginOptions = {
-    // More options see https://github.com/jantimon/html-webpack-plugin#options
-    // cache: true, // cache默认启用
-    template: './src/pages/home/index.ejs',
-    templateParameters: {
-      args
-    }
-  }
-  // see https://github.com/jantimon/html-webpack-plugin
-  const HtmlWebpackPlugin = require('html-webpack-plugin')
-  // 内嵌关键js和css。See https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2#basic-usage
-  htmlWebpackPluginOptions.inlineSource = /(runtime|critical|inline|entry).*\.(js|css)$/.source
-  plugins.push(
-    new HtmlWebpackPlugin(htmlWebpackPluginOptions)
-  )
-  // 只在production mode采用inline，不影响web dev server调试
-  if (isPrd(args.mode)) {
-    const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
-    plugins.push(
-      // The order is important - the plugin must come after HtmlWebpackPlugin.
-      // see https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2
-      // 这个插件对内嵌的资源，没有执行清理，依然存在资源输出目录
-      new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin)
-    )
-  }
+  const pages = require('./build/page-factory')(env, args)
+  plugins.push(...pages.arrHtmlWebpackPlugin)
 
   // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
   // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
@@ -267,9 +244,7 @@ module.exports = (env, args) => {
 
   // webpack 一般配置
   return {
-    entry: {
-      'home-entry': './src/pages/demo1/index.jsx'
-    },
+    entry: pages.entries,
     output: output,
     resolve: {
       extensions: [
@@ -369,7 +344,23 @@ module.exports = (env, args) => {
     },
     plugins: plugins,
     devServer: {
-      host: '0.0.0.0'
+      host: '0.0.0.0',
+
+      // 如果使用--open选项，则使用本机IP
+      useLocalIp: true
+
+      // Shows a full-screen overlay in the browser when there are compiler errors or warnings. Disabled by default.
+      // overlay: {
+      //   warnings: true,
+      //   errors: true
+      // },
+
+      // 可以实现一些mock功能
+      // before: function(app, server) {
+      //   app.get('/some/path', function(req, res) {
+      //     res.json({ custom: 'response' });
+      //   });
+      // }
     }
   }
 }
