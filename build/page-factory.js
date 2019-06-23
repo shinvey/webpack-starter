@@ -4,17 +4,37 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 
 const { isPrd } = require('./env')
+
 // pages根目录
 const pagesBasePath = './src/pages'
-// page命名惯例
-const pageFile = 'page.js'
+// page命名惯例，采用glob pattern
+const pageFile = 'page.?*'
+
+/**
+ * 将glob pattern的部分字符转换为regex pattern
+ * @param {string} globPattern
+ * @returns {string}
+ */
+function transformGlobPattern2Regex (globPattern) {
+  return globPattern.replace(/\./g, '\\.')
+    .replace(/\?\*/g, '\\w+')
+    .replace(/\?/g, '\\w')
+    .replace(/\*/g, '\\w*')
+}
 
 module.exports = (env, args) => {
   const entries = {}
   const arrHtmlWebpackPlugin = []
 
   glob.sync(`${pagesBasePath}/**/${pageFile}`).forEach(path => {
-    const chunk = path.replace(RegExp(`${pagesBasePath}/?|/?${pageFile}`, 'ig'), '')
+    let _strRegex = `${transformGlobPattern2Regex(pagesBasePath)}/?|/?${transformGlobPattern2Regex(pageFile)}`
+    const chunk = path.replace(
+      RegExp(
+        _strRegex,
+        'ig'
+      ),
+      ''
+    )
 
     // 添加webpack entry
     entries[chunk] = path
