@@ -1,4 +1,10 @@
 module.exports = (env, args) => ({
+  vendors: {
+    test: /[\\/]node_modules[\\/]/,
+    chunks: 'initial',
+    // 本规则使用split chunk的默认设置，但调试模式时，不使用
+    enforce: args.debug
+  },
   /**
    * 关键资源分离规则
    * 优先级最高，配合html-webpack-plugin的插件
@@ -28,12 +34,6 @@ module.exports = (env, args) => ({
     // see https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupreuseexistingchunk
     // reuseExistingChunk设置为true和false但区别 https://github.com/webpack/webpack.js.org/issues/2122#issuecomment-388609306
     // reuseExistingChunk: true
-  },
-  vendors: {
-    test: /[\\/]node_modules[\\/]/,
-    chunks: 'initial',
-    // 本规则使用split chunk的默认设置，但调试模式时，不使用
-    enforce: args.debug
   }
 
   // 还可以根据加载性能优化策略（Loading performance optimal strategy），定义更合理的分离配置
