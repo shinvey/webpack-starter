@@ -245,11 +245,11 @@ module.exports = (env, args) => {
 
   // web dev server spa
   const devServer = {}
-  if (typeof args.spa === 'string') {
-    devServer.index = args.spa
+  if (typeof env.spa === 'string') {
+    devServer.index = env.spa
   }
   // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
-  devServer.historyApiFallback = !!args.spa
+  devServer.historyApiFallback = !!env.spa
 
   // webpack 一般配置
   return {
