@@ -57,7 +57,8 @@ module.exports = (env, args) => {
     // Note the use of chunkFilename, which determines the name of non-entry chunk files.
     // https://webpack.js.org/configuration/output/#output-chunkfilename
     chunkFilename: `${chunkFilenamePattern}.js`
-    // publicPath: 'https://example.com/'
+    // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
+    // publicPath: 'http://127.0.0.1:8080/'
   }
 
   let fileManagerOptions = {
@@ -242,6 +243,14 @@ module.exports = (env, args) => {
     })
   )
 
+  // web dev server spa
+  const devServer = {}
+  if (typeof args.spa === 'string') {
+    devServer.index = args.spa
+  }
+  // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
+  devServer.historyApiFallback = !!args.spa
+
   // webpack 一般配置
   return {
     entry: pages.entries,
@@ -347,7 +356,10 @@ module.exports = (env, args) => {
       host: '0.0.0.0',
 
       // 如果使用--open选项，则使用本机IP
-      useLocalIp: true
+      useLocalIp: true,
+
+      // 自定义配置
+      ...devServer
 
       // Shows a full-screen overlay in the browser when there are compiler errors or warnings. Disabled by default.
       // overlay: {
