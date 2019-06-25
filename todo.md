@@ -19,3 +19,29 @@ Bundle分析webpack bundle analyzer
     请求处理
     异步任务处理
   设备检测库选型，够用且小
+
+技术调研
+  新项目的技术选型或现有就项目能否平滑过渡到SSR？
+    问题关键词：SSR, CSR, dynamic rendering, Prerender, headless chrome
+    使用SSR做加载性能优化需要考虑的问题：
+      使用SSR，防止CSR
+      阻止不参与DOM创建资源请求，加速SSR
+      因为SSR是为客户端做预渲染，并不会顾及SPA的事件绑定逻辑，所以需要重新思考事件绑定逻辑
+      为SEO保留页面link入口，SPA在使用router时应保留link入口方便bot爬取页面内容
+      SSR可能带来2x的访问量增长，更具实际情况考虑是否需要阻止
+      SSR非常适合以内容为的页面，如果是web app有很多动态内容只对登陆用户可见，则要慎重考虑是否真的需要SSR
+    解决方案：
+      1. [Puppeteer](https://developers.google.com/web/tools/puppeteer/get-started)，Headless Chrome library
+      2. [Rendertron](https://github.com/GoogleChrome/rendertron#installing--deploying)，Headless Chrome rendering solution
+      3. [Rendora](https://github.com/rendora/rendora)，reverse HTTP proxy server. dynamic server-side rendering using headless Chrome to effortlessly solve the SEO problem for modern javascript websites
+        可能关心的问题：
+        1. [What is the difference between Rendora and Puppeteer?](https://github.com/rendora/rendora#what-is-the-difference-between-rendora-and-puppeteer)
+        2. [What is the difference between Rendora and Rendertron?](https://github.com/rendora/rendora#what-is-the-difference-between-rendora-and-rendertron)
+        核心配置基于agent，paths。Filters based on user agents and paths
+      4. [Prerender](https://prerender.io/)，预渲染在线服务平台
+    相关文章：
+      * [Server side rendering and dynamic rendering with Headless chrome](https://medium.com/@shotap/server-side-rendering-and-dynamic-rendering-with-headless-chrome-f23cdabfae48)
+      * [Headless Chrome: an answer to server-side rendering JS sites](https://developers.google.com/web/tools/puppeteer/articles/ssr)
+    延申阅读
+      [Google Search - Integrate with Search to help grow your business.](https://developers.google.com/search/)
+        * [Implement dynamic rendering](https://developers.google.com/search/docs/guides/dynamic-rendering)
