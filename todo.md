@@ -14,6 +14,7 @@ Bundle分析webpack bundle analyzer
   响应式图像和图像懒加载方案react-ideal-image
   配置中心插件化
   路由插件化，路由规则写到各自page文件夹下
+    [Magic Comments](https://webpack.js.org/api/module-methods/#magic-comments)
   集成异常处理库，web service接口公共异常，和私有业务异常
   rxjs常用业务场景代码片段
     请求处理
@@ -22,11 +23,17 @@ Bundle分析webpack bundle analyzer
 
 技术调研
   新项目的技术选型或现有就项目能否平滑过渡到SSR？
-    问题关键词：SSR, CSR, dynamic rendering, Prerender, headless chrome
+    问题关键词：SSR, CSR, dynamic rendering, Prerender, headless chrome, rehydrate
     使用SSR做加载性能优化需要考虑的问题：
-      使用SSR，防止CSR
+      使用SSR，防止CSR重发请求，重建DOM
+        React在客户端再次渲染时，是否会影响到SSR，事件是否能够正常绑定？
+        [ReactDOM.hydrate](https://reactjs.org/docs/react-dom.html#hydrate)可以配合SSR，对已经存在对HTML markups，only attach event handlers
+          在服务端渲染时，在ajax请求库中定义一个拦截器，将请求结果数据作为initial data生成<script>window.initialData[url]=data</script>代码，注入到head中
+          在客户端代码执行的时候，使用注入到head > script里定义好到数据，调用ReactDOM.hydrate绑事件
+          使用完initial data，及时清理，以免影响由用户交互引发的二次请求
       阻止不参与DOM创建资源请求，加速SSR
       因为SSR是为客户端做预渲染，并不会顾及SPA的事件绑定逻辑，所以需要重新思考事件绑定逻辑
+        React事件处理采用的是事件委派[Event delegation in React](https://github.com/facebook/react/issues/13635)
       为SEO保留页面link入口，SPA在使用router时应保留link入口方便bot爬取页面内容
       SSR可能带来2x的访问量增长，更具实际情况考虑是否需要阻止
       SSR非常适合以内容为的页面，如果是web app有很多动态内容只对登陆用户可见，则要慎重考虑是否真的需要SSR
