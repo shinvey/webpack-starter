@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
+import AccountInformation from './Users/AccountInformation'
 import Navigation from './Navigation'
 import Content from './Content'
 
@@ -16,6 +17,7 @@ import Content from './Content'
 export default function App () {
   return (
     <Router>
+      <AccountInformation/>
       <Navigation/>
       <Content/>
     </Router>

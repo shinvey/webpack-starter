@@ -5,7 +5,7 @@ module.exports = {
     // support for typescript
     // 转义typescript https://devblogs.microsoft.com/typescript/typescript-and-babel-7/
     '@babel/preset-typescript',
-    // 转义react jsx
+    // 转义react jsx https://babeljs.io/docs/en/babel-preset-react
     '@babel/preset-react'
   ],
   plugins: [
