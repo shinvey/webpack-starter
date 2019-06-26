@@ -1,7 +1,7 @@
 module.exports = {
   presets: [
     // 转义ES6代码到ES5
-    '@babel/preset-env',
+    ['@babel/preset-env', { loose: true }],
     // support for typescript
     // 转义typescript https://devblogs.microsoft.com/typescript/typescript-and-babel-7/
     '@babel/preset-typescript'
@@ -22,8 +22,10 @@ module.exports = {
     // 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
     '@babel/plugin-syntax-dynamic-import',
 
-    // 支持定义类属性
+    // 支持定义类静态属性属性语法
     // https://babeljs.io/docs/en/next/babel-plugin-proposal-class-properties.html
     ['@babel/plugin-proposal-class-properties', { 'loose': true }]
+    // 支持类定义私有字段和方法。目前babel-eslint 10还没能很好支持
+    // ['@babel/plugin-proposal-private-methods', { 'loose': true }]
   ]
 }
