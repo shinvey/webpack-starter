@@ -57,7 +57,6 @@ module.exports = (env, args) => {
     // Note the use of chunkFilename, which determines the name of non-entry chunk files.
     // https://webpack.js.org/configuration/output/#output-chunkfilename
     chunkFilename: `${chunkFilenamePattern}.js`
-    // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
     // publicPath: 'http://127.0.0.1:8080/'
   }
 
@@ -245,11 +244,20 @@ module.exports = (env, args) => {
 
   // web dev server spa
   const devServer = {}
-  if (typeof env.spa === 'string') {
-    devServer.index = env.spa
+  // 单页应用路由模式
+  if (env.spa) {
+    if (typeof env.spa === 'string') {
+      // 默认首页设置为spa入口制定的html
+      devServer.index = env.spa
+    }
+    // 选项来源 https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
+    // 参数文档 https://github.com/bripkens/connect-history-api-fallback#index
+    devServer.historyApiFallback = {
+      index: '/'
+    }
+    // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
+    output.publicPath = 'http://127.0.0.1:8080/'
   }
-  // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
-  devServer.historyApiFallback = !!env.spa
 
   // webpack 一般配置
   return {

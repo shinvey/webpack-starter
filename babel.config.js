@@ -20,6 +20,10 @@ module.exports = {
     // '@babel/plugin-transform-runtime'
 
     // 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
-    '@babel/plugin-syntax-dynamic-import'
+    '@babel/plugin-syntax-dynamic-import',
+
+    // 支持定义类属性
+    // https://babeljs.io/docs/en/next/babel-plugin-proposal-class-properties.html
+    ['@babel/plugin-proposal-class-properties', { 'loose': true }]
   ]
 }
