@@ -7,8 +7,8 @@ export function Navigation () {
   return <Link to="/">Home</Link>
 }
 export function Content () {
-  const App = loadable(() => import('./App'), {
+  const View = loadable(() => import('./View'), {
     fallback: <Loading />
   })
-  return <Route path="/" exact component={App} />
+  return <Route path="/" exact component={View} />
 }

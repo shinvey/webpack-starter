@@ -8,8 +8,8 @@ export function Navigation () {
   return <Link to="/users/">Users</Link>
 }
 export function Content () {
-  const App = loadable(() => import('./App'), {
+  const View = loadable(() => import('./View'), {
     fallback: <Loading />
   })
-  return <PrivateRoute path="/users/" component={App} />
+  return <PrivateRoute path="/users/" component={View} />
 }

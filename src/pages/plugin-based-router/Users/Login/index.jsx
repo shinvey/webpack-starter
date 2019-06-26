@@ -11,9 +11,9 @@ export const Navigation = withRouter(({ location }) => <Link to={{
   }
 }}>Login</Link>)
 export function Content () {
-  const App = loadable(() => import('./App'), {
+  const View = loadable(() => import('./View'), {
     fallback: <Loading />
   })
-  return <Route path={path} component={App} />
+  return <Route path={path} component={View} />
 }
 export const path = '/login/'

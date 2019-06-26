@@ -14,7 +14,13 @@ import Content from './Content'
  * Note: React的Suspense组件容易导致浏览器标签页CPU飙升
  */
 
-export default function App () {
+/**
+ * 单页应用装配
+ * 这是个页面容器page container
+ * @returns {*}
+ * @constructor
+ */
+export default function Container () {
   return (
     <Router>
       <AccountInformation/>

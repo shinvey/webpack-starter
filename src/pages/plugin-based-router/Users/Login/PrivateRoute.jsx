@@ -7,6 +7,13 @@ import {
 import { path } from './index'
 import fakeAuth from '../auth'
 
+/**
+ * 定义一个需要用户登录才能使用的路由
+ * @param Component
+ * @param rest
+ * @returns {*}
+ * @constructor
+ */
 export default function PrivateRoute ({ component: Component, ...rest }) {
   return (
     <Route
