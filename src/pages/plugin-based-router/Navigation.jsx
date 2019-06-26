@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Navigation as IndexNav } from './Index'
+import { Navigation as IndexNav } from './Home'
 import { Navigation as AboutNav } from './About'
 import { Navigation as UsersNav } from './Users'
 
