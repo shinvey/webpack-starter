@@ -14,7 +14,7 @@ import fakeAuth from '../auth'
  * @returns {*}
  * @constructor
  */
-export default function PrivateRoute ({ component: Component, ...rest }) {
+export default function AuthRoute ({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
