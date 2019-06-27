@@ -7,16 +7,17 @@ Bundle分析webpack bundle analyzer
 只对工具函数库和依赖使用typescript，为业务开发提供更友好的代码提示，依然保留JavaScript的灵活性，和团队成员的开发效率
 
 创建项目开发模板
-  集成React技术栈，React + Router + Redux + RxJS
+  集成React技术栈，React + Router + Mobx + RxJS
     集成Redux
       使用界限
         组件私有状态组件内部管理，无需使用redux
         父子通信，使用redux emit action
         全局状态，使用redux管理
-    集成RxJS
+    [x] 集成RxJS，轻度使用
     [x] 响应式状态管理Mobx
       enforceActions设置store是否可以被随处修改或限定只能在action中修改
     技术调研redux-persist
+  请求库选型：axios……
   css module支持或组件级样式书写方案
     styled-component
     react css modules
