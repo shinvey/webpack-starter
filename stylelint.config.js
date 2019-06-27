@@ -36,9 +36,12 @@ module.exports = {
     // see https://github.com/ismay/stylelint-no-unsupported-browser-features#recommendations
     'plugin/no-unsupported-browser-features': [true, {
       'severity': 'warning'
-    }]
+    }],
 
     // add your overrides and additions here.
     // Suggested additions https://github.com/stylelint/stylelint-config-standard#suggested-additions
+    'unit-no-unknown': [true, {
+      ignoreFunctions: ['image-set']
+    }]
   }
 }
