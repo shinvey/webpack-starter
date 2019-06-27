@@ -8,12 +8,21 @@ Bundle分析webpack bundle analyzer
 
 创建项目开发模板
   集成React技术栈，React + Router + Redux + RxJS
+    集成Redux
+      使用界限
+        组件私有状态组件内部管理，无需使用redux
+        父子通信，使用redux emit action
+        全局状态，使用redux管理
+    集成RxJS
+    [x] 响应式状态管理Mobx
+      enforceActions设置store是否可以被随处修改或限定只能在action中修改
+    技术调研redux-persist
   css module支持或组件级样式书写方案
     styled-component
     react css modules
   响应式图像和图像懒加载方案react-ideal-image
   配置中心插件化
-  路由插件化，路由规则写到各自page文件夹下
+  [X] 路由插件化，路由规则写到各自page文件夹下
     [Magic Comments](https://webpack.js.org/api/module-methods/#magic-comments)
   集成异常处理库，web service接口公共异常，和私有业务异常
   rxjs常用业务场景代码片段

@@ -22,6 +22,14 @@ module.exports = {
     // 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
     '@babel/plugin-syntax-dynamic-import',
 
+    /**
+     * 启用 decorators https://mobx.js.org/best/decorators.html#enabling-decorator-syntax
+     * make sure that @babel/plugin-proposal-decorators comes before @babel/plugin-proposal-class-properties.
+     * Note that the legacy mode is important (as is putting the decorators proposal first). Non-legacy mode is WIP.
+     * NOTE: Compatibility with @babel/plugin-proposal-class-properties
+     * https://babeljs.io/docs/en/babel-plugin-proposal-decorators#note-compatibility-with-babel-plugin-proposal-class-properties
+     */
+    ['@babel/plugin-proposal-decorators', { 'legacy': true }],
     // 支持定义类静态属性属性语法
     // https://babeljs.io/docs/en/next/babel-plugin-proposal-class-properties.html
     ['@babel/plugin-proposal-class-properties', { 'loose': true }]

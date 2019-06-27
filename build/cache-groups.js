@@ -1,8 +1,26 @@
+const { isDev } = require('./env')
 module.exports = (env, args) => ({
   vendors: {
     test: /[\\/]node_modules[\\/]/,
     chunks: 'initial',
-    // 本规则使用split chunk的默认设置，但调试模式时，不使用
+    name: args.debug
+      /**
+       * 方便审查载入了哪些npm包
+       */
+      ? (module, chunks, cacheGroupKey) => {
+      // get the name. E.g. node_modules/packageName/not/this/part.js
+      // or node_modules/packageName
+        const matches = module.context.match(/([\\/]node_modules[\\/]|[\\/]\.registry\.npmjs\.org[\\/])([@a-z\-~]+)([\\/][\d.\-_]+)?/i)
+        const packageName = matches[2]
+        // npm package names are URL-safe, but some servers don't like @ symbols
+        return `npm.${packageName.replace(/@/g, '').replace(/[\\/]/g, '_')}`
+      }
+      /**
+       * It is recommended to set splitChunks.name to false for production builds so that it doesn't change names unnecessarily.
+       * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunksname
+       */
+      : isDev(args.mode),
+    // 本规则使用split chunk的默认设置，但排除调试模式场景
     enforce: args.debug
   },
   /**
