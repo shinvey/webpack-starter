@@ -3,6 +3,7 @@ import React from 'react'
 import { Navigation as IndexNav } from './Home'
 import { Navigation as AboutNav } from './About'
 import { Navigation as UsersNav } from './Users'
+import { Navigation as TimerNav } from './Timer'
 
 /**
  * 导航主体装配
@@ -21,6 +22,9 @@ export default function Navigation () {
         </li>
         <li>
           <UsersNav/>
+        </li>
+        <li>
+          <TimerNav/>
         </li>
       </ul>
     </nav>

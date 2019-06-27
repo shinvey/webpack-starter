@@ -6,6 +6,7 @@ import { Content as IndexContent } from './Home'
 import { Content as AboutContent } from './About'
 import { Content as UsersContent } from './Users'
 import { Content as LoginContent } from './Users/Login'
+import { Content as TimerContent } from './Timer'
 
 /**
  * 内容主体装配
@@ -19,6 +20,7 @@ export default function Content () {
       <IndexContent/>
       <AboutContent/>
       <UsersContent/>
+      <TimerContent/>
     </ErrorBoundary>
   )
 }
