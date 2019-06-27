@@ -34,8 +34,16 @@ module.exports = {
     ['@babel/plugin-proposal-decorators', { 'legacy': true }],
     // 支持定义类静态属性属性语法
     // https://babeljs.io/docs/en/next/babel-plugin-proposal-class-properties.html
-    ['@babel/plugin-proposal-class-properties', { 'loose': true }]
+    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
     // 支持类定义私有字段和方法。目前babel-eslint 10还没能很好支持
     // ['@babel/plugin-proposal-private-methods', { 'loose': true }]
+    /**
+     * This plugin adds support for server-side rendering, minification of styles, and a nicer debugging experience.
+     * https://www.styled-components.com/docs/tooling#babel-plugin
+     */
+    ['babel-plugin-styled-components', {
+      // Dead Code Elimination https://www.styled-components.com/docs/tooling#dead-code-elimination
+      'pure': true
+    }]
   ]
 }

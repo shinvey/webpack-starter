@@ -307,7 +307,7 @@ module.exports = (env, args) => {
         },
         // 添加pcss支持
         {
-          test: /\.p?css$/,
+          test: /\.p?css|\.styled\.jsx?$/,
           include: directoryWhiteList,
           use: cssPreprocessors
         },

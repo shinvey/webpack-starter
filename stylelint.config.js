@@ -1,4 +1,11 @@
 module.exports = {
+  'processors': [
+    /**
+     * This processor, to extract styles from styled-components
+     * https://www.styled-components.com/docs/tooling#installation
+     */
+    'stylelint-processor-styled-components'
+  ],
   /**
    * npm i -D stylelint stylelint-config-standard
    * stylelint 文档 https://github.com/stylelint/stylelint
@@ -9,7 +16,12 @@ module.exports = {
   'extends': [
     'stylelint-config-standard',
     // Lost grid config for stylelint. See https://github.com/delorge/stylelint-config-lost
-    'stylelint-config-lost'
+    'stylelint-config-lost',
+    /**
+     * The stylelint-config-styled-components to disable stylelint rules that clash with styled-components
+     * https://www.styled-components.com/docs/tooling#setup
+     */
+    'stylelint-config-styled-components'
   ],
   plugins: [
     // support scss. See https://github.com/kristerkari/stylelint-scss
@@ -36,9 +48,12 @@ module.exports = {
     // see https://github.com/ismay/stylelint-no-unsupported-browser-features#recommendations
     'plugin/no-unsupported-browser-features': [true, {
       'severity': 'warning'
-    }]
+    }],
 
     // add your overrides and additions here.
     // Suggested additions https://github.com/stylelint/stylelint-config-standard#suggested-additions
+    'unit-no-unknown': [true, {
+      ignoreFunctions: ['image-set']
+    }]
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
+import { Title } from './Hello.styled'
 
 export default function View () {
-  return <h2>Home</h2>
+  return <Title>Hello World!</Title>
 }

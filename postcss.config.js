@@ -1,5 +1,5 @@
 // see https://github.com/postcss/postcss-loader#configuration
-module.exports = ({ options }) => {
+module.exports = ({ file, options }) => {
   const { args } = options
   const env = args.env || {}
   const plugins = {}
@@ -13,6 +13,7 @@ module.exports = ({ options }) => {
   }
 
   return {
+    parser: ['.js', '.jsx'].includes(file.extname) ? 'postcss-styled' : undefined,
     plugins: {
       /**
        * LostGrid makes use of calc() to create stunning grids based on fractions you define without having to pass a lot of options.

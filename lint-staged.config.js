@@ -8,7 +8,8 @@ module.exports = {
     'tslint --project tsconfig.json --fix',
     'git add'
   ],
-  '*.{css,pcss,scss,sass}': [
+  // js、jsx文件格式是为了支持styled-components
+  '*.{css,pcss,scss,sass,js,jsx}': [
     'stylelint --fix',
     'git add'
   ]
