@@ -278,7 +278,14 @@ module.exports = (env, args) => {
         '.js',
         '.jsx',
         '.ts'
-      ]
+      ],
+      alias: {
+        /**
+         * Tip:Consider using the faster and smaller ES6 build if targetting a modern environment
+         * https://github.com/mobxjs/mobx#installation
+         */
+        mobx: path.resolve('node_modules/mobx/lib/mobx.es6.js')
+      }
     },
     // see https://webpack.js.org/configuration/module
     module: {
