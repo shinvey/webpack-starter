@@ -5,7 +5,7 @@ import Person from '../../components/critical/Person'
 import { plus } from '../../components/shared/util'
 import LazyLoad from 'vanilla-lazyload'
 import style from './example.module.scss'
-import { inArray } from '../../library/utils/Array'
+import { inArray } from '../../library/utils/Array.ts'
 import { get } from '../../components/biz/request/ajaxPromise'
 // import isArray from 'lodash/isArray'
 

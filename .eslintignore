@@ -1,4 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 dist
 # 忽略custom build
-src/utils/*.custom.*
+src/library/utils/*.custom.*
+# eslint不对typescript文件进行检查。交由tslint
+src/**/*.ts
