@@ -29,7 +29,7 @@ module.exports = (env, args) => {
   const optimization = {
     // Extracting Boilerplate. See https://webpack.js.org/guides/caching/#extracting-boilerplate
     // 如果是多页应用，可以考虑分离runtime，在多个entry之间共享runtime
-    // runtimeChunk: 'single',
+    runtimeChunk: 'single',
 
     // Chunk splitting see https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-2
     splitChunks: {

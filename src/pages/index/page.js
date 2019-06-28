@@ -5,7 +5,8 @@ import Person from '../../components/critical/Person'
 import { plus } from '../../components/shared/util'
 import LazyLoad from 'vanilla-lazyload'
 import style from './example.module.scss'
-import { inArray } from '../../utils/Array'
+import { inArray } from '../../library/utils/Array.ts'
+import { get } from '../../components/biz/request/ajaxPromise'
 // import isArray from 'lodash/isArray'
 
 document.body.appendChild(component())
@@ -26,7 +27,7 @@ const lazyLazy = new LazyLoad({
 console.debug('lazyLazy ', lazyLazy)
 
 // Use case for device detection
-import(/* webpackChunkName: "Modernizr" */ '../../utils/modernizr.custom').then(() => {
+import(/* webpackChunkName: "Modernizr" */ '../../library/utils/modernizr.custom').then(() => {
   // see https://modernizr.com/docs#modernizr-addtest
   window.Modernizr.addTest({
     iOS: /iPhone/i.test(navigator.userAgent),
@@ -52,3 +53,11 @@ console.debug(combine())
 console.debug(style)
 
 console.debug(inArray([1, 2, 3], 1))
+
+get('https://jsonplaceholder.typicode.com/todos/1')
+  .then((res) => {
+    console.debug('Yes, I received the response. ', res)
+  })
+  .catch(error => {
+    console.error('promise catch error', error)
+  })
