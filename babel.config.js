@@ -34,8 +34,21 @@ module.exports = {
     ['@babel/plugin-proposal-decorators', { 'legacy': true }],
     // 支持定义类静态属性属性语法
     // https://babeljs.io/docs/en/next/babel-plugin-proposal-class-properties.html
-    ['@babel/plugin-proposal-class-properties', { 'loose': true }]
+    ['@babel/plugin-proposal-class-properties', { 'loose': true }],
     // 支持类定义私有字段和方法。目前babel-eslint 10还没能很好支持
     // ['@babel/plugin-proposal-private-methods', { 'loose': true }]
+
+    // 启用react css module https://github.com/gajus/babel-plugin-react-css-modules
+    ['react-css-modules', {
+      // https://github.com/gajus/babel-plugin-react-css-modules#options
+      webpackHotModuleReloading: true,
+      // https://www.regexpal.com/?fam=110095
+      // exclude: '(?<!\.module)\.[sp]?[ca]ss'
+      'filetypes': {
+        '.scss': {
+          'syntax': 'postcss-scss'
+        }
+      }
+    }]
   ]
 }
