@@ -1,5 +1,30 @@
 import { merge } from './utils/index'
 
+/**
+ * 配置对象
+ * @example
+ * config = new Config({
+ *   none: {
+      schema: 'http',
+      host: '',
+      port: 80,
+      basePath: '',
+      api: {
+        example: 'restful/api'
+      }
+    },
+    // 对象结构与none一致，由section方法进行切换
+    local: {
+      host: 'localhost',
+      api: {
+        example2: 'restful/api2'
+      }
+    },
+ * })
+ * config.section('local')
+ * config.api('example2')
+ * //=> http://localhost/restful/api2
+ */
 export default class Config {
   /**
    * @private
@@ -11,30 +36,46 @@ export default class Config {
       host: '',
       port: 80,
       basePath: '',
-      api: {}
+      api: {
+        example: 'restful/api'
+      }
     },
-    local: {},
+    // 对象结构与none一致，由section方法进行切换
+    local: {
+      host: 'localhost',
+      api: {
+        example2: 'restful/api2'
+      }
+    },
     development: {},
     staging: {},
     production: {}
   };
 
   _sections = [];
+
   /**
    * @param {Object} conf
    */
   constructor (conf) {
-    this.combine(conf)
+    this._mergeConf(conf)
+  }
+
+  _mergeConf (...args) {
+    merge(this._conf, ...args)
+    this._sections = Object.keys(this._conf)
+    return this
   }
 
   /**
-   * 深度合并新的配置对象
+   * 深度合并新的配置对象并自动切换到当前环境
+   * combine should be invoked after section method
    * @param args
    * @returns {Config}
    */
   combine (...args) {
-    merge(this._conf, ...args)
-    this._sections = Object.keys(this._conf)
+    this._mergeConf(...args)
+    this.section(this.env)
     return this
   }
 
@@ -42,7 +83,8 @@ export default class Config {
    * 当前section等级
    * @type {number}
    */
-  level = 0;
+  level = 0
+  env = 'none'
   /**
    * section转level
    * 这里排序是受原生Object key值排序规则影响的
@@ -66,6 +108,7 @@ export default class Config {
    * @returns {Config}
    */
   section (env, mode) {
+    this.env = env
     if (mode === 'inherit') {
       this._sections.some((section, key) => {
         merge(this._section, this._conf[section])
