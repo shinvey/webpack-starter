@@ -346,6 +346,40 @@ __如何在项目中使用webp？__
 
 [Using WebP Images](https://css-tricks.com/using-webp-images/)
 
+__如果对现有项目进行支持webp改造？__
+
+[webp-in-css](https://github.com/ai/webp-in-css) PostCSS plugin and tiny JS script (128 bytes) to use WebP in CSS background
+
+编译时与运行时相结合解决现有项目对webp的支持：
+1. 编译时处理css，增加webp类样式，意图通过webp class 类名样式来支持加载webp
+2. 运行时判断浏览器是否支持webp，在DOM根节点增加webp类名，意图为辅助与配合webp类样式
+
+You add `require('webp-in-css')` to your JS bundle and write CSS like:
+
+```css
+.logo {
+  width: 30px;
+  height: 30px;
+  background: url(/logo.png);
+}
+```
+
+The script will set `webp` or `no-webp` class on `<body>`
+and PostCSS plugin will generates:
+
+```css
+.logo {
+  width: 30px;
+  height: 30px;
+}
+body.webp .logo {
+  background: url(/logo.webp);
+}
+body.no-webp .logo {
+  background: url(/logo.png);
+}
+```
+
 ## caniuse tools
 1. [doiuse](http://doiuse.herokuapp.com/)
 2. [stylelint-no-unsupported-browser-features](https://github.com/ismay/stylelint-no-unsupported-browser-features)
