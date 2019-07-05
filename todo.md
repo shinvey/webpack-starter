@@ -62,3 +62,9 @@ Bundle分析webpack bundle analyzer
     延申阅读
       [Google Search - Integrate with Search to help grow your business.](https://developers.google.com/search/)
         * [Implement dynamic rendering](https://developers.google.com/search/docs/guides/dynamic-rendering)
+
+[ ] 新框架凡事觉得繁琐的地方必会重构，做到少些代码，干更多的事儿
+[ ] VSCode插件安装提议，如果可以提供安装脚本。[30个极大提高开发效率的Visual Studio Code插件](https://blog.fundebug.com/2018/07/24/vs-extensions/)
+
+ > - Test 123
+ > - Follow  [testing artifacts](http://2.bp.blogspot.com) (more Unit )
