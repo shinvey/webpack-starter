@@ -1,7 +1,21 @@
 module.exports = {
   presets: [
     // 转义ES6代码到ES5
-    ['@babel/preset-env', { loose: true }],
+    [
+      '@babel/preset-env',
+      {
+        /**
+         * loose模式会输出更少量的代码
+         * loose模式会导致，会使这种表达式 [...Array(5).keys()] 无法得到预期结果
+         * loose模式在新项目启动使使用比较安全。对已有项目使用，可能会引发未知问题
+         */
+        loose: true,
+        exclude: [
+          // 如果我们已经采用polyfill service，则可以选择不使用regenerator转换async、await语法，使用Promise
+          '@babel/plugin-transform-regenerator'
+        ]
+      }
+    ],
     // support for typescript
     // 转义typescript https://devblogs.microsoft.com/typescript/typescript-and-babel-7/
     '@babel/preset-typescript'
