@@ -62,3 +62,6 @@ Bundle分析webpack bundle analyzer
     延申阅读
       [Google Search - Integrate with Search to help grow your business.](https://developers.google.com/search/)
         * [Implement dynamic rendering](https://developers.google.com/search/docs/guides/dynamic-rendering)
+
+React渲染性能优化
+* [ ] [why-did-you-update](https://github.com/maicki/why-did-you-update)
