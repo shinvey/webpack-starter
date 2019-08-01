@@ -62,3 +62,5 @@ Bundle分析webpack bundle analyzer
     延申阅读
       [Google Search - Integrate with Search to help grow your business.](https://developers.google.com/search/)
         * [Implement dynamic rendering](https://developers.google.com/search/docs/guides/dynamic-rendering)
+
+* [ ] 调整应用架构和目录架构使其支持多端共享业务模型开发模式
