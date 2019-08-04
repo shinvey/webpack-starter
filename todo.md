@@ -64,3 +64,4 @@ Bundle分析webpack bundle analyzer
         * [Implement dynamic rendering](https://developers.google.com/search/docs/guides/dynamic-rendering)
 
 * [ ] 调整应用架构和目录架构使其支持多端共享业务模型开发模式
+* [ ] 编写demo体现MVVM设计模式中数据是如何流转的
