@@ -68,11 +68,23 @@ module.exports = (env, args) => {
         // source map see https://github.com/webpack-contrib/sass-loader#source-maps
         ..._options
       }
+    }),
+
+    lessLoader: () => ({
+      // A Less loader for webpack. Compiles Less to CSS.
+      // see https://github.com/webpack-contrib/less-loader
+      loader: 'less-loader',
+      options: {
+        // source map see https://github.com/webpack-contrib/less-loader#source-maps
+        ..._options
+      }
     })
   }
 
   processors.sassLoader.test = /\.s[ca]ss$/
   processors.sassLoader.moduleTest = /module\.s[ca]ss$/
+
+  processors.lessLoader.test = /\.less$/
 
   return processors
 }
