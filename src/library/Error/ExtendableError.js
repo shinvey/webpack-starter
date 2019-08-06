@@ -1,8 +1,12 @@
 export default class ExtendableError {
   name;
+
   code;
+
   message;
+
   stack;
+
   constructor (message) {
     this.message = message
     // this.name = this.constructor.name;

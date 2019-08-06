@@ -456,8 +456,8 @@ __文件目录管理__
 
 ## 首屏加载性能优化
 [ ] 使用split chunk配置去配合script-ext和style-ext分离出critical resource
-__骨架HTML(bare-bones HTML)__
-index/bare-bones.html
+__骨架HTML(Skeleton HTML)__
+index/skeleton.html
 
 __关键CSS__
 naming convention: xxx.critical.css

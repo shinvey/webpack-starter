@@ -3,6 +3,7 @@
  */
 export default class Statistician {
   _id;
+
   _label;
 
   /**
