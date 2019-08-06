@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 
 import { path } from './index'
-import fakeAuth from '../auth'
+import fakeAuth from '../UserStore'
 
 /**
  * 定义一个需要用户登录才能使用的路由

@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import AccountInformation from './Users/AccountInformation'
+import AccountInformation from './User/AccountInformation'
 import Navigation from './Navigation'
 import Content from './Content'
 

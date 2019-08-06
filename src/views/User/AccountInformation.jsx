@@ -3,7 +3,7 @@ import {
   withRouter
 } from 'react-router-dom'
 import { Navigation as LoginNav } from './Login'
-import fakeAuth from './auth'
+import fakeAuth from './UserStore'
 
 /**
  * withRouter https://reacttraining.com/react-router/web/api/withRouter

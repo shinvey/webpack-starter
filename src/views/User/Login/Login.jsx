@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import fakeAuth from '../auth'
+import fakeAuth from '../UserStore'
 
 export default class Login extends Component {
   state = {

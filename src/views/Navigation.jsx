@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Navigation as IndexNav } from './Home'
 import { Navigation as AboutNav } from './About'
-import { Navigation as UsersNav } from './Users'
+import { Navigation as UsersNav } from './User'
 import { Navigation as TimerNav } from './Timer'
 
 /**
