@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --devtool source-map --env.clean --env.lint",
     "start:open": "npm start -- --open",
-    "start:spa": "npm start -- -d --env.spa",
+    "start:spa": "npm start -- -d --env.spa index.html",
     "build:development": "webpack --mode development",
     "build:staging": "npm run build:production -- --env.SVC_ENV=staging",
     "build:production": "webpack --mode production",
@@ -21,7 +21,7 @@
     "build:modernizr:min": "modernizr --config modernizr-config.json --dest src/library/utils/modernizr.custom.min.js --uglify",
     "serve": "ws --compress --directory dist",
     "serve:open": "npm run serve -- --open",
-    "serve:spa": "npm run serve -- --spa",
+    "serve:spa": "npm run serve -- --spa index.html",
     "lint:js": "eslint .",
     "lint:js:fix": "npm run lint:js -- --fix",
     "lint:style": "stylelint src",
@@ -43,6 +43,7 @@
     "iOS >= 8"
   ],
   "devDependencies": {
+    "@types/glob": "^7.1.1",
     "babel-eslint": "^10.0.2",
     "doiuse": "^4.2.0",
     "eslint": "^6.1.0",
