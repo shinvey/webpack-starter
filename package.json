@@ -101,6 +101,7 @@
     "imagemin-pngquant": "^8.0.0",
     "imagemin-svgo": "^7.0.0",
     "imagemin-webpack": "^5.1.0",
+    "less-loader": "^5.0.0",
     "lost": "^8.3.1",
     "mobx": "^5.13.0",
     "mobx-react": "^6.1.1",

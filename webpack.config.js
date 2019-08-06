@@ -94,6 +94,15 @@ module.exports = (env, args) => {
     importLoaders: 2,
     modules: true
   })
+  // less
+  const lessPreprocessors = [
+    styleLoader,
+    cssPreprocessor.cssLoader({
+      importLoaders: 2
+    }),
+    postcssLoader,
+    cssPreprocessor.lessLoader()
+  ]
 
   // 媒体资源处理
   const assetProcessor = require('./build/asset-processor')(env, args)
@@ -328,6 +337,12 @@ module.exports = (env, args) => {
           test: cssPreprocessor.sassLoader.moduleTest,
           include: directoryWhiteList,
           use: sassModulePreprocessors
+        },
+        // 添加less支持
+        {
+          test: cssPreprocessor.lessLoader.test,
+          include: directoryWhiteList,
+          use: lessPreprocessors
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
         {
