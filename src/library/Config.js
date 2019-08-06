@@ -20,6 +20,7 @@ export default class Config {
   };
 
   _sections = [];
+
   /**
    * @param {Object} conf
    */
@@ -43,6 +44,7 @@ export default class Config {
    * @type {number}
    */
   level = 0;
+
   /**
    * section转level
    * 这里排序是受原生Object key值排序规则影响的
@@ -59,6 +61,7 @@ export default class Config {
    * @type {Object}
    */
   _section = {};
+
   /**
    * 返回当前env环境的config
    * @param {String} env 要切换的配置段
@@ -91,12 +94,14 @@ export default class Config {
     } = this._section
     return `${schema}://${host}:${port}/${basePath}`
   }
+
   /**
    * 读取web service api
    * @param api
    * @returns {string}
    */
   api = api => `${this.baseURL()}/${this._section.api[api]}`;
+
   /**
    * @alias Config.api
    */

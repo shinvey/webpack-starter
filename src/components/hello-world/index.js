@@ -11,7 +11,7 @@ export function stringify (obj) {
 }
 
 export async function msg () {
-  let val = await Promise.resolve('ok')
+  const val = 'ok'
   return val + ' yes'
 }
 

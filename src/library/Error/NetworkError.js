@@ -3,8 +3,11 @@ import ExtendableError from 'assets/lib/Error/ExtendableError'
 
 export default class NetworkError extends ExtendableError {
   config;
+
   request;
+
   response;
+
   constructor (error = {}) {
     super()
 

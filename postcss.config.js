@@ -18,7 +18,7 @@ module.exports = ({ options }) => {
        * LostGrid makes use of calc() to create stunning grids based on fractions you define without having to pass a lot of options.
        * see https://github.com/peterramsing/lost
        */
-      'lost': {},
+      lost: {},
       // https://github.com/csstools/postcss-preset-env
       // 将默认使用browsers list配置文件来断言需要支持的设备列表
       'postcss-preset-env': {
@@ -39,7 +39,7 @@ module.exports = ({ options }) => {
       },
 
       // css minimizer
-      'cssnano': args.mode === 'production' ? {
+      cssnano: args.mode === 'production' ? {
         // cssnano preset configuration
         // see https://cssnano.co/guides/presets
         // see https://cssnano.co/guides/optimisations

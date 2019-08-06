@@ -27,7 +27,7 @@ module.exports = (env, args) => {
   const arrHtmlWebpackPlugin = []
 
   glob.sync(`${pagesBasePath}/**/${pageFile}`).forEach(path => {
-    let _strRegex = `${transformGlobPattern2Regex(pagesBasePath)}/?|/?${transformGlobPattern2Regex(pageFile)}`
+    const _strRegex = `${transformGlobPattern2Regex(pagesBasePath)}/?|/?${transformGlobPattern2Regex(pageFile)}`
     const chunk = path.replace(
       RegExp(
         _strRegex,
@@ -48,7 +48,7 @@ module.exports = (env, args) => {
      * user/*.ejs
      * ./*.ejs
      */
-    let _path = path.split('/')
+    const _path = path.split('/')
     let template
     do {
       _path.pop()
@@ -65,7 +65,7 @@ module.exports = (env, args) => {
     // 没有找到模板，抛出异常
     if (!template) { throw new Error(`A template ejs file for ${filename} is required.`) }
 
-    let htmlWebpackPluginOptions = {
+    const htmlWebpackPluginOptions = {
       filename: filename,
       template: template,
       chunks: ['runtime', 'vendors', 'critical', chunk],

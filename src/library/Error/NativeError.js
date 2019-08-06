@@ -2,7 +2,9 @@ import ExtendableError from './ExtendableError'
 
 export default class NativeError extends ExtendableError {
   data;
+
   method;
+
   constructor (res = {}, ...params) {
     params.unshift(res.errorMessage || 'Native Error')
 
