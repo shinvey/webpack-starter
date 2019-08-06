@@ -6,7 +6,7 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const { isPrd } = require('./env')
 
 // pages根目录
-const pagesBasePath = './src/pages'
+const pagesBasePath = './src/+(page|view)s'
 // page命名惯例，采用glob pattern
 const pageFile = 'page.?*'
 
@@ -34,7 +34,7 @@ module.exports = (env, args) => {
         'ig'
       ),
       ''
-    )
+    ) || 'index'
 
     // 添加webpack entry
     entries[chunk] = path
