@@ -60,7 +60,7 @@ module.exports = (env, args) => {
     // publicPath: 'http://127.0.0.1:8080/'
   }
 
-  let fileManagerOptions = {
+  const fileManagerOptions = {
     onStart: {
       delete: []
     }
@@ -137,16 +137,17 @@ module.exports = (env, args) => {
     const ImageminPlugin = require('imagemin-webpack')
 
     // Before importing imagemin plugin make sure you add it in `package.json` (`dependencies`) and install
-    const imageminGifsicle = require('imagemin-gifsicle')
-    const imageminSvgo = require('imagemin-svgo')
+    // const imageminGifsicle = require('imagemin-gifsicle')
+    // https://www.npmjs.com/package/imagemin-svgo
+    // const imageminSvgo = require('imagemin-svgo')
 
     // 无损压缩模式
     // const imageminJpegtran = require('imagemin-jpegtran')
     // const imageminOptipng = require('imagemin-optipng')
 
     // 有损压缩模式
-    const imageminMozjpeg = require('imagemin-mozjpeg')
-    const imageminPngquant = require('imagemin-pngquant')
+    // const imageminMozjpeg = require('imagemin-mozjpeg')
+    // const imageminPngquant = require('imagemin-pngquant')
 
     plugins.push(
       // Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
@@ -165,41 +166,45 @@ module.exports = (env, args) => {
           // progressive and interlaced rendering的差异 see https://blog.codinghorror.com/progressive-image-rendering/
           plugins: [
             // see https://github.com/imagemin/imagemin-gifsicle
-            imageminGifsicle({
-              // see https://github.com/imagemin/imagemin-gifsicle#interlaced
-              interlaced: true
-            }),
-            imageminSvgo({
-              // What is viewBox?
-              // See https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-              // See https://blog.csdn.net/userkang/article/details/84770843
-              removeViewBox: true
-            }),
+            // imageminGifsicle({
+            //   // see https://github.com/imagemin/imagemin-gifsicle#interlaced
+            //   interlaced: true
+            // }),
+            ['gifsicle', { interlaced: true }],
+            // imageminSvgo({
+            //   // What is viewBox?
+            //   // See https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
+            //   // See https://blog.csdn.net/userkang/article/details/84770843
+            //   removeViewBox: true
+            // }),
+            ['svgo', { plugins: [{ removeViewBox: true }] }],
 
             // 有损压缩模式
             /**
              * jpg以填充色方式存储图像，每块像素都存储着色值
              * see https://github.com/imagemin/imagemin-mozjpeg
              */
-            imageminMozjpeg({
-              // Compression quality, in range 0 (worst) to 100 (perfect).
-              // see https://github.com/imagemin/imagemin-mozjpeg#quality
-              // 注意：quality值如果大于原图像quality的值，输出的图像反而会比原图像更大
-              quality: 65
-            }),
+            // imageminMozjpeg({
+            //   // Compression quality, in range 0 (worst) to 100 (perfect).
+            //   // see https://github.com/imagemin/imagemin-mozjpeg#quality
+            //   // 注意：quality值如果大于原图像quality的值，输出的图像反而会比原图像更大
+            //   quality: 65
+            // }),
+            ['mozjpeg', { quality: 65 }],
             /**
              * png以索引色方式存储，索引色好比色板，画布上每块像素记录着颜色的索引
              * see https://github.com/imagemin/imagemin-pngquant
              */
-            imageminPngquant({
-              /**
-               * Instructs pngquant to use the least amount of colors required to meet or exceed the max quality. If conversion results in quality below the min quality the image won't be saved.
-               * Min and max are numbers in range 0 (worst) to 1 (perfect), similar to JPEG.
-               * 定义索引色数量的阈值，分为最低和最高，原始图片低于最低则不处理，高于最高则缩减到0.8
-               * see https://github.com/imagemin/imagemin-pngquant#quality
-               */
-              quality: [0.65, 0.8]
-            })
+            // imageminPngquant({
+            //   /**
+            //    * Instructs pngquant to use the least amount of colors required to meet or exceed the max quality. If conversion results in quality below the min quality the image won't be saved.
+            //    * Min and max are numbers in range 0 (worst) to 1 (perfect), similar to JPEG.
+            //    * 定义索引色数量的阈值，分为最低和最高，原始图片低于最低则不处理，高于最高则缩减到0.8
+            //    * see https://github.com/imagemin/imagemin-pngquant#quality
+            //    */
+            //   quality: [0.65, 0.8]
+            // }),
+            ['pngquant', { quality: [0.65, 0.8] }]
 
             // 无损压缩模式
             // imageminJpegtran({
