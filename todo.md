@@ -65,3 +65,4 @@ Bundle分析webpack bundle analyzer
 
 * [ ] 调整应用架构和目录架构使其支持多端共享业务模型开发模式
 * [ ] 编写demo体现MVVM设计模式中数据是如何流转的
+* [ ] 提供用例：数据再组合，TopList组合productList and selectList
