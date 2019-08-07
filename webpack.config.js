@@ -101,7 +101,11 @@ module.exports = (env, args) => {
       importLoaders: 2
     }),
     postcssLoader,
-    cssPreprocessor.lessLoader()
+    cssPreprocessor.lessLoader({
+      // Enable Inline JavaScript (Deprecated) http://lesscss.org/usage/#less-options-enable-inline-javascript-deprecated-
+      // this is options used for @ant-design/pro-layout
+      javascriptEnabled: true
+    })
   ]
 
   // 媒体资源处理
@@ -341,7 +345,7 @@ module.exports = (env, args) => {
         // 添加less支持
         {
           test: cssPreprocessor.lessLoader.test,
-          include: directoryWhiteList,
+          // include: directoryWhiteList,
           use: lessPreprocessors
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
