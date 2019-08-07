@@ -4,7 +4,7 @@ import {
   Redirect
 } from 'react-router-dom'
 
-import { path } from './index'
+import { navigation } from './index'
 import fakeAuth from '../UserStore'
 
 /**
@@ -25,7 +25,7 @@ export default function AuthRoute ({ component: Component, ...rest }) {
           // 如果未登录则跳转到登录界面
           <Redirect
             to={{
-              pathname: path,
+              pathname: navigation.path,
               state: {
                 // 当前的location位置，在登录成功后会返回
                 from: props.location

@@ -1,9 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-
-import AccountInformation from './User/AccountInformation'
-import Navigation from './Navigation'
-import Content from './Content'
+import MainFrame from './MainFrame'
+import ErrorBoundary from './deps/ErrorBoundary'
 
 /**
  * 考虑复杂的菜单用例
@@ -23,9 +21,9 @@ import Content from './Content'
 export default function Container () {
   return (
     <Router>
-      <AccountInformation/>
-      <Navigation/>
-      <Content/>
+      <ErrorBoundary>
+        <MainFrame />
+      </ErrorBoundary>
     </Router>
   )
 }

@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 export default function View () {
-  return <h2>Home</h2>
+  return <Fragment>
+    <h2>Home</h2>
+    <p>Hello world!</p>
+  </Fragment>
 }

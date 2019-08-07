@@ -1,14 +1,20 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import loadable from '@loadable/component'
 import Loading from '../Loading'
 
-export function Navigation () {
-  return <Link to="/">Home</Link>
+export const navigation = {
+  path: '/',
+  name: 'Home',
+  icon: 'home'
 }
 export function Content () {
   const View = loadable(() => import('./View'), {
     fallback: <Loading />
   })
-  return <Route path="/" exact component={View} />
+  /**
+   * path也可根据需要自定义
+   * 大部分情况下可以直接使用navigation.path
+   */
+  return <Route path={navigation.path} exact component={View} />
 }

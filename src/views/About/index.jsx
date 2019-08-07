@@ -1,14 +1,15 @@
 import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import loadable from '@loadable/component'
 import Loading from '../Loading'
 
-export function Navigation () {
-  return <Link to="/about/">About</Link>
+export const navigation = {
+  path: '/about',
+  name: '关于'
 }
 export function Content () {
   const View = loadable(() => import('./View'), {
     fallback: <Loading />
   })
-  return <Route path="/about/" component={View}/>
+  return <Route path={navigation.path} component={View}/>
 }

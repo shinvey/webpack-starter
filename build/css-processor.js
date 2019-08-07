@@ -70,13 +70,14 @@ module.exports = (env, args) => {
       }
     }),
 
-    lessLoader: () => ({
+    lessLoader: opts => ({
       // A Less loader for webpack. Compiles Less to CSS.
       // see https://github.com/webpack-contrib/less-loader
       loader: 'less-loader',
       options: {
         // source map see https://github.com/webpack-contrib/less-loader#source-maps
-        ..._options
+        ..._options,
+        ...opts
       }
     })
   }
