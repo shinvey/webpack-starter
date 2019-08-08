@@ -1,4 +1,4 @@
-import { merge } from './utils/index'
+import { merge, defaults } from './utils/index'
 
 export default class Config {
   /**
@@ -25,16 +25,27 @@ export default class Config {
    * @param {Object} conf
    */
   constructor (conf) {
-    this.combine(conf)
+    this._combine(true, conf)
   }
 
   /**
-   * 深度合并新的配置对象
+   * 添加新的配置对象
    * @param args
    * @returns {Config}
    */
   combine (...args) {
-    merge(this._conf, ...args)
+    return this._combine(false, ...args)
+  }
+
+  /**
+   * 合并新的配置对象
+   * @param replace 是否以替换方式的合并。如果为否，则已经定义的属性为只读模式，不可修改
+   * @param args
+   * @returns {Config}
+   * @private
+   */
+  _combine (replace, ...args) {
+    (replace ? merge : defaults)(this._conf, ...args)
     this._sections = Object.keys(this._conf)
     return this
   }
@@ -106,4 +117,19 @@ export default class Config {
    * @alias Config.api
    */
   url = this.api;
+
+  /**
+   * @type Config
+   */
+  static _instance
+
+  /**
+   * 用单例模式使用类
+   * @param args
+   * @returns {Config}
+   */
+  static Singleton (...args) {
+    this._instance = this._instance || new Config(...args)
+    return this._instance
+  }
 }
