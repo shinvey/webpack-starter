@@ -115,6 +115,26 @@ export function merge (...obj) {
 }
 
 /**
+ * recursively copies only the missing properties/values to the target object.
+ * @param {...Object} obj
+ * @returns {Object}
+ * @requires isPlainObj
+ */
+export function defaults (...obj) {
+  return obj.reduce((dest = {}, src = {}) => {
+    Object.keys(src).forEach(key => {
+      if (isPlainObj(src[key]) && isPlainObj(dest[key])) {
+        defaults(dest[key], src[key])
+      } else {
+        // 如果dest对象的属性没有设置，则使用src，行为和lodash的_.defaultsDeep一致
+        dest[key] = dest[key] || src[key]
+      }
+    })
+    return dest
+  })
+}
+
+/**
  * 给个对象属性路径，逐级访问属性值
  * @param {String} path required, like 'obj.prop.child'
  * @param {Object} [context] optional, like an obj
