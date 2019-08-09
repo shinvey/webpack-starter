@@ -90,7 +90,9 @@ module.exports = (env = {}, args = {}) => {
   const sassModulePreprocessors = Array.from(sassPreprocessors)
   sassModulePreprocessors[1] = cssPreprocessor.cssLoader({
     importLoaders: 2,
-    modules: true
+    modules: {
+      localIdentName: isDev(args.mode) ? '[path][name]__[local]--[hash:base64:5]' : '[hash:base64]'
+    }
   })
   // less
   const lessPreprocessors = [
