@@ -247,6 +247,8 @@ module.exports = (env = {}, args = {}) => {
   }
 
   // 环境变量注入
+  // todo 可以从process.env读取 version 变量信息
+  // const { version } = process.env
   const packageJSON = require('./package.json')
   plugins.push(
     new webpack.DefinePlugin({
@@ -272,6 +274,7 @@ module.exports = (env = {}, args = {}) => {
       index: '/'
     }
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
+    // todo 启动端口保持统一
     output.publicPath = 'http://127.0.0.1:8080/'
   }
 
@@ -301,6 +304,8 @@ module.exports = (env = {}, args = {}) => {
          * https://github.com/mobxjs/mobx#installation
          */
         mobx: path.resolve('node_modules/mobx/lib/mobx.es6.js')
+        // react-dom - hot-loader https://github.com/hot-loader/react-dom
+        // 'react-dom': '@hot-loader/react-dom'
       }
     },
     // see https://webpack.js.org/configuration/module
@@ -405,6 +410,11 @@ module.exports = (env = {}, args = {}) => {
 
       // 如果使用--open选项，则使用本机IP
       useLocalIp: true,
+
+      // cors
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
 
       // 自定义配置
       ...devServer

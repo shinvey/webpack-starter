@@ -60,6 +60,9 @@ module.exports = {
     ['import', {
       libraryName: 'ant-design-pro',
       style: true
-    }, 'ant-design-pro']
+    }, 'ant-design-pro'],
+
+    // 启用react hot loader https://github.com/gaearon/react-hot-loader
+    ['react-hot-loader/babel']
   ]
 }

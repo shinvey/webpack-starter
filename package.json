@@ -66,6 +66,7 @@
     "local-web-server": "^3.0.7",
     "modernizr": "^3.7.1",
     "mrm": "^1.2.2",
+    "react-hot-loader": "^4.12.10",
     "rxjs": "^6.5.2",
     "stylelint": "^10.1.0",
     "stylelint-config-lost": "^0.0.3",

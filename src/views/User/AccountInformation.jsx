@@ -1,8 +1,9 @@
 import React from 'react'
 import {
-  withRouter
+  withRouter,
+  Link
 } from 'react-router-dom'
-import { Navigation as LoginNav } from './Login'
+import { navigation } from './Login'
 import LoginStore from './Login/LoginStore'
 
 /**
@@ -24,7 +25,7 @@ export default withRouter(
         </button>
       </p>
     ) : (
-      <p>You are not logged in. You can <LoginNav/> anywhere.</p>
+      <p>You are not logged in. You can <Link to={navigation.path}>{navigation.name}</Link> anywhere.</p>
     )
   }
 )
