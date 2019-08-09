@@ -1,6 +1,4 @@
 export default class ExtendableError {
-  name;
-
   code;
 
   message;
