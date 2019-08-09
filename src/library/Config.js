@@ -1,4 +1,4 @@
-import { merge, defaults } from './utils/index'
+import { merge, defaults, propBy } from './utils/index'
 
 export default class Config {
   /**
@@ -111,7 +111,7 @@ export default class Config {
    * @param api
    * @returns {string}
    */
-  api = api => `${this.baseURL()}/${this._section.api[api]}`;
+  api = api => `${this.baseURL()}/${propBy(api, this._section.api)}`
 
   /**
    * @alias Config.api
