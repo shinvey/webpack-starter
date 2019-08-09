@@ -3,20 +3,21 @@ import {
   withRouter
 } from 'react-router-dom'
 import { Navigation as LoginNav } from './Login'
-import fakeAuth from './UserStore'
+import LoginStore from './Login/LoginStore'
 
 /**
  * withRouter https://reacttraining.com/react-router/web/api/withRouter
  * 当前登录信息。如果未登录则展示未登录
  */
 export default withRouter(
-  ({ history }) =>
-    fakeAuth.isAuthenticated ? (
+  ({ history }) => {
+    const store = LoginStore.Singleton()
+    return store.isLogin ? (
       <p>
         Welcome!
         <button
           onClick={() => {
-            fakeAuth.signOut().then(() => history.push('/'))
+            store.signOut().then(() => history.push('/'))
           }}
         >
           Sign out
@@ -25,4 +26,5 @@ export default withRouter(
     ) : (
       <p>You are not logged in. You can <LoginNav/> anywhere.</p>
     )
+  }
 )

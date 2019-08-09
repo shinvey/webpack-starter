@@ -5,21 +5,20 @@ import {
 } from 'react-router-dom'
 
 import { navigation } from './index'
-import fakeAuth from '../UserStore'
+import LoginStore from './LoginStore'
 
 /**
  * 定义一个需要用户登录才能使用的路由
+ * 当前自定义的路由组件是业务公用组件
  * @param Component
  * @param rest
- * @returns {*}
- * @constructor
  */
 export default function AuthRoute ({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
-        fakeAuth.isAuthenticated ? (
+        LoginStore.Singleton().isLogin ? (
           <Component {...props} />
         ) : (
           // 如果未登录则跳转到登录界面

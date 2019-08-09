@@ -5,16 +5,17 @@ import Config from '../../library/Config'
  */
 const myConf = {
   none: {
-    basePath: 'version/path/to/',
-    api: {
-      // 普通资金号资产接口
-      RESTful: 'api'
-    }
+    // basePath: '/base/path/',
+    // api: {
+    //   RESTful: 'api'
+    // }
   },
   local: {
     host: 'localhost'
   },
   development: {
+    host: 'rap2api.taobao.org',
+    basePath: 'app/mock/227707'
   },
   staging: {
   },
