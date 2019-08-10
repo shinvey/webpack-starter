@@ -90,7 +90,9 @@ module.exports = (env = {}, args = {}) => {
   const sassModulePreprocessors = Array.from(sassPreprocessors)
   sassModulePreprocessors[1] = cssPreprocessor.cssLoader({
     importLoaders: 2,
-    modules: true
+    modules: {
+      localIdentName: isDev(args.mode) ? '[path][name]__[local]--[hash:base64:5]' : '[hash:base64]'
+    }
   })
   // less
   const lessPreprocessors = [
@@ -99,7 +101,11 @@ module.exports = (env = {}, args = {}) => {
       importLoaders: 2
     }),
     postcssLoader,
-    cssPreprocessor.lessLoader()
+    cssPreprocessor.lessLoader({
+      // Enable Inline JavaScript (Deprecated) http://lesscss.org/usage/#less-options-enable-inline-javascript-deprecated-
+      // this is options used for @ant-design/pro-layout
+      javascriptEnabled: true
+    })
   ]
 
   // 媒体资源处理
@@ -243,13 +249,18 @@ module.exports = (env = {}, args = {}) => {
   }
 
   // 环境变量注入
+  // todo 可以从process.env读取 version 变量信息
+  // const { version } = process.env
   const packageJSON = require('./package.json')
   plugins.push(
     new webpack.DefinePlugin({
       env: {
         APP_VERSION: JSON.stringify(packageJSON.version),
         // webpack cli可以设置--env.SVC_ENV选项
-        SVC_ENV: JSON.stringify(SVC_ENV)
+        SVC_ENV: JSON.stringify(SVC_ENV),
+        isDev: isDev(args.mode),
+        isPrd: isPrd(args.mode),
+        hot: args.hot
       }
     })
   )
@@ -268,6 +279,7 @@ module.exports = (env = {}, args = {}) => {
       index: '/'
     }
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
+    // todo 启动端口保持统一
     output.publicPath = 'http://127.0.0.1:8080/'
   }
 
@@ -331,7 +343,7 @@ module.exports = (env = {}, args = {}) => {
         // 添加less支持
         {
           test: cssPreprocessor.lessLoader.test,
-          include: directoryWhiteList,
+          // include: directoryWhiteList,
           use: lessPreprocessors
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
@@ -393,6 +405,11 @@ module.exports = (env = {}, args = {}) => {
 
       // 如果使用--open选项，则使用本机IP
       useLocalIp: true,
+
+      // cors
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
 
       // 自定义配置
       ...devServer
