@@ -59,8 +59,20 @@ module.exports = {
     // for ant-design-pro
     ['import', {
       libraryName: 'ant-design-pro',
-      style: true
+      style: true,
+      camel2DashComponentName: false
     }, 'ant-design-pro'],
+    /**
+     * for antd pro layout
+     * 请使用具体路径引用BasicLayout路径引用其子组件
+     */
+    // ['import', {
+    //   libraryName: '@ant-design/pro-layout',
+    //   style: name => {
+    //     return `${name}.less`
+    //   },
+    //   camel2DashComponentName: false
+    // }, 'ant-design-pro-layout'],
 
     // 启用react hot loader https://github.com/gaearon/react-hot-loader
     ['react-hot-loader/babel']
