@@ -25,18 +25,18 @@ export default class UserLogin extends Component {
   }
 
   /**
-   * @type {LoginStore}
+   * @type {LoginBiz}
    */
-  loginStore
+  loginBiz
 
   constructor (props) {
     super(props)
-    this.loginStore = props.loginStore
+    this.loginBiz = props.loginBiz
   }
 
   _handleLogin = (err, values) => {
     console.debug('_handleLogin', err, values)
-    !err && this.loginStore.login(values).then(() => {
+    !err && this.loginBiz.login(values).then(() => {
       this.setState({ redirectToReferrer: true })
     }).catch(error => {
       // 在公共异常处理逻辑后，可能还需要在业务层处理独有异常交互逻辑

@@ -1,5 +1,4 @@
 import { observable, action } from 'mobx'
-import { login } from './service'
 
 /**
  * __领域状态（Domain Store）职责__
@@ -8,25 +7,21 @@ import { login } from './service'
  * * 状态对象默认以局部状态方式管理，对象实例随着组件被销毁后，进而能够被浏览器回收
  * * UI状态声明 @observable
  * * 修改状态方法声明 @action
+ * * 不推荐声明其他方法处理同步/异步任务，会引入依赖关系问题，增加initial bundle的大小
+ * * 将同步或异步任务从store中分离出去
  *
  * 可选：
  * * 如果状态需要长期存储在内存中，请使用单例模式来访问状态对象
  * * 声明其他私有属性或逻辑状态
- * * 声明其他私有方法处理同步/异步任务
  */
 
 export default class LoginStore {
   @observable isLogin = false
 
   @action
-  login (params) {
+  login (bool) {
     // 登录
-    return login(params).then(() => this.isLogin = true)
-  }
-
-  @action
-  signOut () {
-    return Promise.resolve().then(() => this.isLogin = false)
+    this.isLogin = bool
   }
 
   /**

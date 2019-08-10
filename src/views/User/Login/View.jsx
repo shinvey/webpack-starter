@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginStore from './LoginStore'
+import LoginBiz from './LoginBiz'
 import UserLogin from './UserLogin'
 
 /**
@@ -14,5 +14,5 @@ import UserLogin from './UserLogin'
  */
 
 export default function View (props) {
-  return <UserLogin {...props} loginStore={LoginStore.Singleton()} />
+  return <UserLogin {...props} loginBiz={new LoginBiz()} />
 }
