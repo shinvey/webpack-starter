@@ -257,7 +257,10 @@ module.exports = (env = {}, args = {}) => {
       env: {
         APP_VERSION: JSON.stringify(packageJSON.version),
         // webpack cli可以设置--env.SVC_ENV选项
-        SVC_ENV: JSON.stringify(SVC_ENV)
+        SVC_ENV: JSON.stringify(SVC_ENV),
+        isDev: isDev(args.mode),
+        isPrd: isPrd(args.mode),
+        hot: args.hot
       }
     })
   )
