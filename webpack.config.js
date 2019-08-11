@@ -314,7 +314,10 @@ module.exports = (env = {}, args = {}) => {
       extensions: [
         '.js',
         '.ts'
-      ]
+      ],
+      alias: {
+        '@': path.resolve('src')
+      }
     },
     // see https://webpack.js.org/configuration/module
     module: {
