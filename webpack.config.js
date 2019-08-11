@@ -11,6 +11,7 @@ module.exports = (env = {}, args = {}) => {
   const path = require('path')
   const merge = require('webpack-merge')
   const webpack = require('webpack')
+  const packageJSON = require('./package.json')
   const { isDev, isPrd, svcEnv } = require('./build/env')
   const SVC_ENV = svcEnv(args)
 
@@ -240,6 +241,17 @@ module.exports = (env = {}, args = {}) => {
     fileManagerOptions.onStart.delete.push(output.path)
     // 清理cache-loader缓存
     fileManagerOptions.onStart.delete.push(assetProcessor.cacheLoader().options.cacheDirectory)
+    // 清理zip包目录
+    fileManagerOptions.onStart.delete.push(path.resolve('zip'))
+  }
+  if (env.zip) {
+    fileManagerOptions.onEnd = merge(fileManagerOptions.onEnd, {
+      mkdir: ['./zip'],
+      archive: [
+        { source: './dist', destination: `./zip/${packageJSON.name}-${SVC_ENV}-${packageJSON.version}.zip` },
+        { source: './dist', destination: `./zip/${packageJSON.name}-${SVC_ENV}-latest.zip` }
+      ]
+    })
   }
   if (['clean', 'zip'].some(cliOpt => cliOpt in env)) {
     const FileManagerPlugin = require('filemanager-webpack-plugin')
@@ -251,7 +263,6 @@ module.exports = (env = {}, args = {}) => {
   // 环境变量注入
   // todo 可以从process.env读取 version 变量信息
   // const { version } = process.env
-  const packageJSON = require('./package.json')
   plugins.push(
     new webpack.DefinePlugin({
       env: {
