@@ -22,10 +22,13 @@ export default class LoginBiz {
 
   login (params) {
     // 登录
-    return _login(params).then(() => this.store.isLogin = true)
+    return _login(params).then(ajaxResponse => {
+      this.store.login(ajaxResponse.response.data.token)
+      return ajaxResponse
+    })
   }
 
   signOut () {
-    return Promise.resolve().then(() => this.store.isLogin = false)
+    return Promise.resolve().then(() => this.store.logout())
   }
 }

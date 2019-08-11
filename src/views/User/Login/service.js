@@ -1,4 +1,4 @@
-import { post } from '../../deps/request/ajaxPromise'
+import { get, post } from '../../deps/request/ajaxPromise'
 import api from './config'
 
 /**
@@ -15,4 +15,8 @@ import api from './config'
 // 用户登录接口
 export function login (params) {
   return post(api('user.login'), params)
+}
+// 用户退出接口
+export function logout () {
+  return get(api('user.logout'))
 }

@@ -17,7 +17,8 @@ const conf = {
         // rest URI中携带参数方式
         // login: 'v1/user/login/:id/:password'
         // 普通方式form提交方式
-        login: 'v1/user/login'
+        login: 'v1/user/login',
+        logout: 'v1/user/logout'
       }
     }
   }

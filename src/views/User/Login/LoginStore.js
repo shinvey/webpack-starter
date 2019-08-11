@@ -18,10 +18,40 @@ import { observable, action } from 'mobx'
 export default class LoginStore {
   @observable isLogin = false
 
+  /**
+   * @readonly
+   * @type {undefined|String}
+   */
+  token = undefined
+
+  /**
+   * @type {string}
+   * @private
+   */
+  _tokenKey = 'token'
+
+  constructor () {
+    const token = localStorage.getItem(this._tokenKey)
+    token ? this.login(token) : this.logout()
+  }
+
+  /**
+   * 这是登录相关状态
+   * @param {String} token
+   */
   @action
-  login (bool) {
+  login (token) {
     // 登录
-    this.isLogin = bool
+    this.isLogin = true
+    this.token = token
+    localStorage.setItem(this._tokenKey, token)
+  }
+
+  @action
+  logout () {
+    this.isLogin = false
+    this.token = undefined
+    localStorage.removeItem(this._tokenKey)
   }
 
   /**
