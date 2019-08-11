@@ -38,7 +38,7 @@
     "serve:spa": "npm run serve -- --spa index.html",
     "lint:js": "eslint .",
     "lint:js:fix": "npm run lint:js -- --fix",
-    "lint:style": "stylelint src",
+    "lint:style": "stylelint ./src",
     "lint:style:fix": "npm run lint:style -- --fix",
     "lint:ts": "tslint --project tsconfig.json",
     "lint:ts:fix": "npm run lint:ts -- --fix",
