@@ -277,7 +277,9 @@ module.exports = (env = {}, args = {}) => {
   )
 
   // web dev server spa
-  const devServer = {}
+  const devServer = {
+    port: 8080
+  }
   // 单页应用路由模式
   if (env.spa) {
     if (typeof env.spa === 'string') {
@@ -290,8 +292,8 @@ module.exports = (env = {}, args = {}) => {
       index: '/'
     }
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
-    // todo 启动端口保持统一
-    output.publicPath = 'http://127.0.0.1:8080/'
+    // publicPath与dev server启动端口保持统一
+    output.publicPath = `http://127.0.0.1:${devServer.port}/`
   }
 
   /**
