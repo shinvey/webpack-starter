@@ -321,7 +321,8 @@ module.exports = (env = {}, args = {}) => {
          * Tip:Consider using the faster and smaller ES6 build if targetting a modern environment
          * https://github.com/mobxjs/mobx#installation
          */
-        mobx: path.resolve('node_modules/mobx/lib/mobx.es6.js')
+        mobx: path.resolve('node_modules/mobx/lib/mobx.es6.js'),
+        '@': path.resolve('src')
         // react-dom - hot-loader https://github.com/hot-loader/react-dom
         // 'react-dom': '@hot-loader/react-dom'
       }
