@@ -1,7 +1,12 @@
+/**
+ * 公用业务代码字典
+ * 如果子视图组件的私有业务代码不建议写在这里，你可以自行在视图目录中创建私有业务代码字典
+ */
+
 export default {
-  TOKEN_EXPIRED: -600001,
+  TOKEN_EXPIRED: '6001',
   SYSTEM_ERROR: 506,
-  DONE: 200,
+  DONE: '6000',
   NO_FUND_ID: 305,
   NO_USER_CODE: 306
 }

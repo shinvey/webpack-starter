@@ -1,9 +1,7 @@
 import stringify from 'qs/lib/stringify'
-import { throwError } from 'rxjs'
 import { ajax as rxjsAjax } from 'rxjs/ajax'
 import { tap, catchError } from 'rxjs/operators'
-import BusinessError from '../../../library/Error/BusinessError'
-import NetworkError from '../../../library/Error/NetworkError'
+import ajaxSetup from './ajaxSetup'
 
 /**
  * 处理请求底层公用逻辑
@@ -12,19 +10,17 @@ import NetworkError from '../../../library/Error/NetworkError'
  * 3. 公共异常处理
  *
  * 业务逻辑层只处理私有异常和正常相应数据
- * @param Object options
+ * @param {Object} settings
  * @returns {Observable<any>}
  */
-export default function ajax ({ url, method, headers = {}, body, ...rest }) {
+export default function ajax (settings) {
+  let { url, method, headers = {}, body, ...rest } = ajaxSetup(settings)
   // multipart/form-data对象应对文件上传等需求
   // 不定义headers Content-Type 默认会按照application/x-www-form-urlencoded方式处理
   if (body instanceof FormData) {
     headers['Content-Type'] = 'multipart/form-data'
   }
-  // 设定业务接口默认传递参数的类型
-  if (method.toLowerCase() !== 'get') {
-    headers['Content-Type'] = 'application/json'
-  }
+
   // 用真实参数值替换rest URI中声明参数。如products/:pid，参数是pid，最终可能会替换为products/123。
   const URIParams = (new URL(url)).pathname.match(/:[\w_]+/ig)
   if (URIParams) {
@@ -45,50 +41,15 @@ export default function ajax ({ url, method, headers = {}, body, ...rest }) {
     // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
     // withCredentials: true,
     // responseType: 'json', // rxjs默认使用json parser
-    headers: {
-      'X-API-TOKEN': 'xxx',
-      ...headers
-    },
+    headers,
     url,
     method,
     body, // body instanceof FormData ? data : stringify(data),
     ...rest
   }).pipe(
-    catchError(error => {
-      // console.error('Low level error emit ', error)
-
-      // 通用网络异常处理
-      // todo 创建网络异常对象
-      // do something with network error
-
-      // 继续将错误抛出，允许当前stream上的其他pipe也可以捕获异常，并作自定义处理
-      const response = error.response
-      return throwError(response ? new BusinessError(response.status, response.msg, response) : new NetworkError(error))
-    }),
-    tap(ajaxResponse => {
-      const response = ajaxResponse.response
-      console.log('Low level response emit ', response)
-
-      // 处理业务接口公共错误码，并抛出异常
-      // 创建业务异常对象
-      if (response.status !== '6000') throw new BusinessError(response.status, response.message, response)
-    }),
-    catchError(error => {
-      // console.error('Low level error emit ', error)
-
-      // 通用业务异常处理
-      // todo 与UI组件解耦合
-      if (error instanceof BusinessError) {
-        // do something with business error
-      }
-      // 通用网络异常处理
-      if (error instanceof NetworkError) {
-        // do something with network error
-      }
-
-      // 继续将错误抛出，允许当前stream上的其他pipe也可以捕获异常，提供自定义处理的机会
-      return throwError(error)
-    })
+    catchError(rest.beforeCatchError),
+    tap(rest.tap),
+    catchError(rest.afterCatchError)
   )
 }
 
