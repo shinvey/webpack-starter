@@ -2,22 +2,25 @@ import Config from '../../library/Config'
 
 /**
  * 公用配置
+ * Config默认以扁平化方式合并配置信息。例如将development跟none合并，切换到staging时，将staging与none
  */
 const myConf = {
   none: {
-    // basePath: '/base/path/',
-    // api: {
-    //   RESTful: 'api'
-    // }
+    basePath: 'ft/admin',
+    api: {
+      // 公用接口配置信息
+    }
   },
   local: {
     host: 'localhost'
   },
   development: {
-    host: 'rap2api.taobao.org',
-    basePath: 'app/mock/227707'
+    host: 'ftadmin.fulltime.ws',
+    port: 10000
   },
   staging: {
+    host: 'ftadmin.fulltime.ws',
+    port: 10000
   },
   production: {
     schema: 'https',

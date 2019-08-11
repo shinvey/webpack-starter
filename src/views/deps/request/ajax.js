@@ -21,6 +21,10 @@ export default function ajax ({ url, method, headers = {}, body, ...rest }) {
   if (body instanceof FormData) {
     headers['Content-Type'] = 'multipart/form-data'
   }
+  // 设定业务接口默认传递参数的类型
+  if (method.toLowerCase() !== 'get') {
+    headers['Content-Type'] = 'application/json'
+  }
   // 用真实参数值替换rest URI中声明参数。如products/:pid，参数是pid，最终可能会替换为products/123。
   const URIParams = (new URL(url)).pathname.match(/:[\w_]+/ig)
   if (URIParams) {
@@ -39,7 +43,7 @@ export default function ajax ({ url, method, headers = {}, body, ...rest }) {
 
   return rxjsAjax({
     // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials
-    withCredentials: true,
+    // withCredentials: true,
     // responseType: 'json', // rxjs默认使用json parser
     headers: {
       'X-API-TOKEN': 'xxx',
@@ -58,7 +62,8 @@ export default function ajax ({ url, method, headers = {}, body, ...rest }) {
       // do something with network error
 
       // 继续将错误抛出，允许当前stream上的其他pipe也可以捕获异常，并作自定义处理
-      return throwError(new NetworkError(error))
+      const response = error.response
+      return throwError(response ? new BusinessError(response.status, response.msg, response) : new NetworkError(error))
     }),
     tap(ajaxResponse => {
       const response = ajaxResponse.response
@@ -66,7 +71,7 @@ export default function ajax ({ url, method, headers = {}, body, ...rest }) {
 
       // 处理业务接口公共错误码，并抛出异常
       // 创建业务异常对象
-      if (response.status !== 200) throw new BusinessError(response.status, response.message, response)
+      if (response.status !== '6000') throw new BusinessError(response.status, response.message, response)
     }),
     catchError(error => {
       // console.error('Low level error emit ', error)
@@ -117,4 +122,28 @@ export function get (/* url, body, options */ ...args) {
  */
 export function post (/* url, body, options */ ...args) {
   return shorthandMethod(ajax, 'POST', ...args)
+}
+/**
+ * ajax PUT 快捷方法
+ * @example
+ * put('http://example', { field: 'value' }).subscribe(ajaxResponse => {})
+ */
+export function put (/* url, body, options */ ...args) {
+  return shorthandMethod(ajax, 'PUT', ...args)
+}
+/**
+ * ajax PATCH 快捷方法
+ * @example
+ * patch('http://example', { field: 'value' }).subscribe(ajaxResponse => {})
+ */
+export function patch (/* url, body, options */ ...args) {
+  return shorthandMethod(ajax, 'PATCH', ...args)
+}
+/**
+ * ajax DELETE 快捷方法
+ * @example
+ * del('http://example', { field: 'value' }).subscribe(ajaxResponse => {})
+ */
+export function del (/* url, body, options */ ...args) {
+  return shorthandMethod(ajax, 'DELETE', ...args)
 }

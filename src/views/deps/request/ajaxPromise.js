@@ -33,3 +33,27 @@ export function get (/* url, body, options */ ...args) {
 export function post (/* url, body, options */ ...args) {
   return shorthandMethod(ajaxPromise, 'POST', ...args)
 }
+/**
+ * ajax PUT 快捷方法
+ * @example
+ * put('http://example', { field: 'value' }).then(ajaxResponse => {}).catch(error => {})
+ */
+export function put (/* url, body, options */ ...args) {
+  return shorthandMethod(ajaxPromise, 'PUT', ...args)
+}
+/**
+ * ajax PATCH 快捷方法
+ * @example
+ * patch('http://example', { field: 'value' }).then(ajaxResponse => {}).catch(error => {})
+ */
+export function patch (/* url, body, options */ ...args) {
+  return shorthandMethod(ajaxPromise, 'PATCH', ...args)
+}
+/**
+ * ajax DELETE 快捷方法
+ * @example
+ * del('http://example', { field: 'value' }).then(ajaxResponse => {}).catch(error => {})
+ */
+export function del (/* url, body, options */ ...args) {
+  return shorthandMethod(ajaxPromise, 'DELETE', ...args)
+}

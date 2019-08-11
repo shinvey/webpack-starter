@@ -11,9 +11,7 @@ import { config } from '../../deps/config'
  * * 暂无
  */
 const conf = {
-  local: {
-  },
-  development: {
+  none: {
     api: {
       user: {
         // rest URI中携带参数方式
@@ -22,10 +20,6 @@ const conf = {
         login: 'v1/user/login'
       }
     }
-  },
-  staging: {
-  },
-  production: {
   }
 }
 
