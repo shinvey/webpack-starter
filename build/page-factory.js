@@ -1,4 +1,12 @@
+/**
+ * page工厂职责
+ * * 检索pages or views目录下所有page.*文件为webpack创建entry
+ * * 分别为所有page目录，创建该page目录下所有视图 *View/index.* 索引view-impl.js
+ */
+
 const glob = require('glob')
+const fs = require('fs')
+const path = require('path')
 // see https://github.com/jantimon/html-webpack-plugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
@@ -7,8 +15,15 @@ const { isPrd } = require('./env')
 
 // pages根目录
 const pagesBasePath = './src/+(page|view)s'
+const allFileExt = '.?*'
 // page命名惯例，采用glob pattern
-const pageFile = 'page.?*'
+const pageFile = `page${allFileExt}`
+// page下所有视图接口文件名称
+const viewImpl = 'view-impl.js'
+function viewImplExportCode (moduleName, modulePath) {
+  // 支持 export * as namespace 语法 https://babeljs.io/docs/en/next/babel-plugin-proposal-export-namespace-from.html
+  return `export * as ${moduleName} from './${modulePath}'\n`
+}
 
 /**
  * 将glob pattern的部分字符转换为regex pattern
@@ -21,24 +36,38 @@ function transformGlobPattern2Regex (globPattern) {
     .replace(/\?/g, '\\w')
     .replace(/\*/g, '\\w*')
 }
+const relativeBasePathByFileRegExp = RegExp(
+  `${transformGlobPattern2Regex(pagesBasePath)}/?|/?${transformGlobPattern2Regex(pageFile)}`,
+  'ig'
+)
+function chunkName (path) {
+  return path.replace(relativeBasePathByFileRegExp, '')
+}
 
 module.exports = (env, args) => {
   const entries = {}
   const arrHtmlWebpackPlugin = []
 
-  glob.sync(`${pagesBasePath}/**/${pageFile}`).forEach(path => {
-    const _strRegex = `${transformGlobPattern2Regex(pagesBasePath)}/?|/?${transformGlobPattern2Regex(pageFile)}`
-    const chunk = path.replace(
-      RegExp(
-        _strRegex,
-        'ig'
-      ),
-      ''
-    ) || 'index'
+  // glob pattern https://facelessuser.github.io/wcmatch/glob/
+  glob.sync(`${pagesBasePath}/**/${pageFile}`).forEach(filePath => {
+    let chunk = chunkName(filePath)
+
+    // 在每个page根目录生成该page下所有视图接口文件
+    const chunkBasePath = path.dirname(filePath)
+    const viewPattern = `${pagesBasePath}/${chunk ? chunk + '/' : ''}**/*View/index${allFileExt}`
+    let exportCode = ''
+    glob.sync(viewPattern).forEach(filePath => {
+      // 得出 View 相对于 page 相对路径将作为 import 路径
+      const moduleRelativePath = path.posix.relative(chunkBasePath, filePath)
+      // 得出视图包名。如UserView/LoginView，会得出UserViewLoginView
+      const moduleName = path.dirname(moduleRelativePath).replace(/[\\/]+/g, '')
+      exportCode += viewImplExportCode(moduleName, moduleRelativePath)
+    })
+    fs.writeFileSync(`${chunkBasePath}/${viewImpl}`, exportCode)
 
     // 添加webpack entry
-    entries[chunk] = path
-
+    chunk = chunk || 'index' // 如果不是多页应用，chunk默认为index
+    entries[chunk] = filePath
     // html webpack plugin支持子目录前缀，如user/register.html
     const filename = chunk + '.html'
 
@@ -48,7 +77,7 @@ module.exports = (env, args) => {
      * user/*.ejs
      * ./*.ejs
      */
-    const _path = path.split('/')
+    const _path = filePath.split('/')
     let template
     do {
       _path.pop()
