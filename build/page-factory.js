@@ -98,12 +98,12 @@ module.exports = (env, args) => {
       filename: filename,
       template: template,
       chunks: ['runtime', 'vendors', 'critical', chunk],
-      meta: {
-        viewport: 'width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no',
-        charset: {
-          charset: 'utf-8'
-        }
-      },
+      // meta: {
+      //   viewport: 'width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no',
+      //   charset: {
+      //     charset: 'utf-8'
+      //   }
+      // },
       templateParameters: {
         args
       }
