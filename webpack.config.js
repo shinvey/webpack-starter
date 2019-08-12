@@ -1,18 +1,17 @@
 /**
  * webpack configuration exports a function
  * Environment Variables see https://webpack.js.org/guides/environment-variables
- * @param env 为args.env， see https://webpack.js.org/api/cli/#environment-options
+ * @param {object} env 为args.env， see https://webpack.js.org/api/cli/#environment-options
  * @param {boolean} env.lint 是否对代码进行lint
  * @param {boolean} env.clean 是否清除缓存
  * @param args 命令行参数列表
  * @returns Object
  */
-module.exports = (env, args) => {
-  env = env || {}
-
+module.exports = (env = {}, args = {}) => {
   const path = require('path')
   const merge = require('webpack-merge')
   const webpack = require('webpack')
+  const packageJSON = require('./package.json')
   const { isDev, isPrd, svcEnv } = require('./build/env')
   const SVC_ENV = svcEnv(args)
 
@@ -60,7 +59,7 @@ module.exports = (env, args) => {
     // publicPath: 'http://127.0.0.1:8080/'
   }
 
-  let fileManagerOptions = {
+  const fileManagerOptions = {
     onStart: {
       delete: []
     }
@@ -92,8 +91,23 @@ module.exports = (env, args) => {
   const sassModulePreprocessors = Array.from(sassPreprocessors)
   sassModulePreprocessors[1] = cssPreprocessor.cssLoader({
     importLoaders: 2,
-    modules: true
+    modules: {
+      localIdentName: isDev(args.mode) ? '[path][name]__[local]--[hash:base64:5]' : '[hash:base64]'
+    }
   })
+  // less
+  const lessPreprocessors = [
+    styleLoader,
+    cssPreprocessor.cssLoader({
+      importLoaders: 2
+    }),
+    postcssLoader,
+    cssPreprocessor.lessLoader({
+      // Enable Inline JavaScript (Deprecated) http://lesscss.org/usage/#less-options-enable-inline-javascript-deprecated-
+      // this is options used for @ant-design/pro-layout
+      javascriptEnabled: true
+    })
+  ]
 
   // 媒体资源处理
   const assetProcessor = require('./build/asset-processor')(env, args)
@@ -137,16 +151,17 @@ module.exports = (env, args) => {
     const ImageminPlugin = require('imagemin-webpack')
 
     // Before importing imagemin plugin make sure you add it in `package.json` (`dependencies`) and install
-    const imageminGifsicle = require('imagemin-gifsicle')
-    const imageminSvgo = require('imagemin-svgo')
+    // const imageminGifsicle = require('imagemin-gifsicle')
+    // https://www.npmjs.com/package/imagemin-svgo
+    // const imageminSvgo = require('imagemin-svgo')
 
     // 无损压缩模式
     // const imageminJpegtran = require('imagemin-jpegtran')
     // const imageminOptipng = require('imagemin-optipng')
 
     // 有损压缩模式
-    const imageminMozjpeg = require('imagemin-mozjpeg')
-    const imageminPngquant = require('imagemin-pngquant')
+    // const imageminMozjpeg = require('imagemin-mozjpeg')
+    // const imageminPngquant = require('imagemin-pngquant')
 
     plugins.push(
       // Make sure that the plugin is after any plugins that add images, example `CopyWebpackPlugin`
@@ -165,41 +180,45 @@ module.exports = (env, args) => {
           // progressive and interlaced rendering的差异 see https://blog.codinghorror.com/progressive-image-rendering/
           plugins: [
             // see https://github.com/imagemin/imagemin-gifsicle
-            imageminGifsicle({
-              // see https://github.com/imagemin/imagemin-gifsicle#interlaced
-              interlaced: true
-            }),
-            imageminSvgo({
-              // What is viewBox?
-              // See https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
-              // See https://blog.csdn.net/userkang/article/details/84770843
-              removeViewBox: true
-            }),
+            // imageminGifsicle({
+            //   // see https://github.com/imagemin/imagemin-gifsicle#interlaced
+            //   interlaced: true
+            // }),
+            ['gifsicle', { interlaced: true }],
+            // imageminSvgo({
+            //   // What is viewBox?
+            //   // See https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox
+            //   // See https://blog.csdn.net/userkang/article/details/84770843
+            //   removeViewBox: true
+            // }),
+            ['svgo', { plugins: [{ removeViewBox: true }] }],
 
             // 有损压缩模式
             /**
              * jpg以填充色方式存储图像，每块像素都存储着色值
              * see https://github.com/imagemin/imagemin-mozjpeg
              */
-            imageminMozjpeg({
-              // Compression quality, in range 0 (worst) to 100 (perfect).
-              // see https://github.com/imagemin/imagemin-mozjpeg#quality
-              // 注意：quality值如果大于原图像quality的值，输出的图像反而会比原图像更大
-              quality: 65
-            }),
+            // imageminMozjpeg({
+            //   // Compression quality, in range 0 (worst) to 100 (perfect).
+            //   // see https://github.com/imagemin/imagemin-mozjpeg#quality
+            //   // 注意：quality值如果大于原图像quality的值，输出的图像反而会比原图像更大
+            //   quality: 65
+            // }),
+            ['mozjpeg', { quality: 65 }],
             /**
              * png以索引色方式存储，索引色好比色板，画布上每块像素记录着颜色的索引
              * see https://github.com/imagemin/imagemin-pngquant
              */
-            imageminPngquant({
-              /**
-               * Instructs pngquant to use the least amount of colors required to meet or exceed the max quality. If conversion results in quality below the min quality the image won't be saved.
-               * Min and max are numbers in range 0 (worst) to 1 (perfect), similar to JPEG.
-               * 定义索引色数量的阈值，分为最低和最高，原始图片低于最低则不处理，高于最高则缩减到0.8
-               * see https://github.com/imagemin/imagemin-pngquant#quality
-               */
-              quality: [0.65, 0.8]
-            })
+            // imageminPngquant({
+            //   /**
+            //    * Instructs pngquant to use the least amount of colors required to meet or exceed the max quality. If conversion results in quality below the min quality the image won't be saved.
+            //    * Min and max are numbers in range 0 (worst) to 1 (perfect), similar to JPEG.
+            //    * 定义索引色数量的阈值，分为最低和最高，原始图片低于最低则不处理，高于最高则缩减到0.8
+            //    * see https://github.com/imagemin/imagemin-pngquant#quality
+            //    */
+            //   quality: [0.65, 0.8]
+            // }),
+            ['pngquant', { quality: [0.65, 0.8] }]
 
             // 无损压缩模式
             // imageminJpegtran({
@@ -222,6 +241,17 @@ module.exports = (env, args) => {
     fileManagerOptions.onStart.delete.push(output.path)
     // 清理cache-loader缓存
     fileManagerOptions.onStart.delete.push(assetProcessor.cacheLoader().options.cacheDirectory)
+    // 清理zip包目录
+    fileManagerOptions.onStart.delete.push(path.resolve('zip'))
+  }
+  if (env.zip) {
+    fileManagerOptions.onEnd = merge(fileManagerOptions.onEnd, {
+      mkdir: ['./zip'],
+      archive: [
+        { source: './dist', destination: `./zip/${packageJSON.name}-${SVC_ENV}-${packageJSON.version}.zip` },
+        { source: './dist', destination: `./zip/${packageJSON.name}-${SVC_ENV}-latest.zip` }
+      ]
+    })
   }
   if (['clean', 'zip'].some(cliOpt => cliOpt in env)) {
     const FileManagerPlugin = require('filemanager-webpack-plugin')
@@ -231,19 +261,25 @@ module.exports = (env, args) => {
   }
 
   // 环境变量注入
-  const packageJSON = require('./package.json')
+  // todo 可以从process.env读取 version 变量信息
+  // const { version } = process.env
   plugins.push(
     new webpack.DefinePlugin({
       env: {
         APP_VERSION: JSON.stringify(packageJSON.version),
         // webpack cli可以设置--env.SVC_ENV选项
-        SVC_ENV: JSON.stringify(SVC_ENV)
+        SVC_ENV: JSON.stringify(SVC_ENV),
+        isDev: isDev(args.mode),
+        isPrd: isPrd(args.mode),
+        hot: args.hot
       }
     })
   )
 
   // web dev server spa
-  const devServer = {}
+  const devServer = {
+    port: 8080
+  }
   // 单页应用路由模式
   if (env.spa) {
     if (typeof env.spa === 'string') {
@@ -256,7 +292,8 @@ module.exports = (env, args) => {
       index: '/'
     }
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
-    output.publicPath = 'http://127.0.0.1:8080/'
+    // publicPath与dev server启动端口保持统一
+    output.publicPath = `http://127.0.0.1:${devServer.port}/`
   }
 
   /**
@@ -277,7 +314,10 @@ module.exports = (env, args) => {
       extensions: [
         '.js',
         '.ts'
-      ]
+      ],
+      alias: {
+        '@': path.resolve('src')
+      }
     },
     // see https://webpack.js.org/configuration/module
     module: {
@@ -315,6 +355,12 @@ module.exports = (env, args) => {
           test: cssPreprocessor.sassLoader.moduleTest,
           include: directoryWhiteList,
           use: sassModulePreprocessors
+        },
+        // 添加less支持
+        {
+          test: cssPreprocessor.lessLoader.test,
+          // include: directoryWhiteList,
+          use: lessPreprocessors
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
         {
@@ -375,6 +421,11 @@ module.exports = (env, args) => {
 
       // 如果使用--open选项，则使用本机IP
       useLocalIp: true,
+
+      // cors
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
 
       // 自定义配置
       ...devServer

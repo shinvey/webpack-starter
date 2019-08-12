@@ -24,5 +24,6 @@ module.exports = {
     'react'
   ],
   'rules': {
+    'no-return-assign': 'off'
   }
 }

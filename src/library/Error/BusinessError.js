@@ -1,18 +1,17 @@
-import ExtendableError from 'assets/lib/Error/ExtendableError'
+import ExtendableError from './ExtendableError'
 
 export default class BusinessError extends ExtendableError {
   response;
 
   /**
-   * @param {Object} res 接口响应数据
-   * @param params
+   * @param {Number} code 接口状态码
+   * @param {String} message 接口状态消息
+   * @param {Object} response 接口响应数据
    */
-  constructor (res = {}, ...params) {
-    params.unshift(res.message || 'Business Error')
-    // Pass remaining arguments (including vendor specific ones) to parent constructor
-    super(...params)
+  constructor (code, message, response) {
+    super(message || 'Business Error')
 
-    this.code = res.state
-    this.response = res
+    this.code = code
+    this.response = response
   }
 }

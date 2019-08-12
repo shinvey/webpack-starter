@@ -95,7 +95,6 @@ export function mixin (...obj) {
 
 /**
  * 对象深度合并
- * @todo 测试merge方法
  * @param {...Object} obj
  * @returns {Object}
  * @requires isPlainObj
@@ -115,18 +114,38 @@ export function merge (...obj) {
 }
 
 /**
+ * recursively copies only the missing properties/values to the target object.
+ * @param {...Object} obj
+ * @returns {Object}
+ * @requires isPlainObj
+ */
+export function defaults (...obj) {
+  return obj.reduce((dest = {}, src = {}) => {
+    Object.keys(src).forEach(key => {
+      if (isPlainObj(src[key]) && isPlainObj(dest[key])) {
+        defaults(dest[key], src[key])
+      } else {
+        // 如果dest对象的属性没有设置，则使用src，行为和lodash的_.defaultsDeep一致
+        dest[key] = dest[key] || src[key]
+      }
+    })
+    return dest
+  })
+}
+
+/**
  * 给个对象属性路径，逐级访问属性值
  * @param {String} path required, like 'obj.prop.child'
  * @param {Object} [context] optional, like an obj
  * @returns {*}
  * @example
  * var obj = {
-         *     prop:{
-         *         child: function(){},
-         *         brother: "hello",
-         *         sister: false
-         *     }
-         * }
+ *     prop:{
+ *         child: function(){},
+ *         brother: "hello",
+ *         sister: false
+ *     }
+ * }
  * //间接径访问对象属性
  * propBy('obj.prop.child')
  * => function (){}
@@ -136,7 +155,6 @@ export function merge (...obj) {
  * => false
  * propBy('obj.prop.other')
  * => undefined
- *
  * //指定context, 对象上下文
  * propBy('prop.child', obj)
  * => function (){}
@@ -151,22 +169,20 @@ export function propBy (path, context) {
   if (!path) return path
 
   let prop
+  let key
   let isFirst = 1
 
   const arrPath = path.split('.')
-  const key = arrPath.shift()
-  // eslint-disable-next-line no-unmodified-loop-condition
-  while (key) {
-    if (isFirst) { // 首次
+  while ((key = arrPath.shift())) {
+    if (isFirst) {
+      // 首次
       prop = (context || this || window)[key]
       isFirst = 0
-      // eslint-disable-next-line no-continue
       continue
     }
 
-    if (typeof (key) === 'string' && prop != null) {
+    if (typeof key === 'string' && prop != null) {
       prop = prop[key]
-      // eslint-disable-next-line no-continue
       continue
     }
 

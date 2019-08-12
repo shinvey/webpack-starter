@@ -6,7 +6,7 @@ module.exports = {
    */
 
   // stylelint-config-standard 默认规则 https://github.com/stylelint/stylelint-config-standard/blob/master/index.js
-  'extends': [
+  extends: [
     'stylelint-config-standard',
     // Lost grid config for stylelint. See https://github.com/delorge/stylelint-config-lost
     'stylelint-config-lost'
@@ -28,14 +28,14 @@ module.exports = {
      */
     'stylelint-no-unsupported-browser-features'
   ],
-  'rules': {
+  rules: {
     // especially for scss. See https://github.com/kristerkari/stylelint-config-recommended-scss/blob/master/index.js
     'at-rule-no-unknown': null,
     'scss/at-rule-no-unknown': true,
     // rules specified from stylelint-no-unsupported-browser-features
     // see https://github.com/ismay/stylelint-no-unsupported-browser-features#recommendations
     'plugin/no-unsupported-browser-features': [true, {
-      'severity': 'warning'
+      severity: 'warning'
     }],
 
     // add your overrides and additions here.

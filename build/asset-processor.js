@@ -3,7 +3,7 @@
  * npm i style-loader css-loader postcss-loader sass-loader node-sass
  */
 module.exports = (env, args) => {
-  let processors = {
+  const processors = {
     /**
      * Note that there is an overhead for saving the reading and saving the cache file,
      * so only use this loader to cache expensive loaders.
