@@ -2,7 +2,7 @@ import { throwError } from 'rxjs'
 import BusinessError from '@/library/Error/businessError'
 import NetworkError from '@/library/Error/networkError'
 import WEB_SERVICE_CODE from '../WEB_SERVICE_CODE'
-import LoginStore from '@/views/User/Login/LoginStore'
+import LoginStore from '@/views/UserView/LoginView/LoginStore'
 
 /**
  * 配置底层的ajax行为

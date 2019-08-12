@@ -3,8 +3,8 @@ import {
   withRouter,
   Link
 } from 'react-router-dom'
-import { navigation } from './Login'
-import LoginStore from './Login/LoginStore'
+import { navigation } from './LoginView'
+import LoginStore from './LoginView/LoginStore'
 
 /**
  * withRouter https://reacttraining.com/react-router/web/api/withRouter

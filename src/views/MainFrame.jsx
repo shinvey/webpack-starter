@@ -1,18 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 // @ant-design/pro-layout https://github.com/ant-design/ant-design-pro-layout/blob/master/README.zh-CN.md
-import BasicLayout from '@ant-design/pro-layout'
-// 首页View
-import { navigation as homeRoute, Content as HomeContent } from './Home'
-import { navigation as userRoute, Content as UserContent } from './User'
-import { navigation as aboutRoute, Content as AboutContent } from './About'
-import { navigation as loginRoute, Content as LoginContent } from './User/Login'
-// 其他需要动态加载的View
-// todo 完成自动扫描所有View接口
-// todo 将navigation和Content注入MainFrame
-// todo 再考虑MainFrame是否要和Container进行合并简化结构
-// todo View视图对外接口的文件名称是expose.+
+// import BasicLayout from '@ant-design/pro-layout'
+// 载入当前page下所有视图索引，创建routes and contents，交由basic layout渲染
+import * as views from './view-impl.js'
+const routes = []
+const contents = []
+Object.keys(views).forEach(moduleName => {
+  const view = views[moduleName]
+  const Content = view.Content
+  const key = view.navigation.name
+  routes.push(view.navigation)
+  contents.push(<Content key={key} />)
+})
 
+function BasicLayout (props) {
+  return <div>{props.children}</div>
+}
 /**
  * 考虑复杂的菜单用例
  * 树形菜单
@@ -38,8 +42,8 @@ export default function MainFrame (props) {
     )}
     breadcrumbRender={(routers = []) => [
       {
-        path: homeRoute.path,
-        breadcrumbName: homeRoute.name
+        path: views.HomeView.navigation.path,
+        breadcrumbName: views.HomeView.navigation.name
       },
       ...routers
     ]}
@@ -47,18 +51,10 @@ export default function MainFrame (props) {
     {...settings}
     // route用法 https://pro.ant.design/blog/new-pro-use-cn
     route={{
-      routes: [
-        homeRoute,
-        userRoute,
-        aboutRoute,
-        loginRoute
-      ]
+      routes: routes
     }}
   >
     {children}
-    <HomeContent/>
-    <UserContent/>
-    <AboutContent/>
-    <LoginContent/>
+    {contents}
   </BasicLayout>
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import loadable from '@loadable/component'
 import Loading from '../Loading'
-import AuthRoute from './Login/AuthRoute'
+import AuthRoute from './LoginView/AuthRoute'
 
 export const navigation = {
   path: '/users',
