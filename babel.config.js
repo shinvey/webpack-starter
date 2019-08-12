@@ -37,7 +37,8 @@ module.exports = {
 
     // 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
     '@babel/plugin-syntax-dynamic-import',
-
+    // 支持 export * as namespace 语法 https://babeljs.io/docs/en/next/babel-plugin-proposal-export-namespace-from.html
+    '@babel/plugin-proposal-export-namespace-from',
     /**
      * 启用 decorators https://mobx.js.org/best/decorators.html#enabling-decorator-syntax
      * make sure that @babel/plugin-proposal-decorators comes before @babel/plugin-proposal-class-properties.
