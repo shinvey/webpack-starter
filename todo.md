@@ -25,6 +25,9 @@ Bundle分析webpack bundle analyzer
   配置中心插件化
   [X] 路由插件化，路由规则写到各自page文件夹下
     [Magic Comments](https://webpack.js.org/api/module-methods/#magic-comments)
+    代码生成可选解决方案
+        glob + ejs模板
+        [hygen](http://hygen.io) The simple, fast, and scalable code generator that lives in your project.
   集成异常处理库，web service接口公共异常，和私有业务异常
   rxjs常用业务场景代码片段
     请求处理
@@ -65,3 +68,4 @@ Bundle分析webpack bundle analyzer
 
 * [ ] 调整应用架构和目录架构使其支持多端共享业务模型开发模式
 * [ ] 编写demo体现MVVM设计模式中数据是如何流转的
+* [ ] 将来创建项目模板可以考虑使用[yeoman](https://yeoman.io/)的generator
