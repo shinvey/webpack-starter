@@ -372,7 +372,7 @@ module.exports = (env = {}, args = {}) => {
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
         {
-          test: /\.(jpe?g|png|webp|gif|svg|eot|ttf|woff|woff2)$/,
+          test: /\.(jpe?g|png|webp|gif|ico|svg|eot|ttf|woff|woff2)$/,
           // 排除Responsive Images使用场景的命名模式
           exclude: assetProcessor.responsiveLoader.test,
           include: directoryWhiteList,
