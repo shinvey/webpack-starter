@@ -63,7 +63,7 @@ module.exports = (env, args) => {
       const moduleName = path.dirname(moduleRelativePath).replace(/[\\/]+/g, '')
       exportCode += viewImplExportCode(moduleName, moduleRelativePath)
     })
-    fs.writeFileSync(`${chunkBasePath}/${viewImpl}`, exportCode)
+    exportCode && fs.writeFileSync(`${chunkBasePath}/${viewImpl}`, exportCode)
 
     // 添加webpack entry
     chunk = chunk || 'index' // 如果不是多页应用，chunk默认为index
