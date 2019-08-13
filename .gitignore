@@ -19,6 +19,3 @@ npm-debug.log
 
 # log file
 *.log
-
-# 视图接口文件是自动生成的，不需要提交代码库
-view-impl.js
