@@ -5,8 +5,6 @@
  */
 
 const glob = require('glob')
-const fs = require('fs')
-const path = require('path')
 // see https://github.com/jantimon/html-webpack-plugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
@@ -18,12 +16,6 @@ const pagesBasePath = './src/+(page|view)s'
 const allFileExt = '.?*'
 // page命名惯例，采用glob pattern
 const pageFile = `page${allFileExt}`
-// page下所有视图接口文件名称
-const viewImpl = 'view-impl.js'
-function viewImplExportCode (moduleName, modulePath) {
-  // 支持 export * as namespace 语法 https://babeljs.io/docs/en/next/babel-plugin-proposal-export-namespace-from.html
-  return `export * as ${moduleName} from './${modulePath}'\n`
-}
 
 /**
  * 将glob pattern的部分字符转换为regex pattern
@@ -51,20 +43,6 @@ module.exports = (env, args) => {
   // glob pattern https://facelessuser.github.io/wcmatch/glob/
   glob.sync(`${pagesBasePath}/**/${pageFile}`).forEach(filePath => {
     let chunk = chunkName(filePath)
-
-    // 在每个page根目录生成该page下所有视图接口文件
-    const chunkBasePath = path.dirname(filePath)
-    const viewPattern = `${pagesBasePath}/${chunk ? chunk + '/' : ''}**/*View/index${allFileExt}`
-    let exportCode = ''
-    glob.sync(viewPattern).forEach(filePath => {
-      // 得出 View 相对于 page 相对路径将作为 import 路径
-      const moduleRelativePath = path.posix.relative(chunkBasePath, filePath)
-      // 得出视图包名。如UserView/LoginView，会得出UserViewLoginView
-      const moduleName = path.dirname(moduleRelativePath).replace(/[\\/]+/g, '')
-      exportCode += viewImplExportCode(moduleName, moduleRelativePath)
-    })
-    exportCode && fs.writeFileSync(`${chunkBasePath}/${viewImpl}`, exportCode)
-
     // 添加webpack entry
     chunk = chunk || 'index' // 如果不是多页应用，chunk默认为index
     entries[chunk] = filePath
