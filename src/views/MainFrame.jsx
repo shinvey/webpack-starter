@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom'
 // @ant-design/pro-layout https://github.com/ant-design/ant-design-pro-layout/blob/master/README.zh-CN.md
 // import BasicLayout from '@ant-design/pro-layout'
 // 载入当前page下所有视图索引，创建routes and contents，交由basic layout渲染
-import * as views from './view-impl.js'
+
+// webpack require.context api https://github.com/webpack/docs/wiki/context
+const req = require.context('./', true, /\w+View\/index\.[a-z]+$/i)
 const routes = []
 const contents = []
-Object.keys(views).forEach(moduleName => {
-  const view = views[moduleName]
-  const Content = view.Content
-  const key = view.navigation.name
-  routes.push(view.navigation)
+req.keys().forEach(modulePath => {
+  const ViewModule = req(modulePath)
+  const Content = ViewModule.Content
+  const key = ViewModule.navigation.name
+  routes.push(ViewModule.navigation)
   contents.push(<Content key={key} />)
 })
 
@@ -40,13 +42,16 @@ export default function MainFrame (props) {
     menuItemRender={(menuItemProps, defaultDom) => (
       <Link to={menuItemProps.path}>{defaultDom}</Link>
     )}
-    breadcrumbRender={(routers = []) => [
-      {
-        path: views.HomeView.navigation.path,
-        breadcrumbName: views.HomeView.navigation.name
-      },
-      ...routers
-    ]}
+    breadcrumbRender={(routers = []) => {
+      const HomeViewModule = req('./HomeView')
+      return [
+        {
+          path: HomeViewModule.navigation.path,
+          breadcrumbName: HomeViewModule.navigation.name
+        },
+        ...routers
+      ]
+    }}
     {...props}
     {...settings}
     // route用法 https://pro.ant.design/blog/new-pro-use-cn
