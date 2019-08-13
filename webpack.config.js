@@ -307,7 +307,7 @@ module.exports = (env = {}, args = {}) => {
   }
 
   // webpack 一般配置
-  return {
+  const webpackConfig = {
     entry: pages.entries,
     output: output,
     resolve: {
@@ -444,4 +444,17 @@ module.exports = (env = {}, args = {}) => {
       // }
     }
   }
+
+  /**
+   * https://github.com/asfktz/autodll-webpack-plugin
+   * Important Note
+   * Now, that webpack 5 planning to support caching out-of-the-box, AutoDllPlugin will soon be obsolete.
+   * In the meantime, I would like to recommend Michael Goddard's hard-source-webpack-plugin,
+   * which seems like webpack 5 is going to use internally.
+   * 加速 webpack 二次编译 https://github.com/mzgoddard/hard-source-webpack-plugin
+   */
+  const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+  webpackConfig.plugins.push(new HardSourceWebpackPlugin())
+
+  return webpackConfig
 }
