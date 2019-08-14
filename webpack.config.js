@@ -55,8 +55,8 @@ module.exports = (env = {}, args = {}) => {
     filename: `${filenamePattern}.js`,
     // Note the use of chunkFilename, which determines the name of non-entry chunk files.
     // https://webpack.js.org/configuration/output/#output-chunkfilename
-    chunkFilename: `${chunkFilenamePattern}.js`
-    // publicPath: 'http://127.0.0.1:8080/'
+    chunkFilename: `${chunkFilenamePattern}.js`,
+    publicPath: '/'
   }
 
   const fileManagerOptions = {
@@ -293,7 +293,7 @@ module.exports = (env = {}, args = {}) => {
     }
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
     // publicPath与dev server启动端口保持统一
-    output.publicPath = `http://127.0.0.1:${devServer.port}/`
+    // output.publicPath = `http://127.0.0.1:${devServer.port}/`
   }
 
   /**
@@ -303,7 +303,7 @@ module.exports = (env = {}, args = {}) => {
    *  import引入的包实际编译输出的size是多大
    */
   if (env.inspect) {
-    output.publicPath = 'http://127.0.0.1:8000/'
+    // output.publicPath = 'http://127.0.0.1:8000/'
   }
 
   // webpack 一般配置
