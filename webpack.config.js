@@ -116,25 +116,26 @@ module.exports = (env = {}, args = {}) => {
   const pages = require('./build/page-factory')(env, args)
   plugins.push(...pages.arrHtmlWebpackPlugin)
 
-  // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
-  // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
-  const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
-  plugins.push(
-    new ExtractCssChunks({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: `${filenamePattern}.css`,
-      chunkFilename: `${chunkFilenamePattern}.css`,
-      orderWarning: true // Disable to remove warnings about conflicting order between imports
-    })
-  )
-  // 替换style loader就可以抽离css文件了
-  styleLoader.loader = ExtractCssChunks.loader
-  if (args.hot) {
-    styleLoader.options = merge(styleLoader.options, {
-      hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
-      reloadAll: true // when desperation kicks in - this is a brute force HMR flag
-    })
+  if (!args.hot) {
+    // styleLoader.options = merge(styleLoader.options, {
+    //   hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
+    //   reloadAll: true // when desperation kicks in - this is a brute force HMR flag
+    // })
+
+    // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
+    // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
+    const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
+    plugins.push(
+      new ExtractCssChunks({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: `${filenamePattern}.css`,
+        chunkFilename: `${chunkFilenamePattern}.css`,
+        orderWarning: true // Disable to remove warnings about conflicting order between imports
+      })
+    )
+    // 替换style loader就可以抽离css文件了
+    styleLoader.loader = ExtractCssChunks.loader
   }
 
   /**
