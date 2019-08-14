@@ -116,11 +116,20 @@ module.exports = (env = {}, args = {}) => {
   const pages = require('./build/page-factory')(env, args)
   plugins.push(...pages.arrHtmlWebpackPlugin)
 
-  if (!args.hot) {
-    // styleLoader.options = merge(styleLoader.options, {
-    //   hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
-    //   reloadAll: true // when desperation kicks in - this is a brute force HMR flag
-    // })
+  /**
+   * 如果开启hmr，且使用chrome devtool workspace调试样式表，测试用extract-css-chunks-webpack-plugin导出样式文件
+   * 两种使用HMR调试场景
+   * 1. 主要使用IDE修改源码和样式表。不会加载extract-css-chunks-webpack-plugin args.hot === true && args.devtool !== 'source-map'
+   * 2. 主要使用chrome devtool修改源码和样式表。会加载extract-css-chunks-webpack-plugin args.hot === true && args.devtool === 'source-map'
+   * 3. 编译生产包 args.hot === false
+   */
+  if (!args.hot || (args.hot && args.devtool === 'source-map')) {
+    if (args.hot) {
+      styleLoader.options = merge(styleLoader.options, {
+        hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
+        reloadAll: true // when desperation kicks in - this is a brute force HMR flag
+      })
+    }
 
     // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
     // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
