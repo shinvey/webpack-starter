@@ -70,6 +70,7 @@ Bundle分析webpack bundle analyzer
 * [ ] 编写demo体现MVVM设计模式中数据是如何流转的
 * [ ] 将来创建项目模板可以考虑使用[yeoman](https://yeoman.io/)的generator
 * [ ] 提供用例：数据再组合，TopList组合productList and selectList
+* [ ] 设计会话超时处理解决方案，目前有全局UserStore、全局Event Bus、History push
 
 # 带动团队成员一起制定应用架构标准
 * 参与感
