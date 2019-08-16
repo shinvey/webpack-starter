@@ -385,7 +385,7 @@ module.exports = (env = {}, args = {}) => {
           test: /\.(jpe?g|png|webp|gif|ico|svg|eot|ttf|woff|woff2)$/,
           // 排除Responsive Images使用场景的命名模式
           exclude: assetProcessor.responsiveLoader.test,
-          include: directoryWhiteList,
+          // include: directoryWhiteList,
           use: [
             assetProcessor.urlLoader({
               name: `${assetFilenamePattern}.[ext]`
