@@ -19,3 +19,6 @@ npm-debug.log
 
 # log file
 *.log
+
+# for custom build
+*.custom.js
