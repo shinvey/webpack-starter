@@ -55,8 +55,8 @@ module.exports = (env = {}, args = {}) => {
     filename: `${filenamePattern}.js`,
     // Note the use of chunkFilename, which determines the name of non-entry chunk files.
     // https://webpack.js.org/configuration/output/#output-chunkfilename
-    chunkFilename: `${chunkFilenamePattern}.js`
-    // publicPath: 'http://127.0.0.1:8080/'
+    chunkFilename: `${chunkFilenamePattern}.js`,
+    publicPath: '/'
   }
 
   const fileManagerOptions = {
@@ -116,25 +116,35 @@ module.exports = (env = {}, args = {}) => {
   const pages = require('./build/page-factory')(env, args)
   plugins.push(...pages.arrHtmlWebpackPlugin)
 
-  // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
-  // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
-  const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
-  plugins.push(
-    new ExtractCssChunks({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: `${filenamePattern}.css`,
-      chunkFilename: `${chunkFilenamePattern}.css`,
-      orderWarning: true // Disable to remove warnings about conflicting order between imports
-    })
-  )
-  // 替换style loader就可以抽离css文件了
-  styleLoader.loader = ExtractCssChunks.loader
-  if (args.hot) {
-    styleLoader.options = merge(styleLoader.options, {
-      hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
-      reloadAll: true // when desperation kicks in - this is a brute force HMR flag
-    })
+  /**
+   * 如果开启hmr，且使用chrome devtool workspace调试样式表，测试用extract-css-chunks-webpack-plugin导出样式文件
+   * 两种使用HMR调试场景
+   * 1. 主要使用IDE修改源码和样式表。不会加载extract-css-chunks-webpack-plugin args.hot === true && args.devtool !== 'source-map'
+   * 2. 主要使用chrome devtool修改源码和样式表。会加载extract-css-chunks-webpack-plugin args.hot === true && args.devtool === 'source-map'
+   * 3. 编译生产包 args.hot === false
+   */
+  if (!args.hot || (args.hot && args.devtool === 'source-map')) {
+    if (args.hot) {
+      styleLoader.options = merge(styleLoader.options, {
+        hot: true, // if you want HMR - we try to automatically inject hot reloading but if it's not working, add it to the config
+        reloadAll: true // when desperation kicks in - this is a brute force HMR flag
+      })
+    }
+
+    // 抽离css。并且该插件对HMR相对于mini-css-extract-plugin支持的更好，
+    // 实测中，后者并不能很好的工作 https://github.com/faceyspacey/extract-css-chunks-webpack-plugin
+    const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
+    plugins.push(
+      new ExtractCssChunks({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        filename: `${filenamePattern}.css`,
+        chunkFilename: `${chunkFilenamePattern}.css`,
+        orderWarning: true // Disable to remove warnings about conflicting order between imports
+      })
+    )
+    // 替换style loader就可以抽离css文件了
+    styleLoader.loader = ExtractCssChunks.loader
   }
 
   /**
@@ -293,7 +303,7 @@ module.exports = (env = {}, args = {}) => {
     }
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
     // publicPath与dev server启动端口保持统一
-    output.publicPath = `http://127.0.0.1:${devServer.port}/`
+    // output.publicPath = `http://127.0.0.1:${devServer.port}/`
   }
 
   /**
@@ -303,11 +313,11 @@ module.exports = (env = {}, args = {}) => {
    *  import引入的包实际编译输出的size是多大
    */
   if (env.inspect) {
-    output.publicPath = 'http://127.0.0.1:8000/'
+    // output.publicPath = 'http://127.0.0.1:8000/'
   }
 
   // webpack 一般配置
-  return {
+  const webpackConfig = {
     entry: pages.entries,
     output: output,
     resolve: {
@@ -367,7 +377,7 @@ module.exports = (env = {}, args = {}) => {
           test: /\.(jpe?g|png|webp|gif|ico|svg|eot|ttf|woff|woff2)$/,
           // 排除Responsive Images使用场景的命名模式
           exclude: assetProcessor.responsiveLoader.test,
-          include: directoryWhiteList,
+          // include: directoryWhiteList,
           use: [
             assetProcessor.urlLoader({
               name: `${assetFilenamePattern}.[ext]`
@@ -444,4 +454,17 @@ module.exports = (env = {}, args = {}) => {
       // }
     }
   }
+
+  /**
+   * https://github.com/asfktz/autodll-webpack-plugin
+   * Important Note
+   * Now, that webpack 5 planning to support caching out-of-the-box, AutoDllPlugin will soon be obsolete.
+   * In the meantime, I would like to recommend Michael Goddard's hard-source-webpack-plugin,
+   * which seems like webpack 5 is going to use internally.
+   * 加速 webpack 二次编译 https://github.com/mzgoddard/hard-source-webpack-plugin
+   */
+  const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+  webpackConfig.plugins.push(new HardSourceWebpackPlugin())
+
+  return webpackConfig
 }
