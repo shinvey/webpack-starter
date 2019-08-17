@@ -22,3 +22,7 @@ npm-debug.log
 
 # for custom build
 *.custom.js
+
+# for sonnar scanner and sornar lint
+.scannerwork
+.sonarlint
