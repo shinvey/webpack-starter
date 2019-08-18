@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import loadable from '@loadable/component'
+import loadable from 'react-loadable'
 import Loading from '../Loading'
 
 export const navigation = {
@@ -9,8 +9,9 @@ export const navigation = {
   icon: 'home'
 }
 export function Content () {
-  const View = loadable(() => import('./View'), {
-    fallback: <Loading />
+  const View = loadable({
+    loader: () => import('./View'),
+    loading: Loading
   })
   /**
    * path也可根据需要自定义

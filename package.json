@@ -56,7 +56,6 @@
   ],
   "devDependencies": {
     "@types/glob": "^7.1.1",
-    "@types/loadable__component": "^5.10.0",
     "@types/prop-types": "^15.7.1",
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",
@@ -100,7 +99,6 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
-    "@loadable/component": "^5.10.2",
     "ant-design-pro": "^2.3.2",
     "antd": "^3.21.2",
     "babel-loader": "^8.0.6",
@@ -132,6 +130,7 @@
     "qs": "^6.7.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-loadable": "^5.5.0",
     "react-router-dom": "^5.0.1",
     "responsive-loader": "^1.2.0",
     "sass-loader": "^7.1.0",

@@ -1,4 +1,5 @@
-import { observable, action } from 'mobx'
+// import { observable, action, decorate } from 'mobx'
+// 请在需要将当前store包装成mobx实例，使用decorate对当前对象对方法和属性进行装饰 https://mobx.js.org/refguide/modifiers.html
 
 /**
  * __领域状态（Domain Store）职责__
@@ -16,7 +17,7 @@ import { observable, action } from 'mobx'
  */
 
 export default class LoginStore {
-  @observable isLogin = false
+  isLogin = false
 
   /**
    * @readonly
@@ -39,7 +40,6 @@ export default class LoginStore {
    * 这是登录相关状态
    * @param {String} token
    */
-  @action
   login (token) {
     // 登录
     this.isLogin = true
@@ -47,7 +47,6 @@ export default class LoginStore {
     localStorage.setItem(this._tokenKey, token)
   }
 
-  @action
   logout () {
     this.isLogin = false
     this.token = undefined
