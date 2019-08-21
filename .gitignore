@@ -19,3 +19,6 @@ npm-debug.log
 
 # log file
 *.log
+
+# sonar scanner
+.scannerwork
