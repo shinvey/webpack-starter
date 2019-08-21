@@ -79,3 +79,27 @@ Bundle分析webpack bundle analyzer
 团队成员高级带初级结队编程参与公共模块开发，然后再重构对方的模块
 模块接口设计和实现方案拿出来讨论并最终敲定
 团队可以参与到架构设计的细节当中，并且会参与讨论，相互pk，综合不同方案的优点，剔除方案缺点。
+
+# Router system
+路由组织方式
+* separate files 符合分治理念
+  * 设计View接口，暴露路由规则
+  * 扫描所有路由规则
+* single file 集中式路由
+  * 设计路由map
+
+# Theming
+主题样式结构
+* structural.css
+* theme.xxx.css
+
+主题组织方式
+* separate files 符合分治理念，可以动态加载/按需加载
+* single file 主题样式集中管理
+
+实现方式
+* pure css
+* css module
+
+相关问题：
+* [Swappable themes using global](https://github.com/css-modules/css-modules/issues/160)
