@@ -17,6 +17,8 @@
     // Enable strictest settings like strictNullChecks & noImplicitAny.
     // 对于typescript新人，不建议使用严格的类型检查模式
     // "strict": true,
+    // 允许使用tsx书写react组件
+    // "jsx": "react",
     // Import non-ES modules as default imports.
     "esModuleInterop": true
   },
