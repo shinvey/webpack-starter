@@ -7,15 +7,19 @@ module.exports = (env, args) => {
     sourceMap: !!args.devtool
   }
   const processors = {
-    styleLoader: () => ({
-      // Adds CSS to the DOM by injecting a <style> tag see https://github.com/webpack-contrib/style-loader
-      loader: 'style-loader',
-      // options useable使用场景是手动控制css挂载/卸载 see https://juejin.im/post/5a2668996fb9a0450b663f20#heading-9
-      options: {
-        // source map see https://github.com/webpack-contrib/style-loader#sourcemap
-        ..._options
+    styleLoader: () => {
+      const { sourceMap, ...restOptions } = _options
+      return {
+        // Adds CSS to the DOM by injecting a <style> tag see https://github.com/webpack-contrib/style-loader
+        loader: 'style-loader',
+        // options useable使用场景是手动控制css挂载/卸载 see https://juejin.im/post/5a2668996fb9a0450b663f20#heading-9
+        options: {
+          // source map see https://github.com/webpack-contrib/style-loader#sourcemap
+          // 1.x sourceMap was removed
+          ...restOptions
+        }
       }
-    }),
+    },
 
     cssLoader: opts => ({
       // The css-loader interprets @import and url() like import/require() and will resolve them.
