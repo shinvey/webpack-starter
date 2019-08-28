@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx'
+// import { observable, action } from 'mobx'
 
 /**
  * __领域状态（Domain Store）职责__
@@ -16,7 +16,7 @@ import { observable, action } from 'mobx'
  */
 
 export default class LoginStore {
-  @observable isLogin = false
+  isLogin = false
 
   /**
    * @readonly
@@ -39,7 +39,6 @@ export default class LoginStore {
    * 这是登录相关状态
    * @param {String} token
    */
-  @action
   login (token) {
     // 登录
     this.isLogin = true
@@ -47,7 +46,6 @@ export default class LoginStore {
     localStorage.setItem(this._tokenKey, token)
   }
 
-  @action
   logout () {
     this.isLogin = false
     this.token = undefined

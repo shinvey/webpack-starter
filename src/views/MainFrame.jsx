@@ -17,7 +17,15 @@ req.keys().forEach(modulePath => {
 })
 
 function BasicLayout (props) {
-  return <div>{props.children}</div>
+  const { navigations } = props
+  return <div>
+    <b>所有视图接口：</b>
+    <ul>
+      {navigations.map((nav, key) => <li key={key}><Link to={nav.path}>{nav.name}</Link></li>)}
+    </ul>
+    <b>当前视图内容：</b>
+    {props.children}
+  </div>
 }
 /**
  * 考虑复杂的菜单用例
@@ -35,30 +43,8 @@ function BasicLayout (props) {
  * @constructor
  */
 export default function MainFrame (props) {
-  const { children, settings } = props
-  return <BasicLayout
-    logo={'https://webassets.4it02a.top/common/bob.ico'}
-    title={'Full Time Admin'}
-    menuItemRender={(menuItemProps, defaultDom) => (
-      <Link to={menuItemProps.path}>{defaultDom}</Link>
-    )}
-    breadcrumbRender={(routers = []) => {
-      const HomeViewModule = req('./HomeView')
-      return [
-        {
-          path: HomeViewModule.navigation.path,
-          breadcrumbName: HomeViewModule.navigation.name
-        },
-        ...routers
-      ]
-    }}
-    {...props}
-    {...settings}
-    // route用法 https://pro.ant.design/blog/new-pro-use-cn
-    route={{
-      routes: routes
-    }}
-  >
+  const { children } = props
+  return <BasicLayout navigations={routes}>
     {children}
     {contents}
   </BasicLayout>
