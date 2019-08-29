@@ -10,8 +10,8 @@
     "no-constant-condition": true,
     "no-console": false,
     "semicolon": false,
-    "space-before-function-paren": true,
-    "quotemark": [true, "single", "avoid-escape", "avoid-template", "jsx-double"],
+    "space-before-function-paren": false,
+    "quotemark": false, // [true, "single", "avoid-escape", "avoid-template", "jsx-double"],
     // 不检查对象字面量属性的排序 https://palantir.github.io/tslint/rules/object-literal-sort-keys/
     "object-literal-sort-keys": false,
     "whitespace": [true, "check-module"],
@@ -20,7 +20,10 @@
     "variable-name": false,
     "no-unused-expression": false,
     "arrow-parens": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "comment-format": false,
+    "max-line-length": false,
+    "no-empty": false
   },
   "rulesDirectory": [
     // Improve your TSLint with the missing ESLint rules

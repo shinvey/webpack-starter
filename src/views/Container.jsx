@@ -1,5 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux-dynamic-modules-core'
+import { getObservableExtension } from '@/library/redux-dynamic-modules-observable'
+import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 import MainFrame from './MainFrame'
 import ErrorBoundary from './deps/ErrorBoundary'
 
@@ -22,7 +26,14 @@ export default function Container () {
   return (
     <Router>
       <ErrorBoundary>
-        <MainFrame />
+        <Provider store={createStore({
+          extensions: [
+            // getThunkExtension(),
+            getObservableExtension()
+          ]
+        })}>
+          <MainFrame />
+        </Provider>
       </ErrorBoundary>
     </Router>
   )
