@@ -1,10 +1,8 @@
-/* tslint:disable */
-
-import { getStringRefCounter, getObjectRefCounter, IItemManager } from "redux-dynamic-modules-core";
-import { Epic } from "redux-observable";
-import { merge, BehaviorSubject, of, Subject } from "rxjs";
+import { getStringRefCounter, getObjectRefCounter, IItemManager } from "redux-dynamic-modules-core"
+import { Epic } from "redux-observable"
+import { merge, BehaviorSubject, of, Subject, Observable } from "rxjs"
 import { mergeMap, switchMap, mapTo } from 'rxjs/operators'
-import { combineEpics, ofType } from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable'
 
 // import { Subject, from, queueScheduler } from 'rxjs';
 // const QueueScheduler = queueScheduler.constructor;
@@ -14,20 +12,40 @@ export interface IEpicManager extends IItemManager<Epic> {
   // rootEpic: Epic;
 }
 
+interface IEpicWrapper {
+  (...args: any[]): Observable<unknown>
+  _epic?: Epic
+  epicRef(): Epic
+  replaceWith(epic: Epic): void
+}
+
+interface IModule extends NodeModule {
+  /**
+   * this is referenced to hot module replacement
+   */
+  hot?: object
+}
+declare var module: IModule
+
+// const replaceableWrapper: {
+//   (...args: any[]): Observable<unknown>;
+//   replaceWith(epic: any): void;
+//   epicRef(): any;
+// }
+
 /**
  * Creates an epic manager which manages epics being run in the system
  */
 export function getEpicManager(epicMiddleware): IEpicManager {
-  let runningEpics: Object = {};
+  let runningEpics: object = {}
   // @ts-ignore
-  const epicRefCounter = getObjectRefCounter();
-  const has = (key) => key in runningEpics;
-  const get = (key) => runningEpics[key];
+  const epicRefCounter = getObjectRefCounter()
+  const has = (_key) => _key in runningEpics
+  const get = (_key) => runningEpics[_key]
   const key = (namespace, name) => `${namespace}-${name}`
   // const rootEpic: Epic = createRootEpic(runningEpics);
 
-  return <IEpicManager>{
-    // @ts-ignore
+  return {
     getItems: () => runningEpics,
     // rootEpic,
     /**
@@ -38,12 +56,12 @@ export function getEpicManager(epicMiddleware): IEpicManager {
      * todo 实现替换epic
      *
      */
-    add: (epics: Epic[], namespace) => {
+    add: (epics: Epic[], namespace: string) => {
       if (!epics) {
-        return;
+        return
       }
 
-      let arrEpicWrapper = runningEpics[namespace] || [];
+      const arrEpicWrapper: IEpicWrapper[] = runningEpics[namespace] || []
 
       epics.forEach((epic: Epic, index) => {
         // const epicKey = key(namespace, epic.name)
@@ -62,10 +80,9 @@ export function getEpicManager(epicMiddleware): IEpicManager {
          * fixme 如何处理函数逻辑一致，key更改的情况
          */
         if (arrEpicWrapper[index]) {
-          let epicWrapper = arrEpicWrapper[index]
+          const epicWrapper = arrEpicWrapper[index]
           // 如果开启了HMR，尝试替换epic
-          // @ts-ignore
-          if (module.hot && epicWrapper.epicRef() != epic) {
+          if (module.hot && epicWrapper.epicRef() !== epic) {
             // 更新引用，是为了下一次的判断或对比
             epicRefCounter.remove(epicWrapper.epicRef())
             epicRefCounter.add(epic)
@@ -76,9 +93,7 @@ export function getEpicManager(epicMiddleware): IEpicManager {
              */
             epicWrapper.replaceWith(epic)
 
-
             console.info(`[HRM] previous epic ${epicWrapper} is replaced by new epic ${epic}`)
-            epicWrapper = undefined
           }
         } else {
           const replaceableWrapper = createReplaceableWrapper()
@@ -123,45 +138,44 @@ export function getEpicManager(epicMiddleware): IEpicManager {
     dispose: () => {
       runningEpics = null
     },
-  };
+  } as IEpicManager
 }
 
 /**
  * create a wrapper which can be replace by a epic
- * @returns replaceableWrapper
  */
 function createReplaceableWrapper () {
-  const epic$ = new Subject();
+  const epic$ = new Subject()
 
   // 包装一个可以被替换的wrapper
-  const replaceableWrapper = (...args) =>
+  const replaceableWrapper: IEpicWrapper = (...args) =>
     epic$.pipe(
       // @ts-ignore
       switchMap(epic => epic(...args))
-    );
+    )
 
   // 暴露替换方法
   replaceableWrapper.replaceWith = epic => {
-    epic$.next(epic);
-    replaceableWrapper._epic = epic;
+    epic$.next(epic)
+    replaceableWrapper._epic = epic
   }
   // 提供epic ref访问接口
   replaceableWrapper.epicRef = () => replaceableWrapper._epic
 
-  return replaceableWrapper;
+  return replaceableWrapper
 }
 
 function createRootEpic(runningEpics: Epic[]): Epic {
-  const epic$ = new Subject();
+  const epic$ = new Subject()
 
   const merger = (...args) =>
     epic$.pipe(
       // @ts-ignore
       switchMap(epic => epic(...args))
-    );
+    )
 
   // @ts-ignore
-  merger.replace = (...args) => epic$.next(...args);
+  merger.replace = (...args) => epic$.next(...args)
 
   // Technically the `name` property on Function's are supposed to be read-only.
   // While some JS runtimes allow it anyway (so this is useful in debugging)
@@ -169,8 +183,8 @@ function createRootEpic(runningEpics: Epic[]): Epic {
   try {
     Object.defineProperty(merger, "name", {
       value: "____MODULES_ROOT_EPIC",
-    });
+    })
   } catch (e) {}
 
-  return merger;
+  return merger
 }

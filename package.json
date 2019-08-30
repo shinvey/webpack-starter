@@ -134,7 +134,6 @@
     "redux": "^4.0.4",
     "redux-dynamic-modules": "^5.0.2",
     "redux-dynamic-modules-core": "^5.0.2",
-    "redux-dynamic-modules-observable": "^5.0.2",
     "redux-dynamic-modules-react": "^5.0.2",
     "redux-dynamic-modules-thunk": "^5.0.2",
     "redux-observable": "^1.1.0",
