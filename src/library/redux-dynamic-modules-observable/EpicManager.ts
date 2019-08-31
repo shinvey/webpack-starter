@@ -46,15 +46,14 @@ export function getEpicManager(epicMiddleware): IEpicManager {
   // const rootEpic: Epic = createRootEpic(runningEpics);
 
   return {
-    getItems: () => runningEpics,
+    // @ts-ignore
+    // getItems: () => runningEpics,
     // rootEpic,
     /**
-     * 生产版本 epic只能加一次，必须做放重复检查
-     * 开发版本可以尝试考虑switchMap来替换已存在的epic
-     *
-     * todo 避免重复添加epic，可以使用对象key 加 module id
-     * todo 实现替换epic
-     *
+     * 动态添加epic有
+     * epic不可被真正动态删除
+     * 防止重复添加
+     * 满足module hot load动态更新
      */
     add: (epics: Epic[], namespace: string) => {
       if (!epics) {
@@ -62,6 +61,7 @@ export function getEpicManager(epicMiddleware): IEpicManager {
       }
 
       const arrEpicWrapper: IEpicWrapper[] = runningEpics[namespace] || []
+      runningEpics[namespace] = arrEpicWrapper
 
       epics.forEach((epic: Epic, index) => {
         // const epicKey = key(namespace, epic.name)
@@ -76,8 +76,8 @@ export function getEpicManager(epicMiddleware): IEpicManager {
 
         /**
          * 考虑hot reload场景
-         * 当名称一致，函数引用不一致时可以考虑替换
-         * fixme 如何处理函数逻辑一致，key更改的情况
+         * 在使用react-hot-loader时，去修改epic，触发hot load后，getEpicManager会被重新调用，相当于重建
+         * 不过这里的判断还是有意义的，在用户离开当前路由，再次回来后，可以防止重复添加epic，造成不可以预知的问题
          */
         if (arrEpicWrapper[index]) {
           const epicWrapper = arrEpicWrapper[index]
@@ -100,7 +100,7 @@ export function getEpicManager(epicMiddleware): IEpicManager {
           epicMiddleware.run(replaceableWrapper)
           // 让epic生效
           replaceableWrapper.replaceWith(epic)
-          // 储存epic引用，供下次检查
+          // 储存replaceableWrapper引用，供下次检查
           arrEpicWrapper[index] = replaceableWrapper
           // 引用计数, 供下次检查
           epicRefCounter.add(epic)
@@ -116,6 +116,11 @@ export function getEpicManager(epicMiddleware): IEpicManager {
       //   runningEpics.push(e);
       // });
     },
+    /**
+     * todo 实现epic移除
+     * 目前还没有真正意义上可以移除epic的有效方法，原因请见 https://redux-observable.js.org/docs/recipes/AddingNewEpicsAsynchronously.html
+     * 可以使用替换的思路，使用一个空的epic，然后将业务epic switchMap到无任何作用的epic上
+     */
     remove: (epics: Epic[]) => {
       if (!epics) {
         return
@@ -126,7 +131,6 @@ export function getEpicManager(epicMiddleware): IEpicManager {
       //   return p;
       // }, {});
 
-      // fixme 目前还没有真正可以移除epic的有效方法，原因请见 https://redux-observable.js.org/docs/recipes/AddingNewEpicsAsynchronously.html
       // epics.forEach(epic => {
       //   epicRefCounter.remove(epic);
       // });

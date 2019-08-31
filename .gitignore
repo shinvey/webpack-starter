@@ -26,3 +26,6 @@ npm-debug.log
 # for sonnar scanner and sornar lint
 .scannerwork
 .sonarlint
+
+# for patch files
+*.patch

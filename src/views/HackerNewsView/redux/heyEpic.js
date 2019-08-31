@@ -5,7 +5,7 @@ const heyEpic = action$ => {
   return action$.pipe(
     ofType('HEY'),
     delay(1000), // Asynchronously wait 1000ms then continue
-    mapTo({ type: 'HOU' })
+    mapTo({ type: 'HI' })
   )
 }
 
