@@ -7,6 +7,13 @@ import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 import MainFrame from './MainFrame'
 import ErrorBoundary from './deps/ErrorBoundary'
 
+const store = createStore({
+  extensions: [
+    // getThunkExtension(),
+    getObservableExtension()
+  ]
+})
+
 /**
  * 考虑复杂的菜单用例
  * 树形菜单
@@ -26,12 +33,7 @@ export default function Container () {
   return (
     <Router>
       <ErrorBoundary>
-        <Provider store={createStore({
-          extensions: [
-            // getThunkExtension(),
-            getObservableExtension()
-          ]
-        })}>
+        <Provider store={store}>
           <MainFrame />
         </Provider>
       </ErrorBoundary>
