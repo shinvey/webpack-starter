@@ -9,7 +9,7 @@ import ErrorBoundary from './deps/ErrorBoundary'
 
 const store = createStore({
   extensions: [
-    // getThunkExtension(),
+    getThunkExtension(),
     getObservableExtension()
   ]
 })

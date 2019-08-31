@@ -15,12 +15,12 @@ const List = ({ items }) => {
   return items.map((item, index) => <Link key={index} {...item} />)
 }
 
-const HackerNews = ({ items, isPinging, dispatch }) => {
+const HackerNews = ({ items, isPinging, say, dispatch }) => {
   // if (items.length === 0) {
   //   return <div className="weather-root widget">Loading News...</div>
   // }
 
-  console.debug('dispatch', dispatch)
+  // console.debug('dispatch', dispatch)
 
   return <>
     <div className="news-root widget">
@@ -30,6 +30,8 @@ const HackerNews = ({ items, isPinging, dispatch }) => {
     <div>
       <h2>is pinging: {isPinging.toString()}</h2>
       <button type="button" onClick={() => dispatch(ping())}>ping</button>
+      <p>{say}</p>
+      <button type="button" onClick={() => dispatch({ type: 'HEY' })}>hey</button>
     </div>
   </>
 }
@@ -37,7 +39,8 @@ const HackerNews = ({ items, isPinging, dispatch }) => {
 const mapStateToProps = state => {
   return {
     items: state.hackerNews ? state.hackerNews.items : [],
-    isPinging: state.ping.isPinging
+    isPinging: state.ping.isPinging,
+    say: state.greeting.say
   }
 }
 

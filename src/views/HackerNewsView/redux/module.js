@@ -1,5 +1,6 @@
 import { hackerNewsReducer } from './reducer'
 import { pingReducer } from './pingReducer'
+import { heyReducer } from './heyReducer'
 import pingEpic from './pingEpic'
 import heyEpic from './heyEpic'
 import { fetchStories } from './actions'
@@ -10,13 +11,14 @@ export function getHackerNewsModule () {
     id: 'hacker-news',
     // Maps the Store key to the reducer
     reducerMap: {
-      // hackerNews: hackerNewsReducer,
-      ping: pingReducer
+      hackerNews: hackerNewsReducer,
+      ping: pingReducer,
+      greeting: heyReducer
     },
-    epics: [pingEpic, heyEpic]
+    epics: [heyEpic, pingEpic],
     // Optional: Any actions to dispatch when the module is loaded
-    // initialActions: [fetchStories()],
+    initialActions: [fetchStories()],
     // Optional: Any actions to dispatch when the module is unloaded
-    // finalActions: []
+    finalActions: []
   }
 }
