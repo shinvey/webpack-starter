@@ -42,6 +42,14 @@ module.exports = {
     // Suggested additions https://github.com/stylelint/stylelint-config-standard#suggested-additions
     'unit-no-unknown': [true, {
       ignoreFunctions: ['image-set']
+    }],
+    /**
+     * Many rules have secondary options which provide further customization.
+     * To set secondary options, a two-member array is used:
+     * 将css module语法列进非标准pseudo白名单
+     */
+    'selector-pseudo-class-no-unknown': [true, {
+      ignorePseudoClasses: ['global']
     }]
   }
 }
