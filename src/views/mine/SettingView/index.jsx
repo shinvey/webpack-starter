@@ -1,19 +1,19 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import loadable from 'react-loadable'
-import Loading from '../Loading'
+import Loading from '@/views/Loading'
 
 export const navigation = {
-  path: '/about',
-  name: '关于'
+  path: '/mine/setting',
+  name: '个人设置'
 }
-export function Content (props) {
+export function Content () {
   const View = loadable({
     loader: () => import('./View'),
     loading: Loading,
-    render (loaded, _props) {
+    render (loaded, props) {
       const Component = loaded.default
-      return <Component navigation={navigation} {..._props} {...props}/>
+      return <Component navigation={navigation} {...props}/>
     }
   })
   return <Route path={navigation.path} component={View}/>

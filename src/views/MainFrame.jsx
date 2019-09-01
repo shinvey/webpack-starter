@@ -7,23 +7,25 @@ import { Link } from 'react-router-dom'
 // webpack require.context api https://github.com/webpack/docs/wiki/context
 const req = require.context('./', true, /\w+View\/index\.[a-z]+$/i)
 const routes = []
+// const routes = {}
 const contents = []
 req.keys().forEach(modulePath => {
   const ViewModule = req(modulePath)
   const Content = ViewModule.Content
   const key = ViewModule.navigation.name
   routes.push(ViewModule.navigation)
-  contents.push(<Content key={key} />)
+  // routes[modulePath.replace(/\/index\.[a-z]+$/i, '')] = ViewModule.navigation
+  contents.push(<Content key={key} routes={routes} />)
 })
 
 function BasicLayout (props) {
   const { navigations } = props
   return <div>
-    <b>所有视图接口：</b>
-    <ul>
-      {navigations.map((nav, key) => <li key={key}><Link to={nav.path}>{nav.name}</Link></li>)}
-    </ul>
-    <b>当前视图内容：</b>
+    {/* <b>所有视图接口：</b> */}
+    {/* <ul> */}
+    {/*  {navigations.map((nav, key) => <li key={key}><Link to={nav.path}>{nav.name}</Link></li>)} */}
+    {/* </ul> */}
+    {/* <b>当前视图内容：</b> */}
     {props.children}
   </div>
 }

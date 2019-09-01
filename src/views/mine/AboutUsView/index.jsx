@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import loadable from 'react-loadable'
-import Loading from '../Loading'
+import Loading from '@/views/Loading'
 
 export const navigation = {
-  path: '/weather',
-  name: '天气'
+  path: '/mine/about-us',
+  name: '关于我们'
 }
 export function Content () {
   const View = loadable({
