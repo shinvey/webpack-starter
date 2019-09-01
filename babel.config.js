@@ -53,16 +53,20 @@ module.exports = {
     // 支持类定义私有字段和方法。目前babel-eslint 10还没能很好支持
     // ['@babel/plugin-proposal-private-methods', { 'loose': true }]
     // 按需加载UI组件库 https://github.com/ant-design/babel-plugin-import#options
+    // ['import', {
+    //   libraryName: 'antd',
+    //   style: true
+    // }, 'antd'],
     ['import', {
-      libraryName: 'antd',
+      libraryName: 'antd-mobile',
       style: true
-    }, 'antd'],
+    }, 'antd-mobile'],
     // for ant-design-pro
-    ['import', {
-      libraryName: 'ant-design-pro',
-      style: true,
-      camel2DashComponentName: false
-    }, 'ant-design-pro'],
+    // ['import', {
+    //   libraryName: 'ant-design-pro',
+    //   style: true,
+    //   camel2DashComponentName: false
+    // }, 'ant-design-pro'],
     /**
      * for antd pro layout
      * 请使用具体路径引用BasicLayout路径引用其子组件
@@ -74,6 +78,11 @@ module.exports = {
     //   },
     //   camel2DashComponentName: false
     // }, 'ant-design-pro-layout'],
+    ['import', {
+      libraryName: 'lodash',
+      libraryDirectory: '',
+      camel2DashComponentName: false // default: true
+    }, 'lodash'],
 
     // 启用react hot loader https://github.com/gaearon/react-hot-loader
     ['react-hot-loader/babel']
