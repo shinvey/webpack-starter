@@ -288,7 +288,19 @@ module.exports = (env = {}, args = {}) => {
 
   // web dev server spa
   const devServer = {
-    port: 8080
+    port: 8080,
+    proxy: [
+      {
+        context: [
+          '/assets'
+        ],
+        target: 'http://h5.fgry45iy.com',
+        changeOrigin: true
+        // pathRewrite: {
+        //   '^/assets': ''
+        // }
+      }
+    ]
   }
   // 单页应用路由模式
   if (env.spa) {
@@ -324,7 +336,8 @@ module.exports = (env = {}, args = {}) => {
       extensions: [
         '.js',
         '.jsx',
-        '.ts'
+        '.ts',
+        '.tsx'
       ],
       alias: {
         /**
@@ -358,22 +371,22 @@ module.exports = (env = {}, args = {}) => {
         // 添加pcss支持
         {
           test: /\.p?css$/,
-          include: directoryWhiteList,
+          // include: directoryWhiteList,
           use: cssPreprocessors
         },
         // 添加scss支持
         {
           test: cssPreprocessor.sassLoader.test,
-          exclude: cssPreprocessor.sassLoader.moduleTest,
-          include: directoryWhiteList,
-          use: sassPreprocessors
-        },
-        // 添加scss module支持
-        {
-          test: cssPreprocessor.sassLoader.moduleTest,
+          // exclude: cssPreprocessor.sassLoader.moduleTest,
           include: directoryWhiteList,
           use: sassModulePreprocessors
         },
+        // 添加scss module支持
+        // {
+        //   test: cssPreprocessor.sassLoader.moduleTest,
+        //   include: directoryWhiteList,
+        //   use: sassModulePreprocessors
+        // },
         // 添加less支持
         {
           test: cssPreprocessor.lessLoader.test,
