@@ -9,7 +9,7 @@ export const navigation = {
 }
 export function Content (props) {
   const View = loadable({
-    loader: () => import('./View'),
+    loader: () => import(/* webpackChunkName: "About" */'./View'),
     loading: Loading,
     render (loaded, _props) {
       const Component = loaded.default

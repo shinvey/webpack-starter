@@ -10,7 +10,7 @@ export const navigation = {
 }
 export function Content () {
   const View = loadable({
-    loader: () => import('./View'),
+    loader: () => import(/* webpackChunkName: "Home" */'./View'),
     loading: Loading
   })
   /**
