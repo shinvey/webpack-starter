@@ -29,6 +29,7 @@
     "build:production:sourcemap": "npm run build:production -- --devtool source-map",
     "build:production:inline-sourcemap": "npm run build:production -- --devtool inline-source-map",
     "build:production:inspect": "npm run build:production -- --debug --env.inspect",
+    "build:production:analyze": "npm run build:production -- --env.analyze",
     "build:inspect": "npm run build:development -- -d --env.lint --env.clean",
     "build:inspect:browser": "npm run build:inspect -- --devtool source-map",
     "build:inspect:code": "npm run build:inspect -- --devtool none",
@@ -88,10 +89,10 @@
     "stylelint-scss": "^3.9.3",
     "tslint": "^5.18.0",
     "tslint-eslint-rules": "^5.4.0",
+    "webpack-bundle-analyzer": "^3.4.1",
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
-    "@ant-design/pro-layout": "^4.5.11",
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-proposal-decorators": "^7.4.4",
