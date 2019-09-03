@@ -41,10 +41,11 @@ module.exports = (env = {}, args = {}) => {
   // web dev server 只能用hash
   const hashType = isDev(args.mode) ? 'hash' : 'contenthash'
   // js、css等静态资源
-  const filenamePattern = `assets/[name].[${hashType}:4]`
-  const chunkFilenamePattern = `assets/[name].[${hashType}:4].chunk`
+  const assetsDir = 'static'
+  const filenamePattern = `${assetsDir}/[name].[${hashType}:4]`
+  const chunkFilenamePattern = `${assetsDir}/[name].[${hashType}:4].chunk`
   // 图像、字体等静态资源
-  const assetFilenamePattern = 'assets/[name].[hash:4]'
+  const assetFilenamePattern = `${assetsDir}/[name].[hash:4]`
   // 避免chunk里的module ID因某个module更新ID发生连锁变化反应
   // Module Identifiers. See https://webpack.js.org/guides/caching/#module-identifiers
   isPrd(args.mode) && plugins.push(new webpack.HashedModuleIdsPlugin())
@@ -314,6 +315,15 @@ module.exports = (env = {}, args = {}) => {
    */
   if (env.inspect) {
     // output.publicPath = 'http://127.0.0.1:8000/'
+  }
+
+  /**
+   * Webpack Bundle Analyzer
+   * Visualize size of webpack output files with an interactive zoomable treemap.
+   */
+  if (env.analyze) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+    plugins.push(new BundleAnalyzerPlugin())
   }
 
   // webpack 一般配置
