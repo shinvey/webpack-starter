@@ -24,6 +24,7 @@ module.exports = {
     'react'
   ],
   'rules': {
-    'no-return-assign': 'off'
+    'no-return-assign': 'off',
+    'comma-dangle': 'off',
   }
 }
