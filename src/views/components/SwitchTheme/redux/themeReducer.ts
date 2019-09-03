@@ -10,7 +10,6 @@ export default function themeReducer(
       // 设置主题
       case setTheme:
         draft.theme = state.themes[action.payload]
-        localStorage.setItem(namespace, action.payload)
         break
       case initThemes:
         draft.themes = action.payload

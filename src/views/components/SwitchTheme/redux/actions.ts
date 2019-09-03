@@ -5,8 +5,10 @@ export const initThemes = namespace + '/initThemes'
 export const loadThemes = namespace + '/loadThemes'
 
 export function setThemeActionCreator(payload) {
+  payload = payload || localStorage.getItem(namespace) || 'default'
+  localStorage.setItem(namespace, payload)
   return {
     type: setTheme,
-    payload: payload || localStorage.getItem(namespace) || 'default'
+    payload
   }
 }

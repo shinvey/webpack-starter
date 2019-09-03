@@ -2,7 +2,9 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { isJudge } from '../helpers'
 import { Switch } from 'antd-mobile'
-import { setTheme } from '@/views/components/SwitchTheme/redux/actions'
+import {
+  setThemeActionCreator
+} from '@/views/components/SwitchTheme/redux/actions'
 
 interface SliderProps {
   [random: string]: any
@@ -35,10 +37,7 @@ export default class SwitchButton extends React.PureComponent<
           checked
         })
         // 切换主题
-        this.props.dispatch({
-          type: setTheme,
-          payload: isJudge(checked)('space', 'default')
-        })
+        this.props.dispatch(setThemeActionCreator(isJudge(checked)('space', 'default')))
       }}
       checked={status}
     />
