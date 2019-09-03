@@ -38,6 +38,7 @@ module.exports = {
   },
   'rules': {
     'react/prop-types': 'off',
-    'no-return-assign': 'off'
+    'no-return-assign': 'off',
+    'comma-dangle': 'off',
   }
 }
