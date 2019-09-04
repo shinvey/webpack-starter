@@ -37,16 +37,19 @@ module.exports = (env = {}, args = {}) => {
   }
   /**
    * Caching. See https://webpack.js.org/guides/caching/
+   * 缓存的hash解决了缓存利用率和覆盖式部署等相关问题
    */
   // web dev server 只能用hash
   const hashType = isDev(args.mode) ? 'hash' : 'contenthash'
   // js、css等静态资源
   const assetsDir = 'static'
-  const filenamePattern = `${assetsDir}/[name].[${hashType}:4]`
-  const chunkFilenamePattern = `${assetsDir}/[name].[${hashType}:4].chunk`
+  const filenamePattern = `${assetsDir}/[name]${isPrd(args.mode) ? `.[${hashType}:4]` : ''}`
+  const chunkFilenamePattern = `${assetsDir}/[name]${isPrd(args.mode) ? `.[${hashType}:4]` : ''}.chunk`
   // 图像、字体等静态资源
-  const assetFilenamePattern = `${assetsDir}/[name].[hash:4]`
-  // 避免chunk里的module ID因某个module更新ID发生连锁变化反应
+  const assetFilenamePattern = `${assetsDir}/[name]${isPrd(args.mode) ? '.[hash:4]' : ''}`
+  // css module localIdentName
+  const cssModuleLocalIdentName = isDev(args.mode) ? '[path][name]__[local]--[hash:base64:5]' : '[hash:base64]'
+  // 避免chunk里的module ID因某个module更新ID发生连锁变化反应，导致缓存全部失效
   // Module Identifiers. See https://webpack.js.org/guides/caching/#module-identifiers
   isPrd(args.mode) && plugins.push(new webpack.HashedModuleIdsPlugin())
 
@@ -93,7 +96,7 @@ module.exports = (env = {}, args = {}) => {
   sassModulePreprocessors[1] = cssPreprocessor.cssLoader({
     importLoaders: 2,
     modules: {
-      localIdentName: isDev(args.mode) ? '[path][name]__[local]--[hash:base64:5]' : '[hash:base64]'
+      localIdentName: cssModuleLocalIdentName
     }
   })
   // less
