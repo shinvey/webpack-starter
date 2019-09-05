@@ -1,15 +1,9 @@
-import { getStringRefCounter, getObjectRefCounter, IItemManager } from "redux-dynamic-modules-core"
-import { Epic } from "redux-observable"
-import { merge, BehaviorSubject, of, Subject, Observable } from "rxjs"
-import { mergeMap, switchMap, mapTo } from 'rxjs/operators'
-import { combineEpics, ofType } from 'redux-observable'
-
-// import { Subject, from, queueScheduler } from 'rxjs';
-// const QueueScheduler = queueScheduler.constructor;
-// const uniqueQueueScheduler = new QueueScheduler(queueScheduler.SchedulerAction);
+import { getObjectRefCounter, IItemManager } from 'redux-dynamic-modules-core'
+import { Epic, ofType } from 'redux-observable'
+import { Observable, Subject } from 'rxjs'
+import { mapTo, switchMap } from 'rxjs/operators'
 
 export interface IEpicManager extends IItemManager<Epic> {
-  // rootEpic: Epic;
 }
 
 interface IEpicWrapper {
@@ -19,105 +13,46 @@ interface IEpicWrapper {
   replaceWith(epic: Epic): void
 }
 
-interface IModule extends NodeModule {
-  /**
-   * this is referenced to hot module replacement
-   */
-  hot?: object
-}
-declare var module: IModule
-
-// const replaceableWrapper: {
-//   (...args: any[]): Observable<unknown>;
-//   replaceWith(epic: any): void;
-//   epicRef(): any;
-// }
-
 /**
  * Creates an epic manager which manages epics being run in the system
  */
 export function getEpicManager(epicMiddleware): IEpicManager {
   let runningEpics: object = {}
   // @ts-ignore
-  const epicRefCounter = getObjectRefCounter()
-  const has = (_key) => _key in runningEpics
-  const get = (_key) => runningEpics[_key]
-  const key = (namespace, name) => `${namespace}-${name}`
-  // const rootEpic: Epic = createRootEpic(runningEpics);
+  let epicRefCounter = getObjectRefCounter()
 
   return {
-    // @ts-ignore
-    // getItems: () => runningEpics,
-    // rootEpic,
     /**
      * 动态添加epic有
      * epic不可被真正动态删除
      * 防止重复添加
      * 满足module hot load动态更新
+     * 不同的module依赖同一个epic
      */
-    add: (epics: Epic[], namespace: string) => {
+    add: (epics: Epic[]) => {
       if (!epics) {
         return
       }
 
-      const arrEpicWrapper: IEpicWrapper[] = runningEpics[namespace] || []
-      runningEpics[namespace] = arrEpicWrapper
-
-      epics.forEach((epic: Epic, index) => {
-        // const epicKey = key(namespace, epic.name)
-        // console.debug('check ', epicKey, ' if it existed ', has(epicKey))
-
-        // 发现已经被引用了
-        // if (epicRefCounter.getCount(epic)) {
-        //   // 如果key不一样，更新key
-        //   epicKey ===
-        //   // do nothing
-        // }
-
-        /**
-         * 考虑hot reload场景
-         * 在使用react-hot-loader时，去修改epic，触发hot load后，getEpicManager会被重新调用，相当于重建
-         * 不过这里的判断还是有意义的，在用户离开当前路由，再次回来后，可以防止重复添加epic，造成不可以预知的问题
-         */
-        if (arrEpicWrapper[index]) {
-          const epicWrapper = arrEpicWrapper[index]
-          // 如果开启了HMR，尝试替换epic
-          if (module.hot && epicWrapper.epicRef() !== epic) {
-            // 更新引用，是为了下一次的判断或对比
-            epicRefCounter.remove(epicWrapper.epicRef())
-            epicRefCounter.add(epic)
-            /**
-             * 使用旧epic替换为新epic
-             * 不直接替换是因为rxjs本身设计模式，无法卸载已经存在的epic逻辑
-             * replaceWith会采用switchMap，来尝试替换旧epic逻辑
-             */
-            epicWrapper.replaceWith(epic)
-
-            console.info(`[HRM] previous epic ${epicWrapper} is replaced by new epic ${epic}`)
-          }
-        } else {
+      epics.forEach((epic: Epic) => {
+        const epicKey = epic.toString()
+        if (!runningEpics.hasOwnProperty(epicKey)) {
           const replaceableWrapper = createReplaceableWrapper()
           epicMiddleware.run(replaceableWrapper)
           // 让epic生效
           replaceableWrapper.replaceWith(epic)
-          // 储存replaceableWrapper引用，供下次检查
-          arrEpicWrapper[index] = replaceableWrapper
-          // 引用计数, 供下次检查
-          epicRefCounter.add(epic)
+          /**
+           * 储存replaceableWrapper引用，供下次检查
+           * Is there a limit on length of the key (string) in JS object? https://stackoverflow.com/questions/13367391/is-there-a-limit-on-length-of-the-key-string-in-js-object
+           */
+          runningEpics[epicKey] = replaceableWrapper
         }
+        // 引用计数，管理依赖关系，在remove时有用
+        epicRefCounter.add(epic)
       })
-      // epicMiddleware.run(combineEpics(...replaceableWrappers));
-      // epics.forEach((e, idx) => replaceableWrappers[idx].replaceWith(e))
-
-      // epics.forEach(e => {
-      //   // @ts-ignore
-      //   // rootEpic.replace(e);
-      //   epicRefCounter.add(e.name);
-      //   runningEpics.push(e);
-      // });
     },
     /**
-     * todo 实现epic移除
+     * 实现epic移除
      * 目前还没有真正意义上可以移除epic的有效方法，原因请见 https://redux-observable.js.org/docs/recipes/AddingNewEpicsAsynchronously.html
      * 可以使用替换的思路，使用一个空的epic，然后将业务epic switchMap到无任何作用的epic上
      */
@@ -126,21 +61,22 @@ export function getEpicManager(epicMiddleware): IEpicManager {
         return
       }
 
-      // const epicNameMap = epics.reduce((p, e) => {
-      //   p[e.name] = e;
-      //   return p;
-      // }, {});
+      epics.forEach((epic: Epic) => {
+        epicRefCounter.remove(epic)
 
-      // epics.forEach(epic => {
-      //   epicRefCounter.remove(epic);
-      // });
-
-      // runningEpics = runningEpics.filter(e => {
-      //   !!epicNameMap[e.name] && epicRefCounter.getCount(e.name) !== 0;
-      // });
+        const epicKey = epic.toString()
+        const epicWrapper: IEpicWrapper = runningEpics[epicKey]
+        if (epicWrapper && !epicRefCounter.getCount(epic)) {
+          // 清空epicWrapper内部逻辑
+          epicWrapper.replaceWith(emptyEpic)
+          // 删除epic引用
+          delete runningEpics[epicKey]
+        }
+      })
     },
     dispose: () => {
       runningEpics = null
+      epicRefCounter = undefined
     },
   } as IEpicManager
 }
@@ -169,26 +105,9 @@ function createReplaceableWrapper () {
   return replaceableWrapper
 }
 
-function createRootEpic(runningEpics: Epic[]): Epic {
-  const epic$ = new Subject()
-
-  const merger = (...args) =>
-    epic$.pipe(
-      // @ts-ignore
-      switchMap(epic => epic(...args))
-    )
-
-  // @ts-ignore
-  merger.replace = (...args) => epic$.next(...args)
-
-  // Technically the `name` property on Function's are supposed to be read-only.
-  // While some JS runtimes allow it anyway (so this is useful in debugging)
-  // some actually throw an exception when you attempt to do so.
-  try {
-    Object.defineProperty(merger, "name", {
-      value: "____MODULES_ROOT_EPIC",
-    })
-  } catch (e) {}
-
-  return merger
+function emptyEpic (action$) {
+  return action$.pipe(
+    ofType('noop'),
+    mapTo({ type: 'noop' })
+  )
 }
