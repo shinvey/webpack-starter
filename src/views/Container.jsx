@@ -6,13 +6,17 @@ import { getObservableExtension } from '@/library/redux-dynamic-modules-observab
 import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 import MainFrame from './MainFrame'
 import ErrorBoundary from './deps/ErrorBoundary'
+// import { getThemeModule } from '@/views/components/SwitchTheme/redux/module'
 
-const store = createStore({
-  extensions: [
-    getThunkExtension(),
-    getObservableExtension()
-  ]
-})
+const store = createStore(
+  {
+    extensions: [
+      getThunkExtension(),
+      getObservableExtension()
+    ]
+  },
+  // getThemeModule()
+)
 
 /**
  * 考虑复杂的菜单用例
