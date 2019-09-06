@@ -1,9 +1,10 @@
 import { getObjectRefCounter, IItemManager } from 'redux-dynamic-modules-core'
-import { Epic, ofType } from 'redux-observable'
+import { Epic, ofType, EpicMiddleware } from 'redux-observable'
 import { Observable, Subject } from 'rxjs'
 import { mapTo, switchMap } from 'rxjs/operators'
 
 export interface IEpicManager extends IItemManager<Epic> {
+  // some extra properties
 }
 
 interface IEpicWrapper {
@@ -16,65 +17,72 @@ interface IEpicWrapper {
 /**
  * Creates an epic manager which manages epics being run in the system
  */
-export function getEpicManager(epicMiddleware): IEpicManager {
-  let runningEpics: object = {}
+export function getEpicManager(epicMiddleware: EpicMiddleware<any>): IEpicManager {
+  let runningEpics: { [epicKey: string]: IEpicWrapper } = {}
   // @ts-ignore
   let epicRefCounter = getObjectRefCounter()
 
   return {
     /**
-     * 动态添加epic有
-     * epic不可被真正动态删除
-     * 防止重复添加
-     * 满足module hot load动态更新
-     * 不同的module依赖同一个epic
+     * Dynamically add epics.
+     *
+     * We should consider these potential problem:
+     * * Epic could add repeatedly
+     * * Epic could as a dependency of two or more modules
+     * * Module hot load. React-hot-loader will rerender your react root
+     * component which means it will invoke all of your logic again. So this is
+     * minor worry.
      */
-    add: (epics: Epic[]) => {
-      if (!epics) {
-        return
-      }
-
-      epics.forEach((epic: Epic) => {
+    add (epics: Epic[] = []) {
+      epics.forEach(epic => {
         const epicKey = epic.toString()
+        // Check if epic already exists
         if (!runningEpics.hasOwnProperty(epicKey)) {
           const replaceableWrapper = createReplaceableWrapper()
+          // we put replaceable Observable wrapper into epicMiddleware
           epicMiddleware.run(replaceableWrapper)
-          // 让epic生效
+          // let's roll epic. Here we make epic run truly
           replaceableWrapper.replaceWith(epic)
           /**
-           * 储存replaceableWrapper引用，供下次检查
-           * Is there a limit on length of the key (string) in JS object? https://stackoverflow.com/questions/13367391/is-there-a-limit-on-length-of-the-key-string-in-js-object
+           * We store the reference of replaceableWrapper, so we can check if it exists next time
+           *
+           * Is there a limit on length of the key (string) in JS object?
+           * See https://stackoverflow.com/questions/13367391/is-there-a-limit-on-length-of-the-key-string-in-js-object
            */
           runningEpics[epicKey] = replaceableWrapper
         }
-        // 引用计数，管理依赖关系，在remove时有用
+        /**
+         * We follow practice on official document https://redux-dynamic-modules.js.org/#/reference/ModuleCounting
+         * So we use RefCounter to determine when we should remove epic
+         */
         epicRefCounter.add(epic)
       })
     },
     /**
-     * 实现epic移除
-     * 目前还没有真正意义上可以移除epic的有效方法，原因请见 https://redux-observable.js.org/docs/recipes/AddingNewEpicsAsynchronously.html
-     * 可以使用替换的思路，使用一个空的epic，然后将业务epic switchMap到无任何作用的epic上
+     * Remove epics
+     * Actually it will replace the real epic with a empty epic
+     *
+     * __Note:__
+     * Under some circumstances here https://redux-observable.js.org/docs/recipes/AddingNewEpicsAsynchronously.html
+     * We can't do a actual replacement.
+     * But we can try to replace real epic with empty epic, it works as we expected. This benefit is given by rxjs switchMap
      */
-    remove: (epics: Epic[]) => {
-      if (!epics) {
-        return
-      }
-
-      epics.forEach((epic: Epic) => {
+    remove (epics: Epic[] = []) {
+      epics.forEach(epic => {
         epicRefCounter.remove(epic)
 
         const epicKey = epic.toString()
-        const epicWrapper: IEpicWrapper = runningEpics[epicKey]
-        if (epicWrapper && !epicRefCounter.getCount(epic)) {
-          // 清空epicWrapper内部逻辑
-          epicWrapper.replaceWith(emptyEpic)
-          // 删除epic引用
+        const replaceableWrapper = runningEpics[epicKey]
+        // Check if no module reference epic, we will remove epic
+        if (replaceableWrapper && !epicRefCounter.getCount(epic)) {
+          // Replace the epic with empty epic, so no more unnecessary logic can cause any side effects.
+          replaceableWrapper.replaceWith(emptyEpic)
+          // Delete unnecessary replaceableWrapper reference
           delete runningEpics[epicKey]
         }
       })
     },
-    dispose: () => {
+    dispose () {
       runningEpics = null
       epicRefCounter = undefined
     },
@@ -82,29 +90,33 @@ export function getEpicManager(epicMiddleware): IEpicManager {
 }
 
 /**
- * create a wrapper which can be replace by a epic
+ * create a wrapper which can be replace by a real epic.
+ * And we can also use this wrapper along with {@link emptyEpic} to remove real epic logic
  */
 function createReplaceableWrapper () {
   const epic$ = new Subject()
 
-  // 包装一个可以被替换的wrapper
+  // Wrap epic$ as a replaceable Observable
   const replaceableWrapper: IEpicWrapper = (...args) =>
     epic$.pipe(
       // @ts-ignore
       switchMap(epic => epic(...args))
     )
 
-  // 暴露替换方法
+  // Expose a method. The wrapper can be replaced by real epic, and make it run
   replaceableWrapper.replaceWith = epic => {
     epic$.next(epic)
     replaceableWrapper._epic = epic
   }
-  // 提供epic ref访问接口
   replaceableWrapper.epicRef = () => replaceableWrapper._epic
 
   return replaceableWrapper
 }
 
+/**
+ * Empty epic
+ * This epic do nothing and we need it to be used for real epic replacement
+ */
 function emptyEpic (action$) {
   return action$.pipe(
     ofType('noop'),
