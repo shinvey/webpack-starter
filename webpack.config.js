@@ -310,13 +310,12 @@ module.exports = (env = {}, args = {}) => {
   if (env.spa) {
     if (typeof env.spa === 'string') {
       // 默认首页设置为spa入口制定的html
-      devServer.index = env.spa
+      // devServer.index = env.spa
     }
     // 选项来源 https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
     // 参数文档 https://github.com/bripkens/connect-history-api-fallback#index
-    devServer.historyApiFallback = {
-      index: '/'
-    }
+    // 以下配置是单页应用用例，如果一个项目中有多个单页应用，可以通过rewrites规则来实现
+    devServer.historyApiFallback = true
     // 单页应用路由，必须配置publicPath，在route到虚拟path路径时，可以确保资源加载路径正确
     // publicPath与dev server启动端口保持统一
     // output.publicPath = `http://127.0.0.1:${devServer.port}/`
