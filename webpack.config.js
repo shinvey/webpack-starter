@@ -470,9 +470,13 @@ module.exports = (env = {}, args = {}) => {
    * In the meantime, I would like to recommend Michael Goddard's hard-source-webpack-plugin,
    * which seems like webpack 5 is going to use internally.
    * 加速 webpack 二次编译 https://github.com/mzgoddard/hard-source-webpack-plugin
+   *
+   * debug模式下不使用缓存
    */
-  const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-  webpackConfig.plugins.push(new HardSourceWebpackPlugin())
+  if (!args.debug) {
+    const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+    webpackConfig.plugins.push(new HardSourceWebpackPlugin())
+  }
 
   return webpackConfig
 }

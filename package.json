@@ -6,7 +6,7 @@
   "scripts": {
     "// 启动开发服务": "",
     "// start:spa": "当前项目为单页应用开发模式，使用npm run start:spa来启动web dev server",
-    "start:spa": "npm start -- -d --env.spa index.html",
+    "start:spa": "npm start -- --env.spa index.html",
     "// 代码书写规范检查": "",
     "// & and &&区别": "在npm scripts中组合多个命令时，如果使用 && 表示按顺序执行，如果使用 & 表示同时执行。See https://stackoverflow.com/questions/39172536/running-npm-scripts-sequentially",
     "// lint": "对源码目录执行一次代码检查",
