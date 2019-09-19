@@ -5,14 +5,32 @@ module.exports = {
       '@babel/preset-env',
       {
         /**
-         * loose模式会输出更少量的代码
+         * loose模式会在browserslist对低版本运行环境的query输出更少量的代码
          * loose模式会导致，会使这种表达式 [...Array(5).keys()] 无法得到预期结果
          * loose模式在新项目启动使使用比较安全。对已有项目使用，可能会引发未知问题
+         * loose模式也会影响babel编译代码时无法正常使用browserslist。例如当开启loose，
+         * browserslist设置为current node，依然会转译代码
          */
-        loose: true,
+        // loose: true,
         exclude: [
-          // 如果我们已经采用polyfill service，则可以选择不使用regenerator转换async、await语法，使用Promise
-          '@babel/plugin-transform-regenerator'
+          // 包列表 https://github.com/babel/babel/blob/master/packages/babel-preset-env/src/available-plugins.js
+          /**
+           * 如果我们已经采用polyfill service，且浏览器已经支持async/await/generator
+           * 语法则可以选择不使用regenerator转换async/await/generator语法
+           */
+
+          // 转换async为generator语法
+          'transform-async-to-generator',
+          // '@babel/plugin-transform-async-to-generator',
+
+          /**
+           * 转换generator为低版本浏览器能够运行的代码
+           * transform-regenerator https://babeljs.io/docs/en/babel-plugin-transform-regenerator
+           * 已经支持async/await/generator语法的转换，他不需要和transform-async-to-generator
+           * 同时使用
+           */
+          // 'transform-regenerator',
+          // '@babel/plugin-transform-regenerator',
         ]
       }
     ],
