@@ -354,7 +354,7 @@ module.exports = (env = {}, args = {}) => {
             options: {
               // see https://github.com/babel/babel-loader#options
               // 缓存babel编译结果，加快下次编译速度
-              cacheDirectory: true,
+              cacheDirectory: !env.clean,
               // 缓存时是否压缩缓存。如果编译的文件非常多，不压缩虽然能提升编译性能，但是增加了磁盘空间占用率。
               cacheCompression: false
             }

@@ -8,8 +8,6 @@ module.exports = {
          * loose模式会在browserslist对低版本运行环境的query输出更少量的代码
          * loose模式会导致，会使这种表达式 [...Array(5).keys()] 无法得到预期结果
          * loose模式在新项目启动使使用比较安全。对已有项目使用，可能会引发未知问题
-         * loose模式也会影响babel编译代码时无法正常使用browserslist。例如当开启loose，
-         * browserslist设置为current node，依然会转译代码
          */
         // loose: true,
         exclude: [
