@@ -493,5 +493,12 @@ module.exports = (env = {}, args = {}) => {
     webpackConfig.plugins.push(new HardSourceWebpackPlugin())
   }
 
+  /**
+   * Todo Enable typescript type checking with fork-ts-checker-webpack-plugin
+   * https://stackoverflow.com/questions/54675587/babel-typescript-doesnt-throw-errors-while-webpack-build
+   * ts-loader
+   * https://github.com/TypeStrong/ts-loader
+   */
+
   return webpackConfig
 }
