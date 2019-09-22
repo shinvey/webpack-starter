@@ -70,6 +70,20 @@ module.exports = (env = {}, args = {}) => {
   }
 
   /**
+   * babel compiler configuration
+   */
+  const javascriptCompiler = {
+    loader: 'babel-loader',
+    options: {
+      // see https://github.com/babel/babel-loader#options
+      // 缓存babel编译结果，加快下次编译速度
+      cacheDirectory: !env.clean,
+      // 缓存时是否压缩缓存。如果编译的文件非常多，不压缩虽然能提升编译性能，但是增加了磁盘空间占用率。
+      cacheCompression: false
+    }
+  }
+
+  /**
    * 样式文件处理
    */
   const cssPreprocessor = require('./build/css-processor')(env, args)
@@ -346,18 +360,14 @@ module.exports = (env = {}, args = {}) => {
       // see https://webpack.js.org/configuration/module#modulerules
       rules: [
         {
-          test: /\.(m?js|ts)x?$/,
+          test: /\.m?jsx?$/,
           include: directoryWhiteList,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              // see https://github.com/babel/babel-loader#options
-              // 缓存babel编译结果，加快下次编译速度
-              cacheDirectory: !env.clean,
-              // 缓存时是否压缩缓存。如果编译的文件非常多，不压缩虽然能提升编译性能，但是增加了磁盘空间占用率。
-              cacheCompression: false
-            }
-          }
+          use: javascriptCompiler
+        },
+        {
+          test: /\.tsx?$/,
+          // include: directoryWhiteList,
+          use: javascriptCompiler
         },
         // 添加pcss支持
         {
