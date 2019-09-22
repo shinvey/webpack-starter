@@ -63,10 +63,9 @@ module.exports = (env = {}, args = {}) => {
     publicPath: '/'
   }
 
-  const fileManagerOptions = {
-    onStart: {
-      delete: []
-    }
+  let fileManagerOptions = {
+    onStart: [],
+    onEnd: []
   }
 
   /**
@@ -173,7 +172,7 @@ module.exports = (env = {}, args = {}) => {
      * 图像处理
      */
     // --env.clean开启则删除缓存
-    env.clean && fileManagerOptions.onStart.delete.push('./node_modules/.cache/imagemin-webpack')
+    env.clean && fileManagerOptions.onStart.push({ delete: ['./node_modules/.cache/imagemin-webpack'] })
     // see https://github.com/itgalaxy/imagemin-webpack
     // Note: Make sure that plugin place after any plugins that add images or other assets which you want to optimized.
     const ImageminPlugin = require('imagemin-webpack')
@@ -263,17 +262,19 @@ module.exports = (env = {}, args = {}) => {
   /**
    * 工程文件管理
    */
+  const userFileManagerOptions = require('./build/file-manager')(env, args)
   // 缓存清理
   if (env.clean) {
     // 清理webpack output
-    fileManagerOptions.onStart.delete.push(output.path)
+    fileManagerOptions.onStart.push({ delete: [output.path] })
     // 清理cache-loader缓存
-    fileManagerOptions.onStart.delete.push(assetProcessor.cacheLoader().options.cacheDirectory)
+    fileManagerOptions.onStart.push({ delete: [assetProcessor.cacheLoader().options.cacheDirectory] })
     // 清理zip包目录
-    fileManagerOptions.onStart.delete.push(path.resolve('zip'))
+    fileManagerOptions.onStart.push({ delete: ['./zip'] })
   }
+  fileManagerOptions = merge(fileManagerOptions, userFileManagerOptions)
   if (env.zip) {
-    fileManagerOptions.onEnd = merge(fileManagerOptions.onEnd, {
+    fileManagerOptions.onEnd.push({
       mkdir: ['./zip'],
       archive: [
         { source: './dist', destination: `./zip/${packageJSON.name}-${SVC_ENV}-${packageJSON.version}.zip` },
@@ -281,12 +282,12 @@ module.exports = (env = {}, args = {}) => {
       ]
     })
   }
-  if (['clean', 'zip'].some(cliOpt => cliOpt in env)) {
-    const FileManagerPlugin = require('filemanager-webpack-plugin')
-    plugins.push(
-      new FileManagerPlugin(fileManagerOptions)
-    )
-  }
+  // if (['clean', 'zip'].some(cliOpt => cliOpt in env)) {
+  // }
+  const FileManagerPlugin = require('filemanager-webpack-plugin')
+  plugins.push(
+    new FileManagerPlugin(fileManagerOptions)
+  )
 
   // 环境变量注入
   // todo 可以从process.env读取 version 变量信息
