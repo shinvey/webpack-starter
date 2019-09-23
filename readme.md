@@ -7,20 +7,22 @@
 
 > 在项目根目录执行
 
-```
+```bash
+# 加速 yarn/npm install过程
+# npm、yarn、pnpm测评 https://pnpm.js.org/en/benchmark
 npm i -g pnpm
 pnpm i
 ```
 
 > 在开发环境执行
 
-```
+```bash
 npm run start:spa
 ```
 
 > 构建正式环境包
 
-```
+```bash
 npm run build:production
 ```
 
