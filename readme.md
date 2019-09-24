@@ -14,7 +14,7 @@ npm i -g pnpm
 pnpm i
 ```
 
-Note：有可能出现的异常'vips/vips8' file not found
+Note： Mac OS 下有可能出现的异常'vips/vips8' file not found
 ```bash
 # 如果pnpm i过程中遇到sharp安装抛出的异常fatal error: 'vips/vips8' file not found
 # 可以使用brew安装依赖vips图像处理库
