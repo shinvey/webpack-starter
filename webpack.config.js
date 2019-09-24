@@ -494,11 +494,15 @@ module.exports = (env = {}, args = {}) => {
   }
 
   /**
-   * Todo Enable typescript type checking with fork-ts-checker-webpack-plugin
+   * Enable typescript type checking with fork-ts-checker-webpack-plugin
    * https://stackoverflow.com/questions/54675587/babel-typescript-doesnt-throw-errors-while-webpack-build
    * ts-loader
    * https://github.com/TypeStrong/ts-loader
    */
+  if (env.lint) {
+    const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+    webpackConfig.plugins.push(new ForkTsCheckerWebpackPlugin())
+  }
 
   return webpackConfig
 }
