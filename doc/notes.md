@@ -149,6 +149,9 @@ npm install sass-loader node-sass
 ## css module支持或组件级样式书写方案
 1. css-loader
 1. [styled-component](https://www.styled-components.com/)
+1. [linaria](https://github.com/callstack/linaria)
+  1. [How does SC compare to Linaria?](https://github.com/styled-components/styled-components/issues/2377)
+  2. [Static CSS Extraction](https://github.com/styled-components/styled-components/issues/1018)
 1. [styled-jsx](https://github.com/zeit/styled-jsx)
 ## postcss支持
 1. postcss preset env
