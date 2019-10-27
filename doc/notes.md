@@ -291,9 +291,12 @@ device.js https://github.com/binnng/device.js
 [ ] [使用基于rem的可伸缩布局方案](https://github.com/shinvey/rem-flexible)
   2. [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem)
 
-[x] css autoprefix, postcss-preset-env已实现
-[x] browserlist
-[x] polyfill支持, polyfill service
+* [x] css autoprefix, postcss-preset-env已实现
+* [x] browserlist
+* [x] polyfill支持, polyfill service。改方案会损失一定的开发体验，基于此问题可以尝试如下方案
+  * [polyfill-service-webpack](https://github.com/jussi-kalliokoski/polyfill-service-webpack)
+  * [polyfill-service-url-builder](https://github.com/Financial-Times/polyfill-service-url-builder)
+
 __兼容性检查__
 如果你不打算polyfill你的项目，你或许要开启eslint-plugin-compat对浏览器兼容性的检查
 https://github.com/amilajack/eslint-plugin-compat
