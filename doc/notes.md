@@ -685,7 +685,7 @@ vue为此提供了[style scoped](https://vue-loader-v14.vuejs.org/zh-cn/features
   button: 5px;
 }
 ```
-推荐写法，限定作用于，有scope的概念，减少对全局的影响。
+推荐写法，限定作用于，有scope/namespace/contextual的概念，减少对全局的影响。
 
 * 重复类选择器
 ```css
@@ -712,6 +712,7 @@ vue为此提供了[style scoped](https://vue-loader-v14.vuejs.org/zh-cn/features
 以上三种写法都可以覆盖组件样式，请酌情使用。
 
 问题相关链接：
+* [CSS Specificity](https://www.w3schools.com/css/css_specificity.asp)
 * [CSS incorrect order](https://github.com/webpack-contrib/sass-loader/issues/318)
 * [Feature Request: add a "priority" option to allow defining the order of style blocks](https://github.com/webpack-contrib/style-loader/issues/17)
 * [How can I keep the css order in the css file when I use extract-text-webpack-plugin？](https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/200)
