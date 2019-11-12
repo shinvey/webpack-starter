@@ -153,6 +153,73 @@ npm install sass-loader node-sass
   1. [How does SC compare to Linaria?](https://github.com/styled-components/styled-components/issues/2377)
   2. [Static CSS Extraction](https://github.com/styled-components/styled-components/issues/1018)
 1. [styled-jsx](https://github.com/zeit/styled-jsx)
+
+## css主题书写建议
+如果真要配合css module一块使用，嵌套问题完全取决于，同一个样式表中不同作用域是否有重名css选择器
+不使用css module的情况下，至少要有一个以组件节点作为父级作用域的css selector来确立一个scope，来避免子节点样式可能对外部产生影响
+
+- 基于css module的主题解决方案
+```scss
+// 基本样式 / 不同主题共享样式 / bare bone style
+.component_scope {
+  .child {
+    .grandchild {}
+  }
+  .kid {
+    .grandchild {}
+  }
+  .child {
+    .nested_child {}
+  }
+}
+// 白天
+:global([data-theme=light]) {
+  // 因为子元素classname重名，需要声明父类来区别作用域
+  .child {
+    .grandchild {}
+  }
+  .kid {
+    .grandchild {}
+  }
+  // 无需嵌套.component_scope，css module会帮助隔离外部重名classname
+  .nested_child {}
+}
+// 黑夜
+:global([data-theme=dark]) {
+  .child {
+    .grandchild {}
+  }
+  .kid {
+    .grandchild {}
+  }
+  .nested_child {}
+}
+```
+
+- 纯css主题解决方案
+```scss
+// 基本样式 / 不同主题共享样式 / bare bone style
+.component_scope {
+  .child {
+    .nested_child {}
+  }
+}
+// 白天
+[data-theme=light] {
+  // 纯css方案，至少需要声明一个组件级别作用域
+  .component_scope {
+    // 无重名classname，无需嵌套
+    .nested_child {}
+  }
+}
+// 黑夜
+[data-theme=dark] {
+  .component_scope {
+    .nested_child {}
+  }
+}
+```
+
 ## postcss支持
 1. postcss preset env
 1. PostCSS Utility Library
