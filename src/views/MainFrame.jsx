@@ -1,21 +1,20 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import viewScanner from '@/views/viewScanner'
+// import { Link } from 'react-router-dom'
 // @ant-design/pro-layout https://github.com/ant-design/ant-design-pro-layout/blob/master/README.zh-CN.md
 // import BasicLayout from '@ant-design/pro-layout'
 // 载入当前page下所有视图索引，创建routes and contents，交由basic layout渲染
 
-// webpack require.context api https://github.com/webpack/docs/wiki/context
-const req = require.context('./', true, /\w+View\/index\.[a-z]+$/i)
 const routes = []
 // const routes = {}
-const contents = []
-req.keys().forEach(modulePath => {
-  const ViewModule = req(modulePath)
-  const Content = ViewModule.Content
-  const key = ViewModule.navigation.name
-  routes.push(ViewModule.navigation)
-  // routes[modulePath.replace(/\/index\.[a-z]+$/i, '')] = ViewModule.navigation
-  contents.push(<Content key={key} routes={routes} />)
+const contents = viewScanner({
+  iteratee (ViewModule) {
+    const Content = ViewModule.Content
+    const key = ViewModule.navigation.name
+    routes.push(ViewModule.navigation)
+    // routes[modulePath.replace(/\/index\.[a-z]+$/i, '')] = ViewModule.navigation
+    return <Content key={key} routes={routes} />
+  }
 })
 
 function BasicLayout (props) {
