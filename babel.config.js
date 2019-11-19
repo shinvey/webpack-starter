@@ -5,11 +5,40 @@ module.exports = {
       '@babel/preset-env',
       {
         /**
+         * babel的polyfill方案
+         * core-js 需要配合 useBuiltIns 共同使用
+         * 需要安装core-js依赖 npm i core-js@3
+         *
+         * 如果不想使用babel的polyfill方案可以选用运行时polyfill service方案
+         * 优势按需加载，劣势是需要更具对js api依赖情况定制polyfill service的url
+         * 选用Polyfill service可以查看 https://polyfill.io/
+         */
+        // useBuiltIns: 'usage',
+        // corejs: 3,
+
+        /**
+         * modules选项见 https://babeljs.io/docs/en/babel-preset-env#modules
+         * auto的含义见 https://github.com/babel/babel/pull/8485/files#r236086742
+         * auto的含义解释
+         * 'auto' (default) which will automatically select 'false' if the current
+         * process is known to support ES module syntax, or "commonjs" otherwise
+         * For example, if you are calling Babel using babel-loader, modules will be set to false because webpack supports ES modules
+         */
+        // modules: 'auto', // 如果我们使用webpack，modules将为false
+
+        /**
          * loose模式会在browserslist对低版本运行环境的query输出更少量的代码
          * loose模式会导致，会使这种表达式 [...Array(5).keys()] 无法得到预期结果
          * loose模式在新项目启动使使用比较安全。对已有项目使用，可能会引发未知问题
          */
         // loose: true,
+
+        /**
+         * 如果你想确认babel是否真正使用了browserlist的配置文件，
+         * 或者core js polyfill方案是否启用，可以开启babel调试模式查看更多信息。
+         * 如果你想反复调试，可以考虑关闭babel的cacheDirectory选项，设置为false。
+         */
+        // 'debug': true,
         exclude: [
           // 包列表 https://github.com/babel/babel/blob/master/packages/babel-preset-env/src/available-plugins.js
           /**
@@ -40,6 +69,8 @@ module.exports = {
   ],
   plugins: [
     /**
+     * 新版本可以在@babel/preset-env中配置使用core js和helper等特性
+     *
      * 解决问题 Babel is injecting helpers into each file and bloating my code!
      * see https://github.com/babel/babel-loader#babel-is-injecting-helpers-into-each-file-and-bloating-my-code
      * 如果代码量多，将inline模式插入的helper代码改成以module形式从@babel/runtime包引入还是比较划算的
