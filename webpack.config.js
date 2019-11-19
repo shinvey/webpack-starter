@@ -271,8 +271,6 @@ module.exports = (env = {}, args = {}) => {
     fileManagerOptions.onStart.push({ delete: [assetProcessor.cacheLoader().options.cacheDirectory] })
     // 清理zip包目录
     fileManagerOptions.onStart.push({ delete: ['./zip'] })
-    // 清理zip包目录
-    fileManagerOptions.onStart.delete.push(path.resolve('zip'))
   }
   if (env.zip) {
     fileManagerOptions.onEnd = merge(fileManagerOptions.onEnd, {
