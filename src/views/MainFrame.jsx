@@ -18,7 +18,7 @@ const contents = viewScanner({
 })
 
 function BasicLayout (props) {
-  const { navigations } = props
+  // const { navigations } = props
   return <div>
     {/* <b>所有视图接口：</b> */}
     {/* <ul> */}
