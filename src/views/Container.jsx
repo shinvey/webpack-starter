@@ -5,7 +5,7 @@ import { createStore } from 'redux-dynamic-modules-core'
 import { getObservableExtension } from 'redux-dynamic-modules-observable'
 import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 import MainFrame from './MainFrame'
-import ErrorBoundary from './deps/ErrorBoundary'
+import ErrorBoundary from './components/ErrorBoundary'
 // import { getThemeModule } from '@/views/components/SwitchTheme/redux/module'
 
 const store = createStore(
