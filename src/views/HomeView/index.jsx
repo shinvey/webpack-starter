@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import loadable from 'react-loadable'
-import Loading from '../Loading'
+import Loading from '../components/Loading'
 
 export const navigation = {
   path: '/',

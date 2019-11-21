@@ -17,7 +17,10 @@ module.exports = (env = {}, args = {}) => {
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
-    path.resolve('src')
+    path.resolve('src'),
+    /sunny-js/,
+    // require.resolve('sunny-js'),
+    // path.resolve('sunny-js'),
   ]
   // 插件管理
   const plugins = []

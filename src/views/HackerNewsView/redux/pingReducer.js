@@ -1,5 +1,5 @@
 import { PING, PONG } from './pingAction'
-// import { addActionTranslator } from '@/views/AppBridge/SyncState'
+// import { addActionTranslator } from '../../AppBridge/SyncState'
 
 /**
  * 以下两个action translator，起到了状态同步的作用

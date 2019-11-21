@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import React from 'react'
+import React, { Fragment } from 'react'
 import './hacker-news-component.css'
 import { ping } from '../redux/pingAction'
 
@@ -22,7 +22,7 @@ const HackerNews = ({ items, isPinging, say, dispatch }) => {
 
   // console.debug('dispatch', dispatch)
 
-  return <>
+  return <Fragment>
     <div className="news-root widget">
       <h2>Hacker News - Top 5</h2>
       <List items={items} />
@@ -33,7 +33,7 @@ const HackerNews = ({ items, isPinging, say, dispatch }) => {
       <p>{say}</p>
       <button type="button" onClick={() => dispatch({ type: 'HEY' })}>hey</button>
     </div>
-  </>
+  </Fragment>
 }
 
 const mapStateToProps = state => {

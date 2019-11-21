@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import loadable from 'react-loadable'
-import Loading from '@/views/Loading'
+import Loading from '@/views/components/Loading'
 
 export const navigation = {
   path: '/mine/setting',

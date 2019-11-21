@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import BusinessError from '../Request/BusinessError'
+import NetworkError from '../Request/NetworkError'
 
-export default class ErrorBoundary extends React.Component {
+export default class ErrorBoundary extends PureComponent {
   constructor (props) {
     super(props)
     this.state = { hasError: false }
+
+    // 处理公共网络异常
+    document.removeEventListener(BusinessError.name, this.errorHandler)
+      .addEventListener(BusinessError.name, this.errorHandler)
+    // 处理公共业务异常
+    document.removeEventListener(NetworkError.name, this.errorHandler)
+      .addEventListener(NetworkError.name, this.errorHandler)
+  }
+
+  /**
+   * 处理请求异常事件
+   * @param {BusinessError|NetworkError} error
+   */
+  errorHandler = ({ data: error }) => {
+    console.error(this.constructor.name, error)
   }
 
   static getDerivedStateFromError () {
