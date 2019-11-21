@@ -1,22 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux-dynamic-modules-core'
-import { getObservableExtension } from 'redux-dynamic-modules-observable'
-import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 import MainFrame from './MainFrame'
 import ErrorBoundary from './components/ErrorBoundary'
-// import { getThemeModule } from '@/views/components/SwitchTheme/redux/module'
-
-const store = createStore(
-  {
-    extensions: [
-      getThunkExtension(),
-      getObservableExtension()
-    ]
-  },
-  // getThemeModule()
-)
+import store from './store'
 
 /**
  * 考虑复杂的菜单用例
@@ -30,6 +17,7 @@ const store = createStore(
 /**
  * 单页应用装配
  * 这是个页面容器page container
+ * useMemo vs memo https://github.com/facebook/react/issues/14616
  * @returns {*}
  * @constructor
  */

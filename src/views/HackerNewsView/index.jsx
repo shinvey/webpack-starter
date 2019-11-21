@@ -7,14 +7,15 @@ export const navigation = {
   path: '/hacker-news',
   name: '骇客新闻'
 }
+
+const View = loadable({
+  loader: () => import(/* webpackChunkName: "HackerNews" */'./View'),
+  loading: Loading,
+  // render (loaded, props) {
+  //   const Component = loaded.default
+  //   return <Component navigation={navigation} {...props}/>
+  // }
+})
 export function Content () {
-  const View = loadable({
-    loader: () => import(/* webpackChunkName: "HackerNews" */'./View'),
-    loading: Loading,
-    render (loaded, props) {
-      const Component = loaded.default
-      return <Component navigation={navigation} {...props}/>
-    }
-  })
   return <Route path={navigation.path} component={View}/>
 }

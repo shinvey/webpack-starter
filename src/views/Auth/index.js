@@ -1,7 +1,9 @@
 /**
  * token获取接口
  */
-export function token () {}
+export function token () {
+  return 'adfasdfopwekljladjfpafasdfasd'
+}
 
 /**
  * 登录跳转

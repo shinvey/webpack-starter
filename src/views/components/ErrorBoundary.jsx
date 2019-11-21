@@ -7,13 +7,21 @@ export default class ErrorBoundary extends PureComponent {
   constructor (props) {
     super(props)
     this.state = { hasError: false }
+  }
 
+  componentDidMount () {
     // 处理公共网络异常
-    document.removeEventListener(BusinessError.name, this.errorHandler)
-      .addEventListener(BusinessError.name, this.errorHandler)
+    document.addEventListener(BusinessError.name, this.errorHandler)
     // 处理公共业务异常
+    document.addEventListener(NetworkError.name, this.errorHandler)
+  }
+
+  componentWillUnmount () {
+    // 异步任务一定要在组件被卸载时，能够被清理掉
+    // 移除处理公共网络异常
+    document.removeEventListener(BusinessError.name, this.errorHandler)
+    // 移除处理公共业务异常
     document.removeEventListener(NetworkError.name, this.errorHandler)
-      .addEventListener(NetworkError.name, this.errorHandler)
   }
 
   /**

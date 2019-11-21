@@ -1,3 +1,4 @@
+import { get } from '../../Request/ajaxPromise'
 export const HackerNewsStoriesAvailable = 'hackernews/storiesavailable'
 export const HackerNewsLoadStories = 'hackernews/loadstories'
 
@@ -37,7 +38,11 @@ export const fetchStories = () => {
 
 // Helper to fetch the json
 const fetchJson = url => {
-  return fetch(url).then(response => {
-    return response.json()
-  })
+  // get(url).then(response => { console.log('fetchJSON', response) })
+  //   .catch(err => { console.error('fetchJSON', err) })
+  // return get(url, { name: 'Alice' }).then(AjaxResponse => AjaxResponse.response)
+  return get(url).then(AjaxResponse => AjaxResponse.response)
+  // return fetch(url).then(response => {
+  //   return response.json()
+  // })
 }
