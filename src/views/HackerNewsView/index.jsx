@@ -8,6 +8,15 @@ export const navigation = {
   name: '骇客新闻'
 }
 
+/**
+ * 放在Content外部
+ * actions执行一次，
+ * reducer无法正常热更新。第二次修改要第三次刷新才能看到
+ *
+ * 放在Content里面
+ * actions执行两次
+ * reducer正常热更新
+ */
 const View = loadable({
   loader: () => import(/* webpackChunkName: "HackerNews" */'./View'),
   loading: Loading,
@@ -16,6 +25,7 @@ const View = loadable({
   //   return <Component navigation={navigation} {...props}/>
   // }
 })
+
 export function Content () {
   return <Route path={navigation.path} component={View}/>
 }

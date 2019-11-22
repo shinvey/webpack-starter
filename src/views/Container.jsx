@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import MainFrame from './MainFrame'
 import ErrorBoundary from './components/ErrorBoundary'
 import store from './store'
+// import { configureStore } from './store'
+
+// const store = configureStore()
 
 /**
  * 考虑复杂的菜单用例

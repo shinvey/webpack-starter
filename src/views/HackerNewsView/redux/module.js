@@ -1,6 +1,6 @@
 import { hackerNewsReducer } from './reducer'
 import { pingReducer } from './pingReducer'
-import { heyReducer } from './heyReducer'
+import heyReducer from './heyReducer'
 import pingEpic from './pingEpic'
 import heyEpic from './heyEpic'
 import { fetchStories } from './actions'
