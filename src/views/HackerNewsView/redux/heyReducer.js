@@ -4,7 +4,7 @@ export default function heyReducer (state = { say: '...' }, action) {
       return { say: 'Hey!' }
 
     case 'HI':
-      return { say: 'da!' }
+      return { say: 'Hi!' }
 
     default:
       return state

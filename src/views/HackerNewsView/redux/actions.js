@@ -41,7 +41,6 @@ const fetchJson = url => {
   // get(url).then(response => { console.log('fetchJSON', response) })
   //   .catch(err => { console.error('fetchJSON', err) })
   // return get(url, { name: 'Alice' }).then(AjaxResponse => AjaxResponse.response)
-  // sddsssasdfsssss
   return get(url).then(AjaxResponse => AjaxResponse.response)
   // return fetch(url).then(response => {
   //   return response.json()
