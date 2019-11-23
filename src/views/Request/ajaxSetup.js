@@ -1,6 +1,5 @@
-import { throwError } from 'rxjs'
 import { token } from '../Auth'
-import { beforeCatchError, afterCatchError, detectErrorFromResponse } from './errorHandler'
+import { beforeCatchError, afterCatchError, detectError } from './errorHandler'
 
 /**
  * 配置底层的ajax行为
@@ -26,20 +25,13 @@ export default function ajaxSetup ({ url, method, headers = {}, body, ...rest })
       ...headers
     },
     // 继续将错误抛出，允许当前stream上的其他pipe也可以捕获异常，并作自定义处理
-    beforeCatchError: error => throwError(beforeCatchError(error) || error),
-    tap: {
-      next (ajaxResponse) {
-        const response = ajaxResponse.response
-        console.log('Low level response emit ', response)
-
-        const error = detectErrorFromResponse(response)
-        if (error) {
-          throw error
-        }
-      }
-    },
+    beforeCatchError,
+    // 检测可能出现的业务异常
+    detectError,
+    // 重试次数，可以被具体get, post等方法重设
+    retryTimes: 2,
     // 继续将错误抛出，允许当前stream上的其他pipe也可以捕获异常，提供自定义处理的机会
-    afterCatchError: error => throwError(afterCatchError(error) || error),
+    afterCatchError,
     ...rest
   }
 }

@@ -1,4 +1,5 @@
-import { get } from '../../Request/ajaxPromise'
+// import { get, cancelAll } from '../../Request/ajax'
+import { get, cancelAll } from '../../Request/ajaxPromise'
 export const HackerNewsStoriesAvailable = 'hackernews/storiesavailable'
 export const HackerNewsLoadStories = 'hackernews/loadstories'
 
@@ -41,7 +42,23 @@ const fetchJson = url => {
   // get(url).then(response => { console.log('fetchJSON', response) })
   //   .catch(err => { console.error('fetchJSON', err) })
   // return get(url, { name: 'Alice' }).then(AjaxResponse => AjaxResponse.response)
-  return get(url).then(AjaxResponse => AjaxResponse.response)
+  const result = get(url).then(AjaxResponse => AjaxResponse.response)
+
+  // 重试次数设置为1
+  // const result = get(url, undefined, { retryTimes: 1 }).then(AjaxResponse => AjaxResponse.response)
+
+  // const result = new Promise((resolve, reject) => {
+  //   const subscription = get(url).subscribe({
+  //     next: AjaxResponse => resolve(AjaxResponse.response),
+  //     error: reject
+  //   })
+  //   // 取消请求
+  //   subscription.unsubscribe()
+  // })
+
+  // 取消所有ajax请求
+  // cancelAll()
+  return result
   // return fetch(url).then(response => {
   //   return response.json()
   // })
