@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import BusinessError from '../Request/BusinessError'
 import NetworkError from '../Request/NetworkError'
+import AjaxCancelError from 'sunny-js/request/AjaxCancelError'
 
 export default class ErrorBoundary extends PureComponent {
   constructor (props) {
@@ -14,6 +15,7 @@ export default class ErrorBoundary extends PureComponent {
     document.addEventListener(BusinessError.name, this.errorHandler)
     // 处理公共业务异常
     document.addEventListener(NetworkError.name, this.errorHandler)
+    document.addEventListener(AjaxCancelError.name, this.errorHandler)
   }
 
   componentWillUnmount () {
@@ -22,6 +24,7 @@ export default class ErrorBoundary extends PureComponent {
     document.removeEventListener(BusinessError.name, this.errorHandler)
     // 移除处理公共业务异常
     document.removeEventListener(NetworkError.name, this.errorHandler)
+    document.removeEventListener(AjaxCancelError.name, this.errorHandler)
   }
 
   /**

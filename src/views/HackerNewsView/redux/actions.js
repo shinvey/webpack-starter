@@ -1,5 +1,6 @@
-// import { get, cancelAll } from '../../Request/ajax'
-import { get, cancelAll } from '../../Request/ajaxPromise'
+// import { get, cancelAll, isCancel } from '../../Request/ajax'
+// import { get, cancelAll, isCancel } from '../../Request/ajaxPromise'
+import { get, isCancel } from '../../Request/ajaxPromise'
 export const HackerNewsStoriesAvailable = 'hackernews/storiesavailable'
 export const HackerNewsLoadStories = 'hackernews/loadstories'
 
@@ -42,18 +43,36 @@ const fetchJson = url => {
   // get(url).then(response => { console.log('fetchJSON', response) })
   //   .catch(err => { console.error('fetchJSON', err) })
   // return get(url, { name: 'Alice' }).then(AjaxResponse => AjaxResponse.response)
-  const result = get(url).then(AjaxResponse => AjaxResponse.response)
+  const ajaxP = get(url)
+  const result = ajaxP.then(AjaxResponse => AjaxResponse.response)
+  result.catch(err => {
+    console.error('ajax error', err)
+    isCancel(err) && console.log(err.message)
+  }).finally(() => {
+    console.log('ajax promise complete')
+  })
+  // ajaxP.cancel()
 
   // 重试次数设置为1
   // const result = get(url, undefined, { retryTimes: 1 }).then(AjaxResponse => AjaxResponse.response)
 
   // const result = new Promise((resolve, reject) => {
-  //   const subscription = get(url).subscribe({
-  //     next: AjaxResponse => resolve(AjaxResponse.response),
-  //     error: reject
+  //   const ajax$ = get(url)
+  //   const subscription = ajax$.subscribe({
+  //     next: AjaxResponse => {
+  //       console.log('ajax success')
+  //       resolve(AjaxResponse.response)
+  //     },
+  //     error (err) {
+  //       console.error('ajax error', err)
+  //       reject(err)
+  //     },
+  //     complete (...args) {
+  //       console.log('ajax complete', ...args)
+  //     }
   //   })
-  //   // 取消请求
-  //   subscription.unsubscribe()
+  //   // subscription.unsubscribe()
+  //   // ajax$.cancel()
   // })
 
   // 取消所有ajax请求

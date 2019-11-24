@@ -1,6 +1,7 @@
 import { trigger } from 'sunny-js/util/DOMEvent'
 import BusinessError from './BusinessError'
 import NetworkError from './NetworkError'
+import AjaxCancelError from 'sunny-js/request/AjaxCancelError'
 // import { handleSessionError } from '../Auth/errorHandler'
 
 /**
@@ -56,4 +57,9 @@ export function afterCatchError (error) {
    * 通过document根结点抛出异常事件，由外部对事件感兴趣对相关逻辑处理
    */
   trigger(error.constructor.name, error)
+  console.dir(error)
+  console.debug('BusinessError', error instanceof BusinessError)
+  console.debug('NetworkError', error instanceof NetworkError)
+  console.debug('AjaxCancelError', error instanceof AjaxCancelError)
+  console.debug('Error', error instanceof Error)
 }

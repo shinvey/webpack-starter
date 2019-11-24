@@ -1,4 +1,4 @@
-import NetworkError from 'sunny-js/class/Error/networkError'
+import NetworkError from 'sunny-js/request/NetworkError'
 
 /**
  * 自定义NetworkError实例message属性取值逻辑
