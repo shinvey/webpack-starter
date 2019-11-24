@@ -1,17 +1,19 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import loadable from 'react-loadable'
-import Loading from '../../components/Loading'
+import Loading from '../components/Loading'
 
 export const navigation = {
   path: '/nav',
   name: '视图导航',
 }
+
+const View = loadable({
+  loader: () => import(/* webpackChunkName: "Nav" */'./View'),
+  loading: Loading
+})
+
 export function Content (props) {
-  const View = loadable({
-    loader: () => import(/* webpackChunkName: "Nav" */'./View'),
-    loading: Loading
-  })
   /**
    * path也可根据需要自定义
    * 大部分情况下可以直接使用navigation.path
