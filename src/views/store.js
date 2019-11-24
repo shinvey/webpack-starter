@@ -12,6 +12,16 @@ export function configureStore () {
       ]
     },
     // getThemeModule()
+    {
+      id: 'user-module',
+      reducerMap: {
+        user (state, action) {
+          return {
+            token: 'example-token'
+          }
+        }
+      }
+    }
   )
 }
 

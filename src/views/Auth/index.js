@@ -1,11 +1,22 @@
+import store from '../store'
+
+// 登录 事件
+export const LOGIN = 'LOGIN'
+// 登录成功 事件
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+
 /**
  * token获取接口
+ * @returns {string}
  */
 export function token () {
-  return 'adfasdfopwekljladjfpafasdfasd'
+  return store.getState().user.token || 'adfasdfopwekljladjfpafasdfasd'
 }
 
 /**
- * 登录跳转
+ * 判断是否登录
+ * @returns {boolean}
  */
-// export function login() {}
+export function isLogin () {
+  return !!token()
+}

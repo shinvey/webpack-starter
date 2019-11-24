@@ -1,5 +1,6 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+// import { Route } from 'react-router-dom'
+import AuthRoute from '../Auth/AuthRoute'
 import loadable from 'react-loadable'
 import Loading from '../components/Loading'
 
@@ -22,5 +23,6 @@ export function Content (props) {
    * 为什么不用component https://reacttraining.com/react-router/web/api/Route/component
    * because you will get undesired component unmounts/remounts.
    */
-  return <Route path={navigation.path} exact render={routeProps => <View {...routeProps} {...props} />} />
+  // return <Route path={navigation.path} exact render={routeProps => <View {...routeProps} {...props} />} />
+  return <AuthRoute path={navigation.path} exact render={routeProps => <View {...routeProps} {...props} />} />
 }
