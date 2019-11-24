@@ -9,6 +9,15 @@ export default ({ iteratee }) => {
   // require.context的参数只能够接受直接书写的方式，不可使用变量
   const req = require.context('./', true, /\w+View\/index\.[a-z]+$/i)
   const contents = []
-  req.keys().forEach(modulePath => contents.push(iteratee(req(modulePath))))
+  req.keys().forEach(modulePath => contents.push(iteratee(req(modulePath), modulePath)))
   return contents
+}
+
+/**
+ * 将Module Path转换成Router Path
+ * @param path
+ * @returns {string}
+ */
+export function routerPath (path) {
+  return path.replace(/^([./]*)([\w\d-/_]+?)view\/index\.[\w]+$/ig, '$2').toLowerCase()
 }

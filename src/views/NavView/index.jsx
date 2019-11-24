@@ -19,7 +19,7 @@ export function Content (props) {
    * 大部分情况下可以直接使用navigation.path
    *
    * 用Route组件给View视图传值
-   * 为什么不用component https://reacttraining.com/react-router/web/guides/basic-components/route-rendering-props
+   * 为什么不用component https://reacttraining.com/react-router/web/api/Route/component
    * because you will get undesired component unmounts/remounts.
    */
   return <Route path={navigation.path} exact render={routeProps => <View {...routeProps} {...props} />} />

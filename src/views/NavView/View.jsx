@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function View (props) {
-  const navigations = props.nav
+  const navigations = props.routes
   return <Fragment>
     <b>视图目录：</b>
     <ul>
