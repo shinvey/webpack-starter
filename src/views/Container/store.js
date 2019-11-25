@@ -16,9 +16,14 @@ export function configureStore () {
       id: 'user-module',
       reducerMap: {
         user (state, action) {
-          return {
-            token: 'example-token'
+          if (action.type === 'user/update') {
+            state.token = action.payload.token
+          } else {
+            state = state || {
+              token: undefined
+            }
           }
+          return state
         }
       }
     }

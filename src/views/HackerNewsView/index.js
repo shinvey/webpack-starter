@@ -1,11 +1,10 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
 import loadable from 'react-loadable'
 import Loading from '../components/Loading'
 
-export const navigation = {
+export const route = {
+  key: 'hacker-news',
+  name: '骇客新闻',
   path: '/hacker-news',
-  name: '骇客新闻'
 }
 
 /**
@@ -17,15 +16,7 @@ export const navigation = {
  * actions执行两次
  * reducer正常热更新
  */
-const View = loadable({
+export const Content = loadable({
   loader: () => import(/* webpackChunkName: "HackerNews" */'./View'),
   loading: Loading,
-  // render (loaded, props) {
-  //   const Component = loaded.default
-  //   return <Component navigation={navigation} {...props}/>
-  // }
 })
-
-export function Content () {
-  return <Route path={navigation.path} component={View}/>
-}

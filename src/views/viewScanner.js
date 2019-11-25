@@ -9,7 +9,10 @@ export default ({ iteratee }) => {
   // require.context的参数只能够接受直接书写的方式，不可使用变量
   const req = require.context('./', true, /\w+View\/index\.[a-z]+$/i)
   const contents = []
-  req.keys().forEach(modulePath => contents.push(iteratee(req(modulePath), modulePath)))
+  req.keys().forEach((modulePath, index) => {
+    const result = iteratee(req(modulePath))
+    result && contents.push(result, modulePath)
+  })
   return contents
 }
 

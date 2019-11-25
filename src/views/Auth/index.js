@@ -1,16 +1,11 @@
-import store from '../store'
-
-// 登录 事件
-export const LOGIN = 'LOGIN'
-// 登录成功 事件
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+import store from '../Container/store'
 
 /**
  * token获取接口
  * @returns {string}
  */
 export function token () {
-  return store.getState().user.token || 'adfasdfopwekljladjfpafasdfasd'
+  return store.getState().user.token
 }
 
 /**

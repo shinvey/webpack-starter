@@ -2,7 +2,7 @@
 import { hot } from 'react-hot-loader/root'
 import React from 'react'
 import { render } from 'react-dom'
-import Container from './Container.jsx'
+import Container from './Container'
 
 const App = module.hot ? hot(() => <Container />) : Container
 

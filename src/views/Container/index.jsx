@@ -1,34 +1,52 @@
 import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import {
+  Router,
+  Switch,
+  Route,
+} from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
+import history from './history'
 import viewScanner from '@/views/viewScanner'
 // import viewScanner, { routerPath } from '@/views/viewScanner'
-import ErrorBoundary from './components/ErrorBoundary'
+import ErrorBoundary from '../components/ErrorBoundary'
+import AuthRoute from '../Auth/AuthRoute'
 
 /**
  * 载入当前page下所有视图索引，创建routes and contents
  * 这里完全可决定是否要把所有路由信息以怎样的数据结构传给所有视图
  */
-const routes = []
+// const routes = []
 /**
  * 如果想以对象形式创建路由表
  * 可以考虑在视图接口的navigation上添加id属性作为对象的key
  */
-// const routes = {}
+const routes = {}
 const contents = viewScanner({
   iteratee (ViewModule, modulePath) {
-    // 视图接口暴露的Content
-    const Content = ViewModule.Content
-    // 视图接口暴露的navigation
-    const key = ViewModule.navigation.name
-    routes.push(ViewModule.navigation)
+    const {
+      // 视图接口暴露的Content
+      Content,
+      // 视图接口暴露的route配置
+      route
+    } = ViewModule
+
+    // routes.push(route)
+    routes[route.key] = route
 
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />
 
     // 自定义Content渲染方式，比如传入所有路由信息，可以被子视图所使用
-    return <Content key={key} routes={routes} />
+    // return <Content key={key} routes={routes} />
+
+    const MyRoute = route.auth ? AuthRoute : Route
+    /**
+     * 用Route组件给View视图传值
+     * 为什么不用component https://reacttraining.com/react-router/web/api/Route/component
+     * because you will get undesired component unmounts/remounts.
+     */
+    return <MyRoute {...route} render={props => <Content {...props} routes={routes} />} />
   }
 })
 
@@ -45,15 +63,19 @@ const contents = viewScanner({
  * 单页应用装配
  * 这是个页面容器page container
  * useMemo vs memo https://github.com/facebook/react/issues/14616
- * @returns {*}
- * @constructor
  */
 export default function Container () {
   return (
-    <Router>
+    <Router history={history}>
       <ErrorBoundary>
         <Provider store={store}>
-          {contents}
+          <Switch>
+            {contents}
+            <Route path={'*'}>
+              404
+              {/* 或者跳转到专门为此设计的404页面 */}
+            </Route>
+          </Switch>
         </Provider>
       </ErrorBoundary>
     </Router>
