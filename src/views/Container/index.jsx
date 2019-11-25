@@ -22,6 +22,7 @@ import AuthRoute from '../Auth/AuthRoute'
  * 可以考虑在视图接口的navigation上添加id属性作为对象的key
  */
 const routes = {}
+const customContents = []
 const contents = viewScanner({
   iteratee (ViewModule, modulePath) {
     const {
@@ -37,8 +38,12 @@ const contents = viewScanner({
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />
 
-    // 自定义Content渲染方式，比如传入所有路由信息，可以被子视图所使用
+    // 自定义Content渲染方式，用于处理更复杂灵活多变的需求
     // return <Content key={key} routes={routes} />
+    if (route.custom) {
+      customContents.push(<Content {...route} routes={routes} />)
+      return
+    }
 
     const MyRoute = route.auth ? AuthRoute : Route
     /**
@@ -46,7 +51,7 @@ const contents = viewScanner({
      * 为什么不用component https://reacttraining.com/react-router/web/api/Route/component
      * because you will get undesired component unmounts/remounts.
      */
-    return <MyRoute {...route} render={props => <Content {...props} routes={routes} />} />
+    return <MyRoute {...route} routes={routes} render={props => <Content {...props} routes={routes} />} />
   }
 })
 
@@ -71,6 +76,7 @@ export default function Container () {
         <Provider store={store}>
           <Switch>
             {contents}
+            {customContents}
             <Route path={'*'}>
               404
               {/* 或者跳转到专门为此设计的404页面 */}

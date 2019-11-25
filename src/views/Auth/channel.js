@@ -39,8 +39,10 @@ export function createLoginSuccessAction (payload) {
  * subscription.unsubscribe()
  */
 export function onLoginSuccess (callback) {
+  const subscription$ = onLoginSuccess.subscription$
+  if (subscription$) subscription$.unsubscribe()
   // 监听登录成功通知
-  return authChannel.subscribe(({ type, payload }) => {
+  return onLoginSuccess.subscription$ = authChannel.subscribe(({ type, payload }) => {
     type === LOGIN_SUCCESS && callback(payload)
   })
 }
@@ -57,7 +59,9 @@ export function onLoginSuccess (callback) {
  * subscription.unsubscribe()
  */
 export function onRequestLogin (callback) {
-  return authChannel.subscribe(({ type, payload }) => {
+  const subscription$ = onRequestLogin.subscription$
+  if (subscription$) subscription$.unsubscribe()
+  return onRequestLogin.subscription$ = authChannel.subscribe(({ type, payload }) => {
     type === LOGIN && callback(payload)
   })
 }

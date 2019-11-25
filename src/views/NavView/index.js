@@ -5,7 +5,7 @@ export const route = {
   key: 'nav',
   name: '视图导航',
   path: '/nav',
-  // auth: true
+  auth: true
 }
 
 export const Content = loadable({
