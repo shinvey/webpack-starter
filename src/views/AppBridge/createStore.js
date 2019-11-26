@@ -1,39 +1,32 @@
 import { applyMiddleware } from 'redux'
-import { createStore } from 'redux-dynamic-modules-core'
-import { getObservableExtension } from 'redux-dynamic-modules-observable'
-import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 import { syncMiddleware } from './SyncState'
+import { configureStore } from '../Container/store'
 
 /**
  * 创建store
- * @param reducer
- * @param {object} [initialState]
- * @param [enhancer]
- * @param [epics]
- * @returns {IModuleStore<unknown>}
+ * @param {object} options
+ * @param {object} options.reducerMap
+ * @param {object} options.initialState
+ * @param {Function} options.enhancer
+ * @param {Array} options.epics
+ * @returns {IModuleStore}
  */
-export default ({
+export default function createStore ({
   reducerMap,
   preloadedState: initialState,
   enhancer,
   epics
-}) => {
-  const reduxModule = {
+}) {
+  const enhancers = [
+    applyMiddleware(syncMiddleware),
+  ]
+  enhancer && enhancers.push(enhancer)
+  return configureStore({
+    initialState,
+    enhancers
+  }, {
     id: 'elderAPP',
     reducerMap,
     epics,
-  }
-  return createStore(
-    {
-      initialState,
-      extensions: [
-        getThunkExtension(),
-        getObservableExtension()
-      ],
-      enhancers: [
-        applyMiddleware(syncMiddleware)
-      ],
-    },
-    reduxModule
-  )
+  })
 }
