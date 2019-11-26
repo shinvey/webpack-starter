@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { sendAction, createLoginSuccessAction } from '../../Auth/channel'
+import { loginSuccess } from '../../Auth/channel'
 
 const View = connect()((props) => {
   const { location: { state: { from } = {} }, dispatch } = props
@@ -10,7 +10,7 @@ const View = connect()((props) => {
       // 更新用户信息
       dispatch({ type: 'user/update', payload: { token: 'updated-token' } })
       // 发送登录成功事件
-      sendAction(createLoginSuccessAction(from))
+      loginSuccess(from)
     }}>点击登录</button>
   </Fragment>
 })

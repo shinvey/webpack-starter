@@ -2,12 +2,11 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import { isLogin } from './index'
 import {
-  createLoginAction,
+  requestLogin,
   onRequestLogin,
   onLoginSuccess,
-  sendAction
 } from './channel'
-import history from '../Container/history'
+import history from '../PluggableRouter/history'
 
 // 登录视图检测到登录事件后，执行登录视图跳转
 onRequestLogin(({ to, from = { pathname: '/' } }) => {
@@ -23,7 +22,7 @@ onRequestLogin(({ to, from = { pathname: '/' } }) => {
   }
 })
 // 监听登录成功通知
-onLoginSuccess(({ from }) => {
+onLoginSuccess((from) => {
   console.debug('login success, now go back to', from)
   // history.replace(from)
   history.goBack()
@@ -38,8 +37,12 @@ export default function AuthRoute ({ children, component, render, routes, ...res
   return <Route {...rest} render={props => {
     // 如果未登录
     if (!isLogin()) {
+      /**
+       * react组件必须有个返回
+       * sendAction应该要异步执行
+       */
       // 发送请求登录事件
-      setTimeout(() => sendAction(createLoginAction({ to: routes.login, from: props.location })))
+      setTimeout(() => requestLogin({ to: routes.login, from: props.location }))
       return null
     }
 

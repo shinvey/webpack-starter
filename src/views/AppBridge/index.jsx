@@ -1,6 +1,6 @@
 import React from 'react'
 import ErrorBoundary from '../components/ErrorBoundary'
-import viewScanner from '../viewScanner'
+import viewScanner from '../PluggableRouter/viewScanner'
 
 const contents = viewScanner({
   iteratee (ViewModule) {

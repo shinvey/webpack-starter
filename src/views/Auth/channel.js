@@ -1,19 +1,15 @@
-import { Subject } from 'rxjs'
+import createChannel, { createAction } from 'sunny-js/util/Channel'
+export * from 'sunny-js/util/Channel'
+
 /**
  * 创建一个用于处理认证事件的广播
  */
-const authChannel = new Subject()
+const authChannel = createChannel()
+
 // 登录 事件
 export const LOGIN = 'LOGIN'
 // 登录成功 事件
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-
-export function createAction (type, payload) {
-  return {
-    type,
-    payload
-  }
-}
 
 export function sendAction (action) {
   return authChannel.next(action)
@@ -47,6 +43,10 @@ export function onLoginSuccess (callback) {
   })
 }
 
+export function loginSuccess (from) {
+  return sendAction(createLoginSuccessAction(from))
+}
+
 /**
  * 监听请求登录事件
  * 该方法如果不注销unsubscribe，会常驻内存，持续监听
@@ -64,6 +64,10 @@ export function onRequestLogin (callback) {
   return onRequestLogin.subscription$ = authChannel.subscribe(({ type, payload }) => {
     type === LOGIN && callback(payload)
   })
+}
+
+export function requestLogin (payload) {
+  return sendAction(createLoginAction(payload))
 }
 
 export default authChannel
