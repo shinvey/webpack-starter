@@ -57,7 +57,7 @@ export function afterCatchError (error) {
 
   /**
    * 通用异常处理
-   * 通过document根结点抛出异常事件，由外部对事件感兴趣对相关逻辑处理
+   * 通过requestChannel请求频道广播发送异常事件通知，由外部对事件感兴趣对相关逻辑处理
    */
   requestChannel.next(createAction(error.constructor.name, error))
 }
