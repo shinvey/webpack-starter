@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
-import PluggableRouter, { contents, customContents } from '../PluggableRouter'
+import PluggableRouter, { contents, customContents, routes } from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
 
 /**
@@ -22,7 +22,7 @@ export default function Container () {
   return (
     <PluggableRouter>
       <Provider store={store}>
-        <ErrorBoundary>
+        <ErrorBoundary routes={routes}>
           <Switch>
             {contents}
             {customContents}

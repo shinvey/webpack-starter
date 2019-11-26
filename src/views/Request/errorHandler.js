@@ -1,8 +1,7 @@
-import { trigger } from 'sunny-js/util/DOMEvent'
 import BusinessError from './BusinessError'
 import NetworkError from './NetworkError'
 import AjaxCancelError from 'sunny-js/request/AjaxCancelError'
-// import { handleSessionError } from '../Auth/errorHandler'
+import requestChannel, { createAction } from './channel'
 
 /**
  * 请求异常处理分三个生命周期方法，分别是
@@ -50,16 +49,15 @@ export function detectError (ajaxResponse) {
 export function afterCatchError (error) {
   // console.error('Low level error emit ', error)
 
-  // handleSessionError(error)
-
-  /**
-   * 通用异常处理
-   * 通过document根结点抛出异常事件，由外部对事件感兴趣对相关逻辑处理
-   */
-  trigger(error.constructor.name, error)
   console.dir(error)
   console.debug('BusinessError', error instanceof BusinessError)
   console.debug('NetworkError', error instanceof NetworkError)
   console.debug('AjaxCancelError', error instanceof AjaxCancelError)
   console.debug('Error', error instanceof Error)
+
+  /**
+   * 通用异常处理
+   * 通过document根结点抛出异常事件，由外部对事件感兴趣对相关逻辑处理
+   */
+  requestChannel.next(createAction(error.constructor.name, error))
 }

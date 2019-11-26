@@ -1,4 +1,5 @@
 import store from '../Container/store'
+import { routes } from '../PluggableRouter'
 
 /**
  * token获取接口
@@ -14,4 +15,8 @@ export function token () {
  */
 export function isLogin () {
   return !!token()
+}
+
+export function userRoute () {
+  return routes.login
 }

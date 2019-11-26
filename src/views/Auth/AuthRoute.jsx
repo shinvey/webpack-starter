@@ -1,15 +1,16 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { isLogin } from './index'
+import { isLogin, userRoute } from './index'
 import {
   requestLogin,
   onRequestLogin,
   onLoginSuccess,
 } from './channel'
 import history from '../PluggableRouter/history'
+import { onSessionError } from '../Request/channel'
 
-// 登录视图检测到登录事件后，执行登录视图跳转
-onRequestLogin(({ to, from = { pathname: '/' } }) => {
+function forwardToLoginView (from = history.location) {
+  const to = userRoute()
   if (!to) {
     return console.warn('You are asked to specify a route as the key should be login, e.g. ',
       { key: 'login', path: 'user/login' })
@@ -20,6 +21,13 @@ onRequestLogin(({ to, from = { pathname: '/' } }) => {
     console.debug('request login, so forward to ', to.path, ' from ', from)
     history.push(to.path, { from })
   }
+}
+// 登录视图检测到登录事件后，执行登录视图跳转
+onRequestLogin(forwardToLoginView)
+// 监听会话异常
+onSessionError(error => {
+  console.info('token expired', error)
+  forwardToLoginView()
 })
 // 监听登录成功通知
 onLoginSuccess((from) => {
@@ -42,7 +50,7 @@ export default function AuthRoute ({ children, component, render, routes, ...res
        * sendAction应该要异步执行
        */
       // 发送请求登录事件
-      setTimeout(() => requestLogin({ to: routes.login, from: props.location }))
+      setTimeout(() => requestLogin())
       return null
     }
 

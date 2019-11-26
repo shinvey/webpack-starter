@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import BusinessError from '../Request/BusinessError'
 import NetworkError from '../Request/NetworkError'
+import requestChannel from '../Request/channel'
 import AjaxCancelError from 'sunny-js/request/AjaxCancelError'
 
 export default class ErrorBoundary extends PureComponent {
@@ -11,28 +12,31 @@ export default class ErrorBoundary extends PureComponent {
   }
 
   componentDidMount () {
-    // 处理公共网络异常
-    document.addEventListener(BusinessError.name, this.errorHandler)
-    // 处理公共业务异常
-    document.addEventListener(NetworkError.name, this.errorHandler)
-    document.addEventListener(AjaxCancelError.name, this.errorHandler)
+    this._requestErrorSubscription$ = requestChannel
+      .subscribe(({ payload: error }) => this.errorHandler(error))
   }
 
   componentWillUnmount () {
-    // 异步任务一定要在组件被卸载时，能够被清理掉
-    // 移除处理公共网络异常
-    document.removeEventListener(BusinessError.name, this.errorHandler)
-    // 移除处理公共业务异常
-    document.removeEventListener(NetworkError.name, this.errorHandler)
-    document.removeEventListener(AjaxCancelError.name, this.errorHandler)
+    this._requestErrorSubscription$.unsubscribe()
   }
 
   /**
    * 处理请求异常事件
    * @param {BusinessError|NetworkError} error
    */
-  errorHandler = ({ data: error }) => {
+  errorHandler = error => {
     console.error(this.constructor.name, error)
+    switch (error.constructor.name) {
+      case BusinessError.name:
+        // 处理公共业务异常
+        break
+      case NetworkError.name:
+        // 处理公共网络异常
+        break
+      case AjaxCancelError.name:
+        // 处理请求被取消
+        break
+    }
   }
 
   static getDerivedStateFromError () {
@@ -42,7 +46,7 @@ export default class ErrorBoundary extends PureComponent {
 
   componentDidCatch (error, info) {
     // You can also log the error to an error reporting service
-    console.error(error, info)
+    console.error(this.constructor.name, error, info)
   }
 
   /**

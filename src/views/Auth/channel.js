@@ -36,7 +36,8 @@ export function createLoginSuccessAction (payload) {
  */
 export function onLoginSuccess (callback) {
   const subscription$ = onLoginSuccess.subscription$
-  if (subscription$) subscription$.unsubscribe()
+  // 热更新场景下，需要避免重复绑定
+  if (module.hot && subscription$) subscription$.unsubscribe()
   // 监听登录成功通知
   return onLoginSuccess.subscription$ = authChannel.subscribe(({ type, payload }) => {
     type === LOGIN_SUCCESS && callback(payload)
@@ -60,7 +61,8 @@ export function loginSuccess (from) {
  */
 export function onRequestLogin (callback) {
   const subscription$ = onRequestLogin.subscription$
-  if (subscription$) subscription$.unsubscribe()
+  // 热更新场景下，需要避免重复绑定
+  if (module.hot && subscription$) subscription$.unsubscribe()
   return onRequestLogin.subscription$ = authChannel.subscribe(({ type, payload }) => {
     type === LOGIN && callback(payload)
   })
