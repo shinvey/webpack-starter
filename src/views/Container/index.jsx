@@ -1,12 +1,9 @@
 import React from 'react'
-import {
-  Switch,
-  Route,
-} from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
-import PluggableRouter, { contents, customContents, routes } from '../PluggableRouter'
-import ErrorBoundary from '../components/ErrorBoundary'
+import PluggableRouter from '../PluggableRouter'
+import { Content } from './Content'
 
 /**
  * 内容container可以定制
@@ -22,16 +19,12 @@ export default function Container () {
   return (
     <PluggableRouter>
       <Provider store={store}>
-        <ErrorBoundary routes={routes}>
-          <Switch>
-            {contents}
-            {customContents}
-            <Route path={'*'}>
-              404
-              {/* 或者跳转到专门为此设计的404页面 */}
-            </Route>
-          </Switch>
-        </ErrorBoundary>
+        <Content>
+          <Route path={'*'}>
+            404
+            {/* 或者跳转到专门为此设计的404页面 */}
+          </Route>
+        </Content>
       </Provider>
     </PluggableRouter>
   )
