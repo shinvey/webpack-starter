@@ -40,6 +40,8 @@ onLoginSuccess((from) => {
  * 定义一个需要用户登录才能使用的路由
  * 当前自定义的路由组件是业务公用组件
  * https://reacttraining.com/react-router/web/example/auth-workflow
+ *
+ * todo 支持异步处理认证业务
  */
 export default function AuthRoute ({ children, component, render, routes, ...rest }) {
   return <Route {...rest} render={props => {
@@ -51,7 +53,7 @@ export default function AuthRoute ({ children, component, render, routes, ...res
        */
       // 发送请求登录事件
       setTimeout(() => requestLogin())
-      return null
+      return null // 可以返回一个过度UI组件比如loading
     }
 
     let _component
