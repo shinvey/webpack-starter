@@ -1,4 +1,4 @@
-# 动态添加[RDM]，且跟随组件生命周期而挂载或卸载
+# 动态添加[Redux dynamic module][RDM]，且跟随组件生命周期而挂载或卸载
 需要用到[DynamicModuleLoader](https://redux-dynamic-modules.js.org/#/reference/DynamicModuleLoader)组件
 完成此用例。
 
@@ -18,7 +18,7 @@ export default function View () {
 }
 ````
 
-# 动态添加RDM，且常驻内存，供组件挂载时再次使用
+# 动态添加[Redux dynamic module][RDM]，且常驻内存，供组件挂载时再次使用
 有时你可能需要使用redux这个采用内存存储的全局状态管理工具来添加一些reducer，就算组件被卸载后，依然可以被调用。
 reducer产生的state，也依然在store中保留。
 
@@ -61,5 +61,4 @@ const connectedComponent = connect(state => {
 export default connectedComponent
 ```
 
-# 术语列表
-[RDM]: RDM是redux dynamic module
+[RDM]: https://redux-dynamic-modules.js.org/#/reference/Modules "RDM是redux dynamic module"
