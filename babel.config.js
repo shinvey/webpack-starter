@@ -132,6 +132,11 @@ module.exports = {
     }, 'lodash'],
 
     // 启用react hot loader https://github.com/gaearon/react-hot-loader
-    ['react-hot-loader/babel']
+    ['react-hot-loader/babel'],
+    /**
+     * 为react组件的异常信息调用堆栈添加文件名和行数信息
+     * Component Stack Traces https://reactjs.org/docs/error-boundaries.html#component-stack-traces
+     * 对应babel插件 @babel/plugin-transform-react-jsx-source https://babeljs.io/docs/en/next/babel-plugin-transform-react-jsx-source.html
+     */
   ]
 }
