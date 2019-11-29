@@ -35,8 +35,8 @@ export function detectError (ajaxResponse) {
   console.log('Low level response emit ', response)
   // 处理业务接口公共错误码，并抛出异常
   // 创建业务异常对象
-  if (response.status !== BusinessError.DONE) {
-    return new BusinessError(response.status, response.message, response)
+  if (parseInt(response.status_code, 10) !== BusinessError.DONE) {
+    return new BusinessError(response.status_code, response.message, response)
   }
 }
 
