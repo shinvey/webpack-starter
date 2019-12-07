@@ -2,6 +2,7 @@ import React from 'react'
 import { ConnectedHackerNews } from './component/hacker-news-component'
 import { getHackerNewsModule } from './redux/module'
 import { DynamicModuleLoader } from 'redux-dynamic-modules-react'
+import { hotModuleIsActive } from 'sunny-js/util/HMR'
 
 export default function View () {
   /**
@@ -28,7 +29,7 @@ export default function View () {
    * ，这里影响到了DynamicModuleLoader工作
    * 临时解决办法 https://github.com/microsoft/redux-dynamic-modules/issues/53#issuecomment-557649909
    */
-  return module.hot && module.hot.active && <DynamicModuleLoader strictMode={true} modules={[getHackerNewsModule()]}>
+  return hotModuleIsActive(module, <DynamicModuleLoader strictMode={true} modules={[getHackerNewsModule()]}>
     <ConnectedHackerNews />
-  </DynamicModuleLoader>
+  </DynamicModuleLoader>)
 }
