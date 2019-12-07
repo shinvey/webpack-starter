@@ -4,7 +4,7 @@ import Loading from '../components/Loading'
 export const route = {
   key: 'hacker-news',
   name: '骇客新闻',
-  path: '/hacker-news',
+  path: '/app/hacker-news',
 }
 
 /**

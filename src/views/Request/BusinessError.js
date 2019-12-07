@@ -6,5 +6,6 @@ import BusinessError from 'sunny-js/request/BusinessError'
 BusinessError.TOKEN_EXPIRED = 6001
 BusinessError.TOKEN_EXPIRED_MSG = '会话超时'
 BusinessError.DONE = 6000
+BusinessError.SECURITY_RISK = 6016
 
 export default BusinessError

@@ -29,7 +29,10 @@ export default function View () {
    * ，这里影响到了DynamicModuleLoader工作
    * 临时解决办法 https://github.com/microsoft/redux-dynamic-modules/issues/53#issuecomment-557649909
    */
-  return hotModuleIsActive(module, <DynamicModuleLoader strictMode={true} modules={[getHackerNewsModule()]}>
-    <ConnectedHackerNews />
-  </DynamicModuleLoader>)
+  return hotModuleIsActive(
+    module,
+    <DynamicModuleLoader strictMode={true} modules={[getHackerNewsModule()]}>
+      <ConnectedHackerNews />
+    </DynamicModuleLoader>,
+  )
 }

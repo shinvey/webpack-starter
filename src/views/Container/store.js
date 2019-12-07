@@ -2,6 +2,7 @@ import { createStore } from 'redux-dynamic-modules-core'
 import { getObservableExtension } from 'redux-dynamic-modules-observable'
 import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 // import { getThemeModule } from '@/views/components/SwitchTheme/redux/module'
+import userRDM from '../User/userRDM'
 
 /**
  * 配置store
@@ -31,22 +32,8 @@ export function configureStore (options = {}, ...reduxModule) {
     /**
      * 公用redux module
      */
+    userRDM(),
     // getThemeModule()
-    {
-      id: 'user-module',
-      reducerMap: {
-        user (state, action) {
-          if (action.type === 'user/update') {
-            state.token = action.payload.token
-          } else {
-            state = state || {
-              token: undefined
-            }
-          }
-          return state
-        }
-      }
-    },
     ...reduxModule
   )
 }

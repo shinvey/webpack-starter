@@ -12,8 +12,9 @@ export default class ErrorBoundary extends PureComponent {
   }
 
   componentDidMount () {
-    this._requestErrorSubscription$ = requestChannel
-      .subscribe(({ payload: error }) => this.errorHandler(error))
+    this._requestErrorSubscription$ = requestChannel.subscribe(({ payload: error }) =>
+      this.errorHandler(error),
+    )
   }
 
   componentWillUnmount () {
@@ -25,7 +26,7 @@ export default class ErrorBoundary extends PureComponent {
    * @param {BusinessError|NetworkError} error
    */
   errorHandler = error => {
-    console.error(this.constructor.name, error)
+    console.debug(this.constructor.name, '在这里处理公共异常交互', error)
     switch (error.constructor.name) {
       case BusinessError.name:
         // 处理公共业务异常
@@ -37,7 +38,7 @@ export default class ErrorBoundary extends PureComponent {
         // 处理请求被取消
         break
     }
-  }
+  };
 
   static getDerivedStateFromError () {
     // Update state so the next render will show the fallback UI.
@@ -54,8 +55,8 @@ export default class ErrorBoundary extends PureComponent {
    */
 
   static propTypes = {
-    children: PropTypes.any.isRequired
-  }
+    children: PropTypes.any.isRequired,
+  };
 
   render () {
     if (this.state.hasError) {

@@ -1,10 +1,12 @@
-import createChannel, { createAction } from 'sunny-js/util/Channel'
+import { ReplaySubject } from 'rxjs'
+import { createAction, on } from 'sunny-js/util/Channel'
 export * from 'sunny-js/util/Channel'
 
 /**
  * 创建一个用于处理认证事件的广播
+ * 使用ReplaySubject创建频道，bufferSize 1 表示总是可以让新的订阅者收到最后一个事件
  */
-const authChannel = createChannel()
+const authChannel = new ReplaySubject(1)
 
 // 登录 事件
 export const LOGIN = 'LOGIN'
@@ -26,7 +28,8 @@ export function createLoginSuccessAction (payload) {
 /**
  * 监听登录成功事件
  * 该方法如果不注销unsubscribe，会常驻内存，持续监听
- * @param callback 收到登录成功的事件后会调用callback
+ * @param {function} callback 收到登录成功的事件后会调用callback
+ * @param {string} [key] 可选，在使用Function.prototype.bind绑定的函数，要求传入
  * @returns {Subscription}
  * @example
  * // 开始监听
@@ -34,16 +37,14 @@ export function createLoginSuccessAction (payload) {
  * // 注销监听
  * subscription.unsubscribe()
  */
-export function onLoginSuccess (callback) {
-  const subscription$ = onLoginSuccess.subscription$
-  // 热更新场景下，需要避免重复绑定
-  if (module.hot && subscription$) subscription$.unsubscribe()
-  // 监听登录成功通知
-  return onLoginSuccess.subscription$ = authChannel.subscribe(({ type, payload }) => {
-    type === LOGIN_SUCCESS && callback(payload)
-  })
+export function onLoginSuccess (callback, key) {
+  return on(authChannel, LOGIN_SUCCESS, callback, key)
 }
 
+/**
+ * 发送登录成功事件
+ * @param from
+ */
 export function loginSuccess (from) {
   return sendAction(createLoginSuccessAction(from))
 }
@@ -51,7 +52,8 @@ export function loginSuccess (from) {
 /**
  * 监听请求登录事件
  * 该方法如果不注销unsubscribe，会常驻内存，持续监听
- * @param callback 收到请求登录的事件后会调用callback
+ * @param {function} callback 收到请求登录的事件后会调用callback
+ * @param {string} [key] 可选，在使用Function.prototype.bind绑定的函数，要求传入
  * @returns {Subscription}
  * @example
  * // 开始监听
@@ -59,13 +61,8 @@ export function loginSuccess (from) {
  * // 注销监听
  * subscription.unsubscribe()
  */
-export function onRequestLogin (callback) {
-  const subscription$ = onRequestLogin.subscription$
-  // 热更新场景下，需要避免重复绑定
-  if (module.hot && subscription$) subscription$.unsubscribe()
-  return onRequestLogin.subscription$ = authChannel.subscribe(({ type, payload }) => {
-    type === LOGIN && callback(payload)
-  })
+export function onRequestLogin (callback, key) {
+  return on(authChannel, LOGIN, callback, key)
 }
 
 export function requestLogin (payload) {

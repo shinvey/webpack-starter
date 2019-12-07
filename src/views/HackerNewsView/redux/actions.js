@@ -1,7 +1,6 @@
 // import { get, cancelAll, isCancel } from '../../Request/ajax'
 // import { get, cancelAll, isCancel } from '../../Request/ajaxPromise'
 import { get, isCancel } from '../../Request/ajaxPromise'
-// import { finalize } from 'rxjs/operators'
 export const HackerNewsStoriesAvailable = 'hackernews/storiesavailable'
 export const HackerNewsLoadStories = 'hackernews/loadstories'
 
@@ -59,11 +58,7 @@ const fetchJson = url => {
 
   // const result = new Promise((resolve, reject) => {
   //   const ajax$ = get(url)
-  //   const subscription = ajax$.pipe(
-  //     finalize(() => {
-  //       console.log('Sequence complete')
-  //     })
-  //   ).subscribe({
+  //   const subscription = ajax$.subscribe({
   //     next: AjaxResponse => {
   //       console.log('ajax success')
   //       resolve(AjaxResponse.response)
@@ -72,6 +67,9 @@ const fetchJson = url => {
   //       console.error('ajax error', err)
   //       reject(err)
   //     },
+  //     complete (...args) {
+  //       console.log('ajax complete', ...args)
+  //     }
   //   })
   //   // subscription.unsubscribe()
   //   // ajax$.cancel()

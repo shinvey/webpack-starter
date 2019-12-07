@@ -21,7 +21,9 @@ import requestChannel, { createAction } from './channel'
 export function beforeCatchError (error) {
   // 通用异常创建
   const response = error.response
-  return response ? new BusinessError(response.status, response.msg, response) : new NetworkError(error)
+  return response
+    ? new BusinessError(response.status, response.msg, response)
+    : new NetworkError(error)
 }
 
 /**
@@ -32,7 +34,7 @@ export function beforeCatchError (error) {
  */
 export function detectError (ajaxResponse) {
   const response = ajaxResponse.response
-  console.log('Low level response emit ', response)
+  // console.log('Low level response emit ', response)
   // 处理业务接口公共错误码，并抛出异常
   // 创建业务异常对象
   if (parseInt(response.status_code, 10) !== BusinessError.DONE) {
@@ -49,7 +51,7 @@ export function detectError (ajaxResponse) {
 export function afterCatchError (error) {
   // console.error('Low level error emit ', error)
 
-  console.dir(error)
+  // console.dir(error)
   console.debug('BusinessError', error instanceof BusinessError)
   console.debug('NetworkError', error instanceof NetworkError)
   console.debug('AjaxCancelError', error instanceof AjaxCancelError)

@@ -10,7 +10,7 @@ export default ({ iteratee }) => {
   const req = require.context('../', true, /\w+View\/index\.[a-z]+$/i)
   const contents = []
   req.keys().forEach((modulePath, index) => {
-    const result = iteratee(req(modulePath))
+    const result = iteratee(req(modulePath), modulePath, index)
     result && contents.push(result, modulePath)
   })
   return contents

@@ -1,4 +1,4 @@
-import createChannel from 'sunny-js/util/Channel'
+import createChannel, { on } from 'sunny-js/util/Channel'
 import BusinessError from './BusinessError'
 export * from 'sunny-js/util/Channel'
 
@@ -18,6 +18,7 @@ const requestChannel = createChannel()
  * 监听会话超时异常
  * 该方法如果不注销unsubscribe，会常驻内存，持续监听
  * @param callback 收到请求登录的事件后会调用callback
+ * @param {string} [key] 可选，在使用Function.prototype.bind绑定的函数，要求传入
  * @returns {Subscription}
  * @example
  * // 开始监听
@@ -25,13 +26,15 @@ const requestChannel = createChannel()
  * // 注销监听
  * subscription.unsubscribe()
  */
-export function onSessionError (callback) {
-  const subscription$ = onSessionError.subscription$
-  // 热更新场景下，需要避免重复绑定
-  if (module.hot && subscription$) subscription$.unsubscribe()
-  return onSessionError.subscription$ = requestChannel.subscribe(({ payload: error }) => {
-    error.code === BusinessError.TOKEN_EXPIRED && callback(error)
-  })
+export function onSessionError (callback, key) {
+  return on(
+    requestChannel,
+    BusinessError.name,
+    error => {
+      error.code === BusinessError.TOKEN_EXPIRED && callback(error)
+    },
+    key || callback.toString(),
+  )
 }
 
 export default requestChannel
