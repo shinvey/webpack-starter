@@ -1,10 +1,10 @@
 import loadable from 'react-loadable'
-import Loading from '../components/Loading'
+import Loading from '../../components/Loading'
 
 export const route = {
-  key: 'nav',
-  name: '视图导航',
-  path: '/app/nav/:welcome?',
+  key: 'child',
+  name: '儿子',
+  path: '/app/parent/child',
   // auth: true
 }
 

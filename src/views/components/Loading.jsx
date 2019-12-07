@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { useElement } from 'sunny-js/util/DOM'
 
 function Loading ({ error, show, retry }) {
+  error && console.error(error)
   if (!show) {
     return null
   }
