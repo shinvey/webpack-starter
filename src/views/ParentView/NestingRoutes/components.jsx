@@ -1,4 +1,5 @@
 import React, { Children, cloneElement } from 'react'
+import { Switch } from 'react-router-dom'
 
 export const ParentContent = props => {
   console.debug('ParentContent', props)
@@ -7,8 +8,12 @@ export const ParentContent = props => {
     <li>
       This ParentContent<br/>
       {routes.test.path}
-      {/* 为子组件传值的用例 */}
-      {Children.map(children, child => cloneElement(child, { hello: 'The param from parent' }))}
+      {/* 支持使用Switch */}
+      <Switch>
+        {/* 为子组件传值的用例 */}
+        {Children.map(children, child => cloneElement(child, { hello: 'The param from parent' }))}
+        {/* {children} */}
+      </Switch>
     </li>
   </ul>
 }
@@ -17,7 +22,7 @@ export const ChildContent = props => {
   const { children, routes, hello } = props
   return <ul>
     <li>
-      This ParentContent<br/>
+      This ChildContent<br/>
       {routes.test.path}<br/>
       {hello}
       {/* {children} */}
@@ -40,11 +45,12 @@ export const GrandchildContent = props => {
 }
 export const BrotherContent = props => {
   console.debug('BrotherContent', props)
-  const { children, routes } = props
+  const { children, routes, hello } = props
   return <ul>
     <li>
-      This ParentContent<br/>
-      {routes.test.path}
+      This BrotherContent<br/>
+      {routes.test.path}<br/>
+      {hello}
       {children}
       {/* {Children.map(children, child => cloneElement(child, { hello: 'from parent' }))} */}
     </li>
