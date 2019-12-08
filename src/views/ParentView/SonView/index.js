@@ -2,13 +2,13 @@ import loadable from 'react-loadable'
 import Loading from '../../components/Loading'
 
 export const route = {
-  key: 'child',
+  key: 'son',
   name: '儿子',
-  path: '/app/parent/child',
+  path: '/parent/son',
   // auth: true
 }
 
 export const Content = loadable({
-  loader: () => import(/* webpackChunkName: "Nav" */'./View'),
+  loader: () => import(/* webpackChunkName: "son" */'./View'),
   loading: Loading
 })

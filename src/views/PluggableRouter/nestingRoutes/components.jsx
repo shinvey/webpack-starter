@@ -1,17 +1,20 @@
-import React, { Children, cloneElement } from 'react'
+import React, { Children, cloneElement, useState } from 'react'
 import { Switch } from 'react-router-dom'
 
 export const ParentContent = props => {
   console.debug('ParentContent', props)
   const { children, routes } = props
+  // 是否会重复渲染子组件测试代码
+  const [hello, setHello] = useState(1)
   return <ul>
     <li>
       This ParentContent<br/>
+      <button onClick={() => setHello(2)}>setHello</button><br/>
       {routes.test.path}
       {/* 支持使用Switch */}
       <Switch>
         {/* 为子组件传值的用例 */}
-        {Children.map(children, child => cloneElement(child, { hello: 'The param from parent' }))}
+        {Children.map(children, child => cloneElement(child, { hello }))}
         {/* {children} */}
       </Switch>
     </li>

@@ -17,11 +17,15 @@ export default ({ iteratee }) => {
 }
 
 /**
- * 将Module Path转换成Router Path
+ * 将Module Path转换成不包含文件名的目录路径
  * @param path
- * @returns {string}
+ * @returns {string} directory path
+ * @example
+ * modulePathToDirPath('User/LoginView/index.jsx')
+ * // => "User/Login"
  */
-export function routerPath (path) {
-  return path.replace(routerPath.regexp, '$2').toLowerCase()
+export function modulePathToDirPath (path) {
+  const regexp = /^([./]*)([\w\d-/_]+?)\/index\.[\w]+$/ig
+  path = path.replace(/view/ig, '')
+  return path.replace(regexp, '$2') // .toLowerCase()
 }
-routerPath.regexp = /^([./]*)([\w\d-/_]+?)view\/index\.[\w]+$/ig

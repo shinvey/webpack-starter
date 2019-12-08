@@ -9,6 +9,6 @@ export const route = {
 }
 
 export const Content = loadable({
-  loader: () => import(/* webpackChunkName: "Nav" */'./View'),
+  loader: () => import(/* webpackChunkName: "parent" */'./View'),
   loading: Loading
 })

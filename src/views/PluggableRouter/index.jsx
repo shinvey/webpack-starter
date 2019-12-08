@@ -2,9 +2,11 @@ import React from 'react'
 import { Router, Route } from 'react-router-dom'
 import { compile } from 'path-to-regexp'
 import history from './history'
-import viewScanner from './viewScanner'
+import viewScanner, { modulePathToDirPath } from './viewScanner'
 // import viewScanner, { routerPath } from '@/views/viewScanner'
 import AuthRoute from '../Auth/AuthRoute'
+import { flatRoutes } from './flatRoutes'
+import { arrRoutesToNestingRoutes } from './nestingRoutes'
 
 /**
  * 载入当前page下所有视图索引，创建routes and contents
@@ -15,12 +17,13 @@ import AuthRoute from '../Auth/AuthRoute'
  * 如果想以对象形式创建路由表
  * 可以考虑在视图接口的navigation上添加id属性作为对象的key
  */
-export const routes = {}
-export const customContents = []
+const routes = {}
 // 根结点Route组件列表
-export const rootContents = []
+let rootContents = []
+let customContents = []
 // 默认Route组件列表
-export const contents = viewScanner({
+let contents = []
+viewScanner({
   iteratee (ViewModule, modulePath, index) {
     const {
       // 视图接口暴露的Content
@@ -28,7 +31,6 @@ export const contents = viewScanner({
       // 视图接口暴露的route配置
       route,
     } = ViewModule
-
     /**
      * 用于翻译路由动态path路径
      * {@link https://github.com/pillarjs/path-to-regexp#compile-reverse-path-to-regexp path-to-regexp}
@@ -41,48 +43,51 @@ export const contents = viewScanner({
      * // => /app/nav/hello
      */
     route.toPath = compile(route.path, { encode: encodeURIComponent })
+    // 存放ViewModule庐江
+    route.dir = modulePathToDirPath(modulePath)
+    // console.debug(route.dir)
 
-    // routes.push(route)
-    routes[route.key || index] = route
+    // 收集路由配置信息，如果没有设置key，则使用目录路径作为key
+    routes[route.key || route.dir] = route
 
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />
 
-    // 自定义路由内容渲染方式，用于处理更复杂灵活多变的需求
-    if (route.role === 'custom') {
-      customContents.push(<Content key={index} {...route} routes={routes} />)
-      return
+    const routeElement = {
+      route,
+      Content
     }
-
-    // 批量创建Route
-    const MyRoute = route.auth ? AuthRoute : Route
-    /**
-     * 用Route组件给View视图传值
-     * 为什么不用component https://reacttraining.com/react-router/web/api/Route/component
-     * because you will get undesired component unmounts/remounts.
-     *
-     * 关于嵌套路由的生成请移至readme.md文档 [如何生成嵌套路由？](./readme.md#nested-routes)
-     */
-    const RouteComponent = (
-      <MyRoute
-        key={index}
-        {...route}
-        routes={routes}
-        render={props => <Content {...props} route={route} routes={routes} />}
-      />
-    )
-
-    /**
-     * rootContents意图是放在嵌套路由的根结点位置
-     */
-    if (route.role === 'root') {
-      rootContents.push(RouteComponent)
-      return
+    switch (route.role) {
+      case 'custom':
+        // 自定义路由内容渲染方式，用于处理更复杂灵活多变的需求
+        customContents.push(routeElement)
+        break
+      case 'root':
+        // rootContents意图是放在嵌套路由的根结点位置
+        rootContents.push(routeElement)
+        break
+      default:
+        contents.push(routeElement)
+        break
     }
-
-    return RouteComponent
   },
 })
+const flatRoutesOptions = {
+  props: { routes },
+  pickRoute (route) {
+    return route.auth ? AuthRoute : Route
+  }
+}
+rootContents = flatRoutes(rootContents, flatRoutesOptions)
+customContents = flatRoutes(customContents, flatRoutesOptions)
+// contents = flatRoutes(contents, flatRoutesOptions)
+contents = arrRoutesToNestingRoutes(contents, flatRoutesOptions)
+export {
+  routes,
+  rootContents,
+  customContents,
+  contents,
+}
 
 /**
  * 可拔插路由
