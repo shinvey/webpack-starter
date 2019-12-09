@@ -37,6 +37,6 @@ const routes = {
 }
 const _treeRoutes = arrRoutesToTreeRoutes(defArrRoutes)
 console.debug('treeRoutes', _treeRoutes)
-const NestingRoutes = generateNestingRoutes(_treeRoutes, { routes })
+const NestingRoutes = generateNestingRoutes(_treeRoutes, { props: { routes } })
 console.debug('NestingRoutes', NestingRoutes)
 export { NestingRoutes }

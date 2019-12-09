@@ -43,8 +43,8 @@ viewScanner({
      * // => /app/nav/hello
      */
     route.toPath = compile(route.path, { encode: encodeURIComponent })
-    // 存放ViewModule庐江
-    route.dir = modulePathToDirPath(modulePath)
+    // 存放ViewModule路径（不包含View后缀），也是生成嵌套路由重要依赖属性
+    route.dir = route.dir || modulePathToDirPath(modulePath)
     // console.debug(route.dir)
 
     // 收集路由配置信息，如果没有设置key，则使用目录路径作为key

@@ -3,13 +3,20 @@ import { Route } from 'react-router-dom'
 import { createElement } from 'react'
 
 /**
+ * @typedef {object} routeProps
+ * @property {string} dir for example: parent/child/grandchild
+ */
+
+/**
  * 将路由信息由 一维数组路 转换成 树形结构对象
- * @param {array} arrRoutes
+ * @param {routeProps[]} arrRoutes
  * @returns {object} treeRoutes
+ * @throws {Error} 如果route对象中没有定义dir属性，则会抛出异常
  */
 export function arrRoutesToTreeRoutes (arrRoutes) {
   const treeRoutes = {}
   arrRoutes.forEach(({ route, Content }) => {
+    if (!route.dir) throw new Error('There must be a dir(directory) property in your ' + JSON.stringify(route) + ' at least')
     const segments = route.dir.split('/')
     segments.reduce((accumulator, segment, index) => {
       // 如果为空，跳过，处理下一个
