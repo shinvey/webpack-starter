@@ -26,63 +26,27 @@ React Router 相关逻辑<a name="react-router-match"></a>
 
 # 如何让 PluggableRouter 支持嵌套路由？<a name="nested-routes"></a>
 
-```js
-/**
- * todo 根据path路径生成嵌套路由
- * path路径已经可以体现URL层级，那么我们可以根据URL层级的特征生成一个树形结构
- * 路由信息表。然后就可以利用层级信息生成嵌套路由。
- */
-```
+当初考虑使用Route path来体现路由层级，后在测试可用性的过程中，发现Route path是动态路径，
+规则可以简单或复杂，所以改用嵌套文件夹来体现路由嵌套层级，那么我们可以根据嵌套文件夹的特征
+生成一个树形结构路由信息表。然后就可以利用树形结构路由信息表生成嵌套路由。
 
-嵌套路由的数据结构可能如下：
+生成嵌套路由
+1. 扫描所有视图入口，生成[一维数组路由信息表](./nestingRoutes/defArrRoutes.js)，包含视图所在目录信息
+2. 根据视图入口所在目录信息分析嵌套关系，生成[嵌套路由信息表](./nestingRoutes/defTreeRoutes.js)
+3. 使用递归将嵌套路由信息表转换为[嵌套路由组件](./nestingRoutes/treeRoutesJSX.jsx)
 
-```js
-let routes = [
-  {
-    path: '/app',
-    Content,
-    children: [
-      {
-        path: '/app/account',
-        auth: true,
-        Content,
-        children: [
-          {
-            path: '/app/account/profile',
-            Content,
-          },
-          {
-            path: '/app/account/deposit',
-            Content,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: '/login',
-    Content,
-  },
-];
-```
+嵌套路由需要解决三个问题
 
-最终生成的嵌套路由结构可能如下：
+必须：
 
-```js
-let ReactJSX = (
-  <>
-    <Route path={'/app'} render={props => <Content {...props} />}>
-      <AuthRoute path={'/app/account'} render={props => <Content {...props} />}>
-        <Route path={'/app/account/profile'} render={props => <Content {...props} />} />
-        <Route path={'/app/account/deposit'} render={props => <Content {...props} />} />
-      </AuthRoute>
-    </Route>
-    <Route path={'/login'} render={props => <Content {...props} />} />
-  </>
-);
-```
+1. 父组件可以决定props.children摆放位置
 
-如果需要跨路由组件进行通信
+可选：
+
+2. 父组件可以向下传递props
+3. 父级组件可以选择是否嵌套Switch
+
+嵌套路由组件中，父子组件或跨组件通信可以选择
 
 - 可以考虑使用[React Context](https://reactjs.org/docs/context.html)特性
 - 解决一下向下传递 props 的问题 [How to pass props to {this.props.children}](https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children)
