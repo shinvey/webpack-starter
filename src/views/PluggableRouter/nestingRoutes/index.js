@@ -135,8 +135,8 @@ export function generateNestingRoutes (treeRoutes, options) {
  */
 export function arrRoutesToNestingRoutes (arrRoutes, options) {
   const treeRoutes = arrRoutesToTreeRoutes(arrRoutes)
-  // console.debug('treeRoutes', treeRoutes)
+  console.debug('treeRoutes', treeRoutes)
   const nestingRoutes = generateNestingRoutes(treeRoutes, options)
-  // console.debug('nestingRoutes', nestingRoutes)
+  console.debug('nestingRoutes', nestingRoutes)
   return nestingRoutes
 }
