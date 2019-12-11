@@ -56,8 +56,18 @@ React Router 相关逻辑<a name="react-router-match"></a>
 
 选择Route path需要面对的问题
 1. /, *, /:variable, 正则表达式等几种路径无法体现嵌套关系
+    1. 无法确认嵌套关系
+        1. 避免这类路径有嵌套关系
+        2. 视为没有嵌套关系的独立视图
+    2. 配合Switch组件切换，需要考虑两个Route排列先后顺序问题
+        1. 路由配置需要声明排序属性，解决排序问题
 2. /parent/child, /parent/child/grandchild指向同一个视图，路径之间是别名关系
+    1. 打破了嵌套path规则
+        1. 使用path数组方式声明
+        2. 如果父级路由没有任何嵌套关系，可以声明Route exact属性
 3. /parent/child, /parent/child/grandchild指向不同视图，且UI界面视觉上不是嵌套关系
+    1. 打破了嵌套path规则
+    2. 配合Switch组件切换，需要考虑两个Route排列先后顺序问题
 
 选择directory需要面对的问题
 1. 要求UI视觉和目录的嵌套关系是一致的
