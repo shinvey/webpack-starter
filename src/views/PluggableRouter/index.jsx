@@ -31,6 +31,8 @@ viewScanner({
       // 视图接口暴露的route配置
       route,
     } = ViewModule
+    const dir = modulePathToDirPath(modulePath)
+
     /**
      * 用于翻译路由动态path路径
      * {@link https://github.com/pillarjs/path-to-regexp#compile-reverse-path-to-regexp path-to-regexp}
@@ -43,12 +45,17 @@ viewScanner({
      * // => /app/nav/hello
      */
     route.toPath = compile(route.path, { encode: encodeURIComponent })
-    // 存放ViewModule路径（不包含View后缀），也是生成嵌套路由重要依赖属性
-    route.dir = route.dir || modulePathToDirPath(modulePath)
-    // console.debug(route.dir)
+
+    /**
+     * 存放ViewModule路径（不包含View后缀），也是生成嵌套路由重要依赖属性
+     * 默认以route.path来分析嵌套关系。
+     * 如果你喜欢以路径来体现UI视觉上的嵌套关系，可以取消注释以下代码
+     */
+    // route.nest = route.nest || dir
+    // console.debug(route.nest)
 
     // 收集路由配置信息，如果没有设置key，则使用目录路径作为key
-    routes[route.key || route.dir] = route
+    routes[route.key || dir] = route
 
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />

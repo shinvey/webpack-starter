@@ -1,5 +1,5 @@
 import loadable from 'react-loadable'
-import Loading from '../../../components/Loading'
+import Loading from '../../../../components/Loading'
 
 /**
  * 不同路由共享视图的用例

@@ -87,7 +87,8 @@ path，directory分析嵌套关系方案的共同点
 2. 不需要设计新的路由配置信息。如path方案改写嵌套关系，需要声明额外路由配置属性
 3. 除了常规树遍历，代码无需为Route path变化额外增加特殊处理和逻辑判断
 
-如果一定要依赖Route path分析嵌套关系，有可能会限定path使用规则，或增加新的路由配置属性
+如果一定要依赖Route path分析嵌套关系，可能会限定path使用规则，或增加新的路由配置属性
+
 
 ## 嵌套路由的使用案例
 代码中的children均代表子一级路由组件数组，可以被react直接渲染
@@ -168,7 +169,7 @@ export const route = {
 export const route = {
   key: 'brother',
   name: '兄弟',
-  path: '/parent/brother',
+  path: '/parent/:id',
 }
 // 场景二：父级路由和其他子视图有嵌套关系，但其中一个视图在UI视觉上没有嵌套关系
 export const route = {
@@ -176,7 +177,7 @@ export const route = {
   name: '父亲',
   path: '/parent',
   // 不声明dir属性的默认值，会设置成所在目录地址
-  // dir: 'Parent',
+  // nest: 'Parent',
   sort: 2
 }
 export const route = {
@@ -184,7 +185,7 @@ export const route = {
   name: '兄弟',
   path: '/parent/brother',
   // brother视图通过改写目录属性，来拒绝被parent视图嵌套
-  dir: 'ParentBrother',
+  nest: 'ParentBrother',
   // 如果搭配了Switch，还需要声明排序规则
   sort: 1
 }

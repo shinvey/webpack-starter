@@ -4,8 +4,26 @@ import { createElement } from 'react'
 
 /**
  * @typedef {object} routeProps
- * @property {string} dir for example: parent/child/grandchild
+ * @property {string} path for example: parent/child/grandchild
+ * @property {string} [nest] like path 可选，用于重写默认嵌套规则
  */
+
+/**
+ * 将类似parent/child/grandchild字符串分成片段
+ * 将于解析视图的嵌套关系
+ * @param {routeProps} route
+ * @returns {array} 返回一维嵌套关系数组
+ */
+function routeToNestedSegments (route) {
+  const regexp = /^[\w-]+$/i
+  const nest = route.nest || route.path
+  if (!nest) throw new Error('There must be a nest(like path) or path property in your ' + JSON.stringify(route) + ' at least')
+  const segments = nest.split('/').filter(segment => regexp.test(segment))
+  // 我层级结构视为孤立或独立无嵌套关系视图
+  if (segments.length === 0) segments.push('_orphan_')
+  // console.debug('segments', segments)
+  return segments
+}
 
 /**
  * 将路由信息由 一维数组路 转换成 树形结构对象
@@ -16,24 +34,27 @@ import { createElement } from 'react'
 export function arrRoutesToTreeRoutes (arrRoutes) {
   const treeRoutes = {}
   arrRoutes.forEach(({ route, Content }) => {
-    if (!route.dir) throw new Error('There must be a dir(directory) property in your ' + JSON.stringify(route) + ' at least')
-    const segments = route.dir.split('/')
+    const segments = routeToNestedSegments(route)
     segments.reduce((accumulator, segment, index) => {
       // 如果为空，跳过，处理下一个
       if (!segment) {
         return accumulator
       }
 
-      // 创建叶子节点
-      const leaf = accumulator[segment] = accumulator[segment] || {}
-      // 如果到达URL片段的最末位
+      // 如果叶子节点已经创建则使用已有节点，没有则创建
+      let leaf = accumulator[segment] = accumulator[segment] || {}
+      // 如果到达path片段的最末位
       if (segments.length - 1 === index) {
+        // 如果route/Content已存在，创建新的兄弟节点
+        if ('route' in leaf) {
+          leaf = accumulator[[segment, route.key || index].join('-')] = {}
+        }
         // 存储route、Content
         return Object.assign(leaf, {
           route,
           Content
         })
-      } else { // 如果还没到最末位
+      } else { // 如果还没到path最末位，创建子节点
         // 添加新的叶子节点
         return leaf.children = leaf.children || {}
       }
@@ -142,6 +163,13 @@ export function generateNestingRoutes (treeRoutes, options) {
  * @returns {ReactNode[]}
  */
 export function arrRoutesToNestingRoutes (arrRoutes, options) {
+  // const toPath = compile('/parent/:child/grandchild/:id', { encode: encodeURIComponent })
+  // console.debug('toPath', toPath())
+  // console.debug('routeToNestedSegments', routeToNestedSegments({ path: '/' }))
+  // console.debug('routeToNestedSegments', routeToNestedSegments({ path: '*' }))
+  // console.debug('routeToNestedSegments', routeToNestedSegments({ path: '/:id' }))
+  // console.debug('routeToNestedSegments', routeToNestedSegments({ path: '/parent/:child/grandchild' }))
+  // console.debug('routeToNestedSegments', routeToNestedSegments({ path: '/parent/:child/grandchild/:id' }))
   console.debug('arrRoutes', arrRoutes)
   const treeRoutes = arrRoutesToTreeRoutes(arrRoutes)
   console.debug('treeRoutes', treeRoutes)

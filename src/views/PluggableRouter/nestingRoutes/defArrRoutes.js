@@ -12,25 +12,25 @@ import {
 export const defArrRoutes = [
   {
     route: {
-      dir: '/parent'
+      path: '/parent'
     },
     Content: ParentContent
   },
   {
     route: {
-      dir: '/parent/child'
+      path: '/parent/child'
     },
     Content: ChildContent
   },
   {
     route: {
-      dir: '/parent/child/grandchild'
+      path: '/parent/child/grandchild'
     },
     Content: GrandchildContent
   },
   {
     route: {
-      dir: '/parent/brother'
+      path: '/parent/brother'
     },
     Content: BrotherContent
   }
