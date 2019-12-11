@@ -5,6 +5,7 @@ export const route = {
   key: 'parent',
   name: '父亲',
   path: '/parent',
+  sort: 2
   // auth: true
 }
 

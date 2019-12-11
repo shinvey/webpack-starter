@@ -59,24 +59,33 @@ React Router 相关逻辑<a name="react-router-match"></a>
     1. 无法确认嵌套关系
         1. 避免这类路径有嵌套关系
         2. 视为没有嵌套关系的独立视图
-    2. 配合Switch组件切换，需要考虑两个Route排列先后顺序问题
-        1. 路由配置需要声明排序属性，解决排序问题
-2. /parent/child, /parent/child/grandchild指向同一个视图，路径之间是别名关系
-    1. 打破了嵌套path规则
-        1. 使用path数组方式声明
-        2. 如果父级路由没有任何嵌套关系，可以声明Route exact属性
-3. /parent/child, /parent/child/grandchild指向不同视图，且UI界面视觉上不是嵌套关系
-    1. 打破了嵌套path规则
-    2. 配合Switch组件切换，需要考虑两个Route排列先后顺序问题
+2. 处理path中的动态参数，处理数组类型的path
+4. 要求`UI视觉`和`path`的嵌套关系是一致的
 
 选择directory需要面对的问题
-1. 要求UI视觉和目录的嵌套关系是一致的
+1. 要求`UI视觉`、`path`、`目录`的嵌套关系是一致的
+
+共同的问题
+1. /parent/child, /parent/child/grandchild指向同一个视图，路径之间是别名关系
+    1. 打破了嵌套path规则
+        1. 使用path数组方式声明
+2. /parent/child, /parent/child/grandchild，URL前缀一样，但指向不同视图，且UI界面视觉上不是嵌套关系
+    1. 打破了嵌套path规则
+        1. 如果父级路由没有任何嵌套关系，可以声明Route exact属性
+        2. 如果父级路由跟其他视图有嵌套关系，是个死结，则当前视图，需要脱离嵌套关系
+            - 对于path的解法，需要声明额外路由配置属性来脱离嵌套关系
+            - 对于directory的解法，在目录上可以脱离嵌套关系
+            - path + directory脱离嵌套关系后，需要共同面对排序问题
+                - 兄弟路由，搭配Switch组件切换，如果path前缀相同，需要考虑两个Route排列先后顺序问题
+                    - [兄弟路由排序问题的代码例子](https://stackblitz.com/edit/react-router-hash)
+
+path，directory分析嵌套关系方案的共同点
+1. 要求`Route path`、`UI视觉`的嵌套关系是一致的
 
 选择directory的原因
 1. 目录变化的几率比Route path更小，面对的问题最少
-2. UI视觉和目录的嵌套关系一致，符合常规逻辑思维习惯
-3. 不需要设计新的路由配置信息
-4. 除了常规树遍历，代码无需为Route path变化额外增加特殊处理和逻辑判断
+2. 不需要设计新的路由配置信息。如path方案改写嵌套关系，需要声明额外路由配置属性
+3. 除了常规树遍历，代码无需为Route path变化额外增加特殊处理和逻辑判断
 
 如果一定要依赖Route path分析嵌套关系，有可能会限定path使用规则，或增加新的路由配置属性
 
@@ -141,13 +150,42 @@ export const Content = loadable({
   loading: Loading
 })
 // 如果需要组件级更细致的控制，将共享视图抽象成组件会是更合适的解决方案
+```
 
-// 改写视图的嵌套关系
+特殊问题的应对办法
+```jsx harmony
+/**
+* 改写视图的嵌套关系应对方法
+* 通常默认规则已经能够解决大部分问题，如果一定需要改写默认嵌套规则，需要考虑两个场景
+*/
+// 场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
+export const route = {
+  key: 'parent',
+  name: '父亲',
+  path: '/parent',
+  exact: true,
+}
+export const route = {
+  key: 'brother',
+  name: '兄弟',
+  path: '/parent/brother',
+}
+// 场景二：父级路由和其他子视图有嵌套关系，但其中一个视图在UI视觉上没有嵌套关系
+export const route = {
+  key: 'parent',
+  name: '父亲',
+  path: '/parent',
+  // 不声明dir属性的默认值，会设置成所在目录地址
+  // dir: 'Parent',
+  sort: 2
+}
 export const route = {
   key: 'brother',
   name: '兄弟',
   path: '/parent/brother',
   // brother视图通过改写目录属性，来拒绝被parent视图嵌套
-  dir: 'parent-brother'
+  dir: 'ParentBrother',
+  // 如果搭配了Switch，还需要声明排序规则
+  sort: 1
 }
 ```

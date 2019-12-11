@@ -61,47 +61,55 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
 export function generateNestingRoutes (treeRoutes, options) {
   const { props: crossProps = {}, pickRoute = () => Route } = options
   const RouteComponents = []
-  Object.entries(treeRoutes).forEach(([segment, { route, Content, children }], index) => {
-    if (route && Content) {
+  Object.entries(treeRoutes)
+    /**
+     * 满足兄弟路由path前缀相同，且搭配Router Switch组件使用时，而产生的排序问题
+     * 在树形结构数据中可能嵌套n层的情况下，这里的排序行为，仅仅影响当前层级的兄弟路由。
+     */
+    .sort((
+      [, { route: { sort: aSort = 0 } = {} }],
+      [, { route: { sort: bSort = 0 } = {} }]) => aSort - bSort)
+    .forEach(([segment, { route, Content, children }], index) => {
+      if (route && Content) {
       // 创建路由
       // 使用PassProps包装Route组件辅助向下传递props参数，因为Route组件不会帮你传
-      const PassProps = ({
+        const PassProps = ({
         // 辅助Switch工作的属性，不需要传递给子组件
-        path,
-        exact,
-        strict,
-        location,
-        sensitive,
-        // 搬运来自父组件的自定义参数
-        ...transferProps
-      }) => {
-        return createElement(pickRoute(route), {
+          path,
+          exact,
+          strict,
+          location,
+          sensitive,
+          // 搬运来自父组件的自定义参数
+          ...transferProps
+        }) => {
+          return createElement(pickRoute(route), {
           // 嵌套关系下的组件都能够收到的自定参数，我用来传递路由信息表
-          ...crossProps,
-          route,
-          // Route正常运作的功能参数
-          key: segment + index,
-          ...route,
-          render (routeProps) {
-            const contentProps = {
+            ...crossProps,
+            route,
+            // Route正常运作的功能参数
+            key: segment + index,
+            ...route,
+            render (routeProps) {
+              const contentProps = {
               // 允许父级组件给子组件传值
-              ...transferProps,
-              // 给所有在嵌套路由中的组件传递全局参数
-              ...crossProps,
-              route,
+                ...transferProps,
+                // 给所有在嵌套路由中的组件传递全局参数
+                ...crossProps,
+                route,
 
-              // 路由Route组件传入的props
-              ...routeProps,
-            }
-            if (children) {
+                // 路由Route组件传入的props
+                ...routeProps,
+              }
+              if (children) {
               // 使用递归来嵌套路由组件
-              contentProps.children = generateNestingRoutes(children, options)
+                contentProps.children = generateNestingRoutes(children, options)
+              }
+              return createElement(Content, contentProps)
             }
-            return createElement(Content, contentProps)
-          }
-        })
-      }
-      RouteComponents.push(createElement(PassProps, {
+          })
+        }
+        RouteComponents.push(createElement(PassProps, {
         /**
          * 如果使用PassProps包装Route，则会丧失使用Router Switch组件的能力，因为通常
          * 我们对Route的包装是想赋予路由更高级的特性，并把包装后的组件当成Route组件使用。
@@ -112,18 +120,18 @@ export function generateNestingRoutes (treeRoutes, options) {
          * 就可以辅助Switch的Route组件切换逻辑。被匹配到path的组件会额外接收到一个computedMatch
          * https://github.com/ReactTraining/react-router/blob/ea44618e68f6a112e48404b2ea0da3e207daf4f0/packages/react-router/modules/Switch.js#L40
          */
-        // 初path外，其他参数也同样会影响Switch行为例如 exact, strict, sensitive, location...
-        path: route.path,
-        exact: route.exact,
-        strict: route.strict,
-        location: route.location,
-        sensitive: route.sensitive,
-        key: [PassProps.name, segment + index].join('-'),
-      }))
-    } else if (children) {
-      RouteComponents.push(...generateNestingRoutes(children, options))
-    }
-  })
+          // 初path外，其他参数也同样会影响Switch行为例如 exact, strict, sensitive, location...
+          path: route.path,
+          exact: route.exact,
+          strict: route.strict,
+          location: route.location,
+          sensitive: route.sensitive,
+          key: [PassProps.name, segment + index].join('-'),
+        }))
+      } else if (children) {
+        RouteComponents.push(...generateNestingRoutes(children, options))
+      }
+    })
   return RouteComponents
 }
 
@@ -134,6 +142,7 @@ export function generateNestingRoutes (treeRoutes, options) {
  * @returns {ReactNode[]}
  */
 export function arrRoutesToNestingRoutes (arrRoutes, options) {
+  console.debug('arrRoutes', arrRoutes)
   const treeRoutes = arrRoutesToTreeRoutes(arrRoutes)
   console.debug('treeRoutes', treeRoutes)
   const nestingRoutes = generateNestingRoutes(treeRoutes, options)
