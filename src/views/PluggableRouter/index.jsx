@@ -55,7 +55,8 @@ viewScanner({
     // console.debug(route.nest)
 
     // 收集路由配置信息，如果没有设置key，则使用目录路径作为key
-    routes[route.key || dir] = route
+    route.key = route.key || dir
+    routes[route.key] = route
 
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />

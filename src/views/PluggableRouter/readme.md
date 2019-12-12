@@ -82,19 +82,6 @@ React Router 相关逻辑<a name="react-router-match"></a>
 path，directory分析嵌套关系方案的共同点
 1. 要求`Route path`、`UI视觉`的嵌套关系是一致的
 
-选择directory的原因
-1. 目录变化的几率比Route path更小，面对的问题最少
-2. 不需要设计新的路由配置信息。如path方案改写嵌套关系，需要声明额外路由配置属性
-3. 除了常规树遍历，代码无需为Route path变化额外增加特殊处理和逻辑判断
-选择path的理由
-1. 业务模块的目录结构可以自由设计
-2. 无法体现嵌套关系的path会被视为孤立视图或兄弟视图
-    1. /game, /game/:id 这两个path对应的视图被视为兄弟视图
-    2. /, *, /:id, 正则表达式 会被视为孤立视图
-
-如果一定要依赖Route path分析嵌套关系，可能会限定path使用规则，或增加新的路由配置属性
-
-
 ## 嵌套路由的使用案例
 代码中的children均代表子一级路由组件数组，可以被react直接渲染
 ```jsx harmony
@@ -113,6 +100,20 @@ export default function View ({ children }) {
 function Layout () {}
 export default function View ({ children }) {
   return <Layout>{children}</Layout>
+}
+
+// 使用自定义布局，并自由决定子路由摆放位置
+function Layout () {}
+export default function View ({ childrenRoutes }) {
+  /**
+   * 如果你有三个视图，他们route.key分别是leftSidebar、rightSidebar、myContent
+   * 你可以通过访问childrenRoutes对象来决定它们在你布局中的位置
+   */
+  return <Layout>
+    <div className="left sidebar">{childrenRoutes.leftSidebar}</div>
+    {childrenRoutes.myContent}
+    <div className="right sidebar">{childrenRoutes.rightSidebar}</div>
+  </Layout>
 }
 
 // 嵌套Switch组件
@@ -169,7 +170,8 @@ export const route = {
   key: 'parent',
   name: '父亲',
   path: '/parent',
-  exact: true,
+  // 如果遇到Switch解析优先级问题，可以尝试使用exact属性
+  // exact: true,
 }
 export const route = {
   key: 'brother',
@@ -181,17 +183,15 @@ export const route = {
   key: 'parent',
   name: '父亲',
   path: '/parent',
-  // 不声明dir属性的默认值，会设置成所在目录地址
-  // nest: 'Parent',
-  sort: 2
+  // sort: 2
 }
 export const route = {
   key: 'brother',
   name: '兄弟',
   path: '/parent/brother',
-  // brother视图通过改写目录属性，来拒绝被parent视图嵌套
-  nest: 'ParentBrother',
-  // 如果搭配了Switch，还需要声明排序规则
-  sort: 1
+  // brother视图通过改写嵌套属性，来拒绝被parent视图嵌套，变成parent的兄弟节点
+  nest: '/parent',
+  // 如果搭配了Switch，且有排序问题时，可以声明排序规则
+  // sort: 1
 }
 ```
