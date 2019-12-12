@@ -4,7 +4,7 @@ import Loading from '../../components/Loading'
 export const route = {
   key: 'parent',
   name: '父亲',
-  path: '/parent',
+  path: '/app/parent',
   sort: 2
   // auth: true
 }

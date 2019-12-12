@@ -4,7 +4,7 @@ import Loading from '../../../components/Loading'
 export const route = {
   key: 'brother',
   name: '兄弟',
-  path: '/parent/brother',
+  path: '/app/parent/brother',
 }
 
 export const Content = loadable({

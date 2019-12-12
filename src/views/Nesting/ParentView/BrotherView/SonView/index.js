@@ -8,7 +8,7 @@ import Loading from '../../../../components/Loading'
 export const route = {
   key: 'brotherSon',
   name: '兄弟的儿子',
-  path: '/parent/brother/son',
+  path: '/app/parent/brother/son',
 }
 
 export const Content = loadable({

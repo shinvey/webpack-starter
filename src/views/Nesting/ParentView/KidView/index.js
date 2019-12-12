@@ -8,9 +8,9 @@ import Loading from '../../../components/Loading'
 export const route = {
   key: 'kid',
   name: '小儿子',
-  path: '/parent/kid',
+  path: '/app/parent/kid',
   // 改写嵌套规则
-  nest: 'parentKid',
+  nest: '/app/parentKid',
   // 将Kid视图优先级提高，path解析优先于Parent视图
   sort: 1,
 }

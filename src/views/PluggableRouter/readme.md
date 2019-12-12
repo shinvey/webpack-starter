@@ -26,9 +26,8 @@ React Router 相关逻辑<a name="react-router-match"></a>
 
 # 如何让 PluggableRouter 支持嵌套路由？<a name="nested-routes"></a>
 
-当初考虑使用Route path来体现路由层级，后在测试可用性的过程中，发现Route path是动态路径，
-规则可以简单或复杂，所以改用嵌套文件夹来体现路由嵌套层级，那么我们可以根据嵌套文件夹的特征
-生成一个树形结构路由信息表。然后就可以利用树形结构路由信息表生成嵌套路由。
+可以利用路径信息来辅助分析Route组件的嵌套关系，这个路径信息可以来自Route path，也可以来自
+视图所在目录。为了让默认嵌套关系可以被修改，当然也可以手动指定一个类似路径的属性，用来修改嵌套关系。
 
 ## 生成嵌套路由的过程
 1. 扫描所有视图入口，生成[一维数组路由信息表](./nestingRoutes/defArrRoutes.js)，包含视图所在目录信息
@@ -102,8 +101,7 @@ export default function View ({ children }) {
   return <Layout>{children}</Layout>
 }
 
-// 使用自定义布局，并自由决定子路由摆放位置
-function Layout () {}
+// 使用自定义布局，并自由决定子路由在DOM中的位置
 export default function View ({ childrenRoutes }) {
   /**
    * 如果你有三个视图，他们route.key分别是leftSidebar、rightSidebar、myContent
@@ -190,7 +188,7 @@ export const route = {
   name: '兄弟',
   path: '/parent/brother',
   // brother视图通过改写嵌套属性，来拒绝被parent视图嵌套，变成parent的兄弟节点
-  nest: '/parent',
+  nest: '/parentBrother',
   // 如果搭配了Switch，且有排序问题时，可以声明排序规则
   // sort: 1
 }

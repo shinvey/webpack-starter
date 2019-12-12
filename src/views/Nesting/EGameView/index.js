@@ -4,7 +4,7 @@ import Loading from '../../components/Loading'
 export const route = {
   key: 'EGameView',
   name: 'EGameView',
-  path: '/egame',
+  path: '/app/egame',
 }
 
 export const Content = loadable({
