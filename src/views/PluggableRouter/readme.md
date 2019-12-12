@@ -35,7 +35,7 @@ React Router 相关逻辑<a name="react-router-match"></a>
 2. 根据视图入口所在目录信息分析嵌套关系，生成[嵌套路由信息表](./nestingRoutes/defTreeRoutes.js)
 3. 使用递归将嵌套路由信息表转换为[嵌套路由组件](./nestingRoutes/treeRoutesJSX.jsx)
 
-## 嵌套路由需要解决三个问题
+## 嵌套路由需要解决4个问题
 
 必须：
 
@@ -60,7 +60,7 @@ React Router 相关逻辑<a name="react-router-match"></a>
         1. 避免这类路径有嵌套关系
         2. 视为没有嵌套关系的独立视图
 2. 处理path中的动态参数，处理数组类型的path
-4. 要求`UI视觉`和`path`的嵌套关系是一致的
+3. 要求`UI视觉`和`path`的嵌套关系是一致的
 
 选择directory需要面对的问题
 1. 要求`UI视觉`、`path`、`目录`的嵌套关系是一致的
@@ -86,6 +86,11 @@ path，directory分析嵌套关系方案的共同点
 1. 目录变化的几率比Route path更小，面对的问题最少
 2. 不需要设计新的路由配置信息。如path方案改写嵌套关系，需要声明额外路由配置属性
 3. 除了常规树遍历，代码无需为Route path变化额外增加特殊处理和逻辑判断
+选择path的理由
+1. 业务模块的目录结构可以自由设计
+2. 无法体现嵌套关系的path会被视为孤立视图或兄弟视图
+    1. /game, /game/:id 这两个path对应的视图被视为兄弟视图
+    2. /, *, /:id, 正则表达式 会被视为孤立视图
 
 如果一定要依赖Route path分析嵌套关系，可能会限定path使用规则，或增加新的路由配置属性
 
