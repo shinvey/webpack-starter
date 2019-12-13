@@ -5,8 +5,6 @@ export const route = {
   key: 'parent',
   name: '父亲',
   path: '/app/parent',
-  sort: 2
-  // auth: true
 }
 
 export const Content = loadable({

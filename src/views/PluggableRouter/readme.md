@@ -83,8 +83,9 @@ path，directory分析嵌套关系方案的共同点
 
 ## 嵌套路由的使用案例
 代码中的children均代表子一级路由组件数组，可以被react直接渲染
+
+常规嵌套
 ```jsx harmony
-// 常规嵌套
 import React from 'react'
 export default function View ({ children }) {
   return <ul>
@@ -94,14 +95,21 @@ export default function View ({ children }) {
     </li>
   </ul>
 }
+```
 
-// 使用自定义布局
+使用自定义布局
+```jsx harmony
+import React from 'react'
 function Layout () {}
 export default function View ({ children }) {
   return <Layout>{children}</Layout>
 }
+```
 
-// 使用自定义布局，并自由决定子路由在DOM中的位置
+使用自定义布局，并自由决定子路由在DOM中的位置
+```jsx harmony
+import React from 'react'
+function Layout () {}
 export default function View ({ childrenRoutes }) {
   /**
    * 如果你有三个视图，他们route.key分别是leftSidebar、rightSidebar、myContent
@@ -113,14 +121,35 @@ export default function View ({ childrenRoutes }) {
     <div className="right sidebar">{childrenRoutes.rightSidebar}</div>
   </Layout>
 }
+```
 
-// 嵌套Switch组件
+嵌套Switch组件
+```jsx harmony
+import React from 'react'
 import { Switch } from 'react-router-dom'
 export default function View ({ children }) {
-  return <Layout><Switch>{children}</Switch></Layout>
+  return <Switch>{children}</Switch>
 }
+```
 
-// 向子视图传递参数。也可以考虑使用React Context特性传参
+使用PluggableRouter Switch组件，满足全局No Match（404）场景
+```jsx harmony
+import React from 'react'
+import { Switch } from './index'
+export function View ({ children }) {
+  // 如果没有匹配到URL，则会默认跳转至/404
+  return <Switch>{children}</Switch>
+}
+export function CopyView ({ children }) {
+  // 使用noMatch属性，修改默认跳转行为，比如跳转至首页
+  return <Switch noMatch={'/home'}>{children}</Switch>
+}
+```
+
+向子视图传递参数。也可以考虑使用React Context特性传参
+```jsx harmony
+import React from 'react'
+function Layout () {}
 export default function View ({ children }) {
   return <Layout>{Children.map(
     children,
@@ -131,8 +160,11 @@ export default function View ({ children }) {
     )
   )}</Layout>
 }
+```
 
-// 不同路由组件共享同一个视图
+不同路由组件共享同一个视图
+```jsx harmony
+import React from 'react'
 // 第一个视图接口 ParentView/SonView/index.js
 export const route = {
   key: 'son',
@@ -157,39 +189,68 @@ export const Content = loadable({
 // 如果需要组件级更细致的控制，将共享视图抽象成组件会是更合适的解决方案
 ```
 
-特殊问题的应对办法
+### 改写视图嵌套关系的应对方法
+
+通常默认规则已经能够解决大部分问题，而下列路由规则的之间的关系则很微妙
+
+场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
 ```jsx harmony
-/**
-* 改写视图的嵌套关系应对方法
-* 通常默认规则已经能够解决大部分问题，如果一定需要改写默认嵌套规则，需要考虑两个场景
-*/
-// 场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
 export const route = {
   key: 'parent',
   name: '父亲',
   path: '/parent',
-  // 如果遇到Switch解析优先级问题，可以尝试使用exact属性
-  // exact: true,
 }
 export const route = {
   key: 'brother',
   name: '兄弟',
   path: '/parent/:id',
+  // 提高路由解析优先级
+  exact: true,
 }
-// 场景二：父级路由和其他子视图有嵌套关系，但其中一个视图在UI视觉上没有嵌套关系
+```
+
+场景二：为有嵌套关系的视图，单独创建落地页
+```jsx harmony
 export const route = {
   key: 'parent',
   name: '父亲',
   path: '/parent',
-  // sort: 2
+}
+export const route = {
+  key: 'son',
+  name: '儿子',
+  path: '/parent/son', // 与/parent是嵌套关系
+}
+export const route = {
+  key: 'parentHome',
+  name: '父亲的落地页',
+  // parentHome虽然与parent使用同一个path，但它却是独立视图，
+  // 跟parent没有继承关系
+  path: '/parent',
+  // 提高路由解析优先级
+  exact: true,
+}
+// 如果你想为parent的创建一个有嵌套关系的首页，可以使用常规办法
+export const route = {
+  key: 'parent-home',
+  name: '父亲的默认子视图',
+  path: '/parent/index',
+}
+```
+
+场景三：父级路由和其他子视图有嵌套关系，但其中一个视图在UI视觉上没有嵌套关系
+```jsx harmony
+export const route = {
+  key: 'parent',
+  name: '父亲',
+  path: '/parent',
 }
 export const route = {
   key: 'brother',
   name: '兄弟',
   path: '/parent/brother',
   // brother视图通过改写嵌套属性，来拒绝被parent视图嵌套，变成parent的兄弟节点
+  // 并提高路由解析优先级
   nest: '/parentBrother',
-  // 如果搭配了Switch，且有排序问题时，可以声明排序规则
-  // sort: 1
 }
 ```

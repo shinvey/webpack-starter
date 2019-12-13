@@ -44,21 +44,38 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
         return accumulator
       }
 
+      // 遍历过程中是否已经到达最后一个节点
+      const isLast = segments.length - 1 === index
+      /**
+       * 如果某个路由使用exact属性
+       * - 表明其他路由也使用了他的path作为前缀
+       * - 它与path后的路径所对应的路由不是嵌套关系
+       * 例如有如下三个视图：
+       * parent/son exact son继承自parent，但是一个独立视图，不参与子路由继承关系
+       * parent/son son继承自parent，且参与子路由继承关系
+       * parent/son/grandson grandson继承自son，son继承自parent
+       * 采取措施：
+       * 为parent/son exact另外创建一个作为parent/son的兄弟节点，
+       * 就可以避免破坏parent/son/grandson之间的继承关系
+       */
+      if (isLast && route.exact) {
+        segment = [segment, route.key || index].join('-')
+      }
+      // exact 和 nest属性都有一个共同意图，就是路由解析优先级高于默认的嵌套路由
+      if (route.exact || route.nest) {
+        route.sort = -1 // 提高Route解析优先级
+      }
       // 如果叶子节点已经创建则使用已有节点，没有则创建
-      let leaf = accumulator[segment] = accumulator[segment] || {}
+      const leaf = accumulator[segment] = accumulator[segment] || {}
       // 如果到达path片段的最末位
-      if (segments.length - 1 === index) {
-        // 如果route/Content已存在，创建新的兄弟节点
-        if ('route' in leaf) {
-          leaf = accumulator[[segment, route.key || index].join('-')] = {}
-        }
+      if (isLast) {
         // 存储route、Content
         return Object.assign(leaf, {
           route,
           Content
         })
       } else { // 如果还没到path最末位，创建子节点
-        // 添加新的叶子节点
+        // 添加新的叶子节点，children体现当前节点有被继承的关系
         return leaf.children = leaf.children || {}
       }
     }, treeRoutes)
@@ -107,6 +124,7 @@ export function generateNestingRoutes (treeRoutes, options) {
         const PassProps = ({
           // 辅助Switch工作的属性，不需要传递给子组件
           path,
+          from,
           exact,
           strict,
           location,
@@ -159,6 +177,7 @@ export function generateNestingRoutes (treeRoutes, options) {
            */
           // 初path外，其他参数也同样会影响Switch行为例如 exact, strict, sensitive, location...
           path: route.path,
+          from: route.from, // 来自此用例场景 https://reacttraining.com/react-router/web/api/Switch/children-node
           exact: route.exact,
           strict: route.strict,
           location: route.location,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route } from 'react-router-dom'
+import { Router, Route, Switch as RouterSwitch, Redirect } from 'react-router-dom'
 import { compile } from 'path-to-regexp'
 import history from './history'
 import viewScanner, { modulePathToDirPath } from './viewScanner'
@@ -98,4 +98,15 @@ export { rootRoutes }
  */
 export default function PluggableRouter ({ children }) {
   return <Router history={history}>{children}</Router>
+}
+
+/**
+ * 可拔插路由模块的Switch组件
+ * 对原版Switch进行封装，加上No Match默认行为，用来满足嵌套路由全局默认No Match使用场景
+ */
+export function Switch ({ children, noMatch = '/404', ...props }) {
+  return <RouterSwitch {...props}>
+    {children}
+    <Redirect to={noMatch} />
+  </RouterSwitch>
 }

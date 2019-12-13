@@ -9,10 +9,8 @@ export const route = {
   key: 'kid',
   name: '小儿子',
   path: '/app/parent/kid',
-  // 改写嵌套规则
+  // 改写嵌套规则，当前视图的路由变为/app/parent的兄弟节点
   nest: '/app/parentKid',
-  // 将Kid视图优先级提高，path解析优先于Parent视图
-  sort: 1,
 }
 
 export const Content = loadable({

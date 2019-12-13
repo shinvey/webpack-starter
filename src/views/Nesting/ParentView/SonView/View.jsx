@@ -1,4 +1,5 @@
 import React from 'react'
+import { Switch } from '../../../PluggableRouter'
 
 export default function View (props) {
   console.debug('Son', props)
@@ -7,7 +8,9 @@ export default function View (props) {
     <ul>
       <li>
         This is Son View
-        {children}
+        <Switch>
+          {children}
+        </Switch>
       </li>
     </ul>
   )
