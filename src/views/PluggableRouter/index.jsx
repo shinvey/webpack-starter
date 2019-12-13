@@ -9,20 +9,23 @@ import { flatRoutes } from './flatRoutes'
 import { arrRoutesToNestingRoutes } from './nestingRoutes'
 
 /**
- * 载入当前page下所有视图索引，创建routes and contents
+ * 载入当前page下所有视图索引，创建routes and normalRoutes
  * 这里完全可决定是否要把所有路由信息以怎样的数据结构传给所有视图
  */
 // const routes = []
 /**
  * 如果想以对象形式创建路由表
- * 可以考虑在视图接口的navigation上添加id属性作为对象的key
+ * 可以考虑在视图接口的route上添加key属性作为对象的key
  */
 const routes = {}
-// 根结点Route组件列表
-let rootContents = []
-let customContents = []
+/**
+ * 根结点Route组件列表
+ * @type {Array}
+ * @deprecated
+ */
+let rootRoutes = []
 // 默认Route组件列表
-let contents = []
+let normalRoutes = []
 viewScanner({
   iteratee (ViewModule, modulePath, index) {
     const {
@@ -61,41 +64,34 @@ viewScanner({
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />
 
-    const routeElement = {
+    ;(route.role === 'root' ? rootRoutes : normalRoutes).push({
       route,
       Content
-    }
-    switch (route.role) {
-      case 'custom':
-        // 自定义路由内容渲染方式，用于处理更复杂灵活多变的需求
-        customContents.push(routeElement)
-        break
-      case 'root':
-        // rootContents意图是放在嵌套路由的根结点位置
-        rootContents.push(routeElement)
-        break
-      default:
-        contents.push(routeElement)
-        break
-    }
+    })
   },
 })
+
 const flatRoutesOptions = {
   props: { routes },
   pickRoute (route) {
     return route.auth ? AuthRoute : Route
   }
 }
-rootContents = flatRoutes(rootContents, flatRoutesOptions)
-customContents = flatRoutes(customContents, flatRoutesOptions)
-// contents = flatRoutes(contents, flatRoutesOptions)
-contents = arrRoutesToNestingRoutes(contents, flatRoutesOptions)
+// 扁平化方式组织路由
+// normalRoutes = flatRoutes(normalRoutes, flatRoutesOptions)
+// 嵌套方式组织路由
+normalRoutes = arrRoutesToNestingRoutes(normalRoutes, flatRoutesOptions)
 export {
   routes,
-  rootContents,
-  customContents,
-  contents,
+  normalRoutes,
 }
+
+/**
+ * Note:
+ * 筛选根结点的路由是因老应用有嵌套路由组合的需要。如果是全新开发，不需要以下两行代码
+ */
+rootRoutes = flatRoutes(rootRoutes, flatRoutesOptions)
+export { rootRoutes }
 
 /**
  * 可拔插路由

@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
 import PluggableRouter from '../PluggableRouter'
-import { Content } from './Content'
+import Content from './Content'
 
 /**
  * 内容container可以定制
