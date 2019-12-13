@@ -12,6 +12,6 @@ export const route = {
 }
 
 export const Content = loadable({
-  loader: () => import('../../SonView/View.jsx'),
+  loader: () => import('../../Child/GrandchildView/View.jsx'),
   loading: Loading
 })
