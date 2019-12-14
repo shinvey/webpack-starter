@@ -63,7 +63,7 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
       }
       // exact 和 nest属性都有一个共同意图，就是路由解析优先级高于默认的嵌套路由
       if (route.exact || route.nest) {
-        route.sort = -1 // 提高Route解析优先级
+        route.sort = route.sort || -1 // 提高Route解析优先级
       }
       // 如果叶子节点已经创建则使用已有节点，没有则创建
       const leaf = accumulator[segment] = accumulator[segment] || {}
