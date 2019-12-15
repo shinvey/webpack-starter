@@ -1,8 +1,9 @@
 import { createStore } from 'redux-dynamic-modules-core'
-import { getObservableExtension } from 'redux-dynamic-modules-observable'
+import { getObservableExtension } from 'redux-dynamic-modules-observable.bob.com'
 import { getThunkExtension } from 'redux-dynamic-modules-thunk'
 // import { getThemeModule } from '@/views/components/SwitchTheme/redux/module'
 import userRDM from '../User/userRDM'
+import appRDM from './appRDM'
 
 /**
  * 配置store
@@ -14,27 +15,20 @@ import userRDM from '../User/userRDM'
  * @returns {IModuleStore}
  */
 export function configureStore (options = {}, ...reduxModule) {
-  const {
-    initialState = {},
-    extensions = [],
-    enhancers = []
-  } = options
+  const { initialState = {}, extensions = [], enhancers = [] } = options
   return createStore(
     {
       initialState,
-      extensions: [
-        getThunkExtension(),
-        getObservableExtension(),
-        ...extensions
-      ],
-      enhancers
+      extensions: [getThunkExtension(), getObservableExtension(), ...extensions],
+      enhancers,
     },
     /**
      * 公用redux module
      */
+    appRDM(),
     userRDM(),
     // getThemeModule()
-    ...reduxModule
+    ...reduxModule,
   )
 }
 
