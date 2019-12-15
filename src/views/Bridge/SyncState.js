@@ -34,17 +34,19 @@ export function addActionTranslator (actionType, translate) {
  * @returns {object} return modified state
  */
 export const syncMiddleware = store => next => action => {
-  // 首先直接保持dispatch的默认行为
-  let result = next(action)
+  // 首先直接保持dispatch的默认行为，就是先发送当前的action，给所有reducer处理
+  const result = next(action)
 
   /**
-   * 通过action translator，dispatch翻译后的action，就可以在两个应用公用一个store
-   * 的情况下实现状态同步
+   * 通过action translator的转换，
+   * 然后发送翻译后的action，
+   * 如此就可以在两个应用公用一个store的情况下实现状态同步
    */
+  // 取出action翻译函数
   const translate = _translator[action.type]
   if (typeof translate === 'function') {
-    // 先调用dispatch输出的结果，如果命名冲突的情况下，优先保留结果
-    result = Object.assign(next(translate(action) || action), result)
+    // 发送翻译后的action
+    next(translate(action))
   }
 
   return result
