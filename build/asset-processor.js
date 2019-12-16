@@ -27,12 +27,21 @@ module.exports = (env, args) => {
        *
        * 相关问题
        * Images and css-loader Source Map Gotcha https://survivejs.com/webpack/loading/images/#images-and-css-loader-source-map-gotcha
+       *
+       * url-loader 3.0 开始以es module语法export，用以支持module concatenation + tree shaking
        */
       loader: 'url-loader',
       options: {
         limit: 8192,
 
         // Using file-loader options, see https://github.com/webpack-contrib/file-loader
+        /**
+         * file-loader 5.0 开始以es module语法export，用以支持module concatenation + tree shaking
+         * https://github.com/webpack-contrib/file-loader#esmodule
+         * By default, file-loader generates JS modules that use the ES modules syntax.
+         * There are some cases in which using ES modules is beneficial,
+         * like in the case of module concatenation and tree shaking.
+         */
 
         ...opts
       }
