@@ -7,7 +7,7 @@ import Loading from '../../../components/Loading'
 
 export const route = {
   key: 'kid',
-  name: '小儿子',
+  name: '与父亲成为兄弟kid视图',
   path: '/app/parent/kid',
   // 改写嵌套规则，当前视图的路由变为/app/parent的兄弟节点
   nest: '/app/parentKid',

@@ -140,7 +140,7 @@ export function View ({ children }) {
   // 如果没有匹配到URL，则会默认跳转至/404
   return <Switch>{children}</Switch>
 }
-export function CopyView ({ children }) {
+export function View ({ children }) {
   // 使用noMatch属性，修改默认跳转行为，比如跳转至首页
   return <Switch noMatch={'/home'}>{children}</Switch>
 }
@@ -193,7 +193,7 @@ export const Content = loadable({
 
 通常默认规则已经能够解决大部分问题，而下列路由规则的之间的关系则很微妙
 
-场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
+#### 场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
 ```jsx harmony
 export const route = {
   key: 'parent',
@@ -209,7 +209,7 @@ export const route = {
 }
 ```
 
-场景二：为有嵌套关系的视图，单独创建落地页
+#### 场景二：为有父子嵌套关系的视图，单独创建独立的落地页
 ```jsx harmony
 export const route = {
   key: 'parent',
@@ -227,18 +227,31 @@ export const route = {
   // parentHome虽然与parent使用同一个path，但它却是独立视图，
   // 跟parent没有继承关系
   path: '/parent',
-  // 提高路由解析优先级
+  // 因为path跟parent相同，需要使用精确匹配属性
   exact: true,
-}
-// 如果你想为parent的创建一个有嵌套关系的首页，可以使用常规办法
-export const route = {
-  key: 'parent-home',
-  name: '父亲的默认子视图',
-  path: '/parent/index',
 }
 ```
 
-场景三：父级路由和其他子视图有嵌套关系，但其中一个视图在UI视觉上没有嵌套关系
+如果你想为parent的创建一个有嵌套关系的首页，可以使用常规办法
+```jsx harmony
+export const route = {
+  key: 'parentHome',
+  name: '父亲的落地页',
+  path: '/parent/landing', // path路径中包含了嵌套关系
+}
+```
+或者在不改动path的情况下，修改嵌套属性，重定义嵌套关系
+```jsx harmony
+export const route = {
+  key: 'parentHome',
+  name: '父亲的落地页',
+  path: '/parent', // 跟parent使用相同path
+  nest: '/parent/index', // 表示该视图从parent继承
+  exact: true, // 因为path跟parent相同，需要使用精确匹配属性
+}
+```
+
+#### 场景三：父级路由和其他子级路由有嵌套关系，但其中一个路由对应的视图在UI视觉上没有嵌套关系
 ```jsx harmony
 export const route = {
   key: 'parent',
@@ -246,11 +259,16 @@ export const route = {
   path: '/parent',
 }
 export const route = {
+  key: 'child',
+  name: '孩子',
+  path: '/parent/child', // 跟/parent有嵌套关系
+}
+export const route = {
   key: 'brother',
   name: '兄弟',
   path: '/parent/brother',
-  // brother视图通过改写嵌套属性，来拒绝被parent视图嵌套，变成parent的兄弟节点
-  // 并提高路由解析优先级
+  // brother视图通过改写nest嵌套属性，来拒绝被parent视图嵌套，变成parent的兄弟节点
+  // nest属性会提高路由解析优先级
   nest: '/parentBrother',
 }
 ```
