@@ -69,8 +69,15 @@ module.exports = (env, args) => {
       // see https://github.com/webpack-contrib/sass-loader
       loader: 'sass-loader',
       options: {
-        // source map see https://github.com/webpack-contrib/sass-loader#source-maps
-        ..._options
+        /**
+         * prependData https://github.com/webpack-contrib/sass-loader#prependdata
+         * 可以根据环境变量提前插入一些sass代码
+         */
+        /**
+         * source map see https://github.com/webpack-contrib/sass-loader#sourcemap
+         * Default: depends on the compiler.devtool value
+         */
+        // ..._options
       }
     }),
 
