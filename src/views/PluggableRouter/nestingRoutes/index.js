@@ -69,6 +69,10 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
       const leaf = accumulator[segment] = accumulator[segment] || {}
       // 如果到达path片段的最末位
       if (isLast) {
+        // 有冲突的嵌套路由检测
+        leaf.route && console.error('Warning: ', leaf.route, ' and ', route, ' appear to be in' +
+          ' conflict with each other. The one of them should be changed in' +
+          ' different path/nest property')
         // 存储route、Content
         return Object.assign(leaf, {
           route,
