@@ -36,7 +36,26 @@ function routeToNestedSegments (route) {
  */
 export function arrRoutesToTreeRoutes (arrRoutes) {
   const treeRoutes = {}
-  arrRoutes.forEach(({ route, Content }) => {
+
+  // 重复route path检测
+  const conflictWaring = (a, b) => {
+    console.error('Warning: ', a, ' and ', b, ' appear to be in' +
+      ' conflict with each other. The one of them should be changed in' +
+      ' different path/nest property')
+  }
+  const routeByPath = {}
+  const conflictDetect = route => {
+    const duplicate = routeByPath[route.path]
+    if (duplicate && (duplicate.exact === route.exact)) {
+      conflictWaring(duplicate, route)
+    }
+    routeByPath[route.path] = route
+  }
+
+  arrRoutes.forEach(({ route, Content }, routeIndex) => {
+    conflictDetect(route)
+
+    // 开始创建树
     const segments = routeToNestedSegments(route)
     segments.reduce((accumulator, segment, index) => {
       // 如果为空，跳过，处理下一个
@@ -57,9 +76,11 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
        * 采取措施：
        * 为parent/son exact另外创建一个作为parent/son的兄弟节点，
        * 就可以避免破坏parent/son/grandson之间的继承关系
+       *
+       * 新增route.nest条件，允许nest属性在其他路由配置中有重复声明的情况
        */
-      if (isLast && route.exact) {
-        segment = [segment, route.key || index].join('-')
+      if (isLast && (route.exact || route.nest)) {
+        segment = [segment, route.key, routeIndex].join('-')
       }
       // exact 和 nest属性都有一个共同意图，就是路由解析优先级高于默认的嵌套路由
       if (route.exact || route.nest) {
@@ -70,9 +91,7 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
       // 如果到达path片段的最末位
       if (isLast) {
         // 有冲突的嵌套路由检测
-        leaf.route && console.error('Warning: ', leaf.route, ' and ', route, ' appear to be in' +
-          ' conflict with each other. The one of them should be changed in' +
-          ' different path/nest property')
+        leaf.route && conflictWaring(leaf.route, route)
         // 存储route、Content
         return Object.assign(leaf, {
           route,
@@ -104,7 +123,7 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
  * @returns {{ arrRouteComponents: ReactNode[], objRouteComponents: object }}
  */
 export function generateNestingRoutes (treeRoutes, options) {
-  const { props: crossProps = {}, pickRoute = () => Route } = options
+  const { props: crossProps = {}, pickRoute = route => route && Route } = options
 
   // 存放组装好的Route组件列表
   const arrRouteComponents = []

@@ -3,7 +3,7 @@ import Loading from '../../../../components/Loading'
 
 export const route = {
   key: 'grandson',
-  name: 'grandson',
+  name: '孙子',
   path: '/app/parent/son/grandson',
   // auth: true
 }
