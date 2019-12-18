@@ -10,7 +10,7 @@ import Loading from '../../../components/Loading'
 export const route = {
   key: 'EGameListView',
   name: 'EGameListView',
-  path: '/app/egame/:id',
+  path: '/app/pcGame/:id',
   exact: true
 }
 
