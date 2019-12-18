@@ -32,7 +32,7 @@ export default function ajaxSetup ({ url, method, headers = {}, body, ...rest })
     // retryTimes: 2,
     // 继续将错误抛出，允许当前stream上的其他pipe也可以捕获异常，提供自定义处理的机会
     afterCatchError,
-    transformData: ajaxResponse => ajaxResponse.response.data,
+    transformData: ajaxResponse => ajaxResponse.response,
     ...rest
   }
 }
