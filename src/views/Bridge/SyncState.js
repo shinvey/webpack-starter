@@ -51,3 +51,12 @@ export const syncMiddleware = store => next => action => {
 
   return result
 }
+
+/**
+ * 将syncMiddleware以Redux Dynamic Module库的Extension形式创建
+ */
+export function syncStateExtension () {
+  return {
+    middleware: [syncMiddleware],
+  }
+}
