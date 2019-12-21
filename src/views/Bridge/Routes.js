@@ -1,1 +1,1 @@
-export { rootRoutes, normalRoutes } from '../PluggableRouter'
+export { rootRoutes, normalRoutes, widgetRoutes } from '../PluggableRouter'

@@ -26,8 +26,22 @@ const routes = {}
 let rootRoutes = []
 // 默认Route组件列表
 let normalRoutes = []
+// 用于添加页面小部件的路由，无嵌套关系，不受路由Switch组件约束
+let widgetRoutes = []
+/**
+ * 分拣路由
+ */
+function sortRoute (parcel, role = 'normal') {
+  const obj = {
+    rootRoutes,
+    widgetRoutes,
+    normalRoutes
+  }
+  const target = obj[role + 'Routes']
+  target && target.push(parcel)
+}
 viewScanner({
-  iteratee (ViewModule, modulePath, index) {
+  iteratee (ViewModule, modulePath) {
     const {
       // 视图接口暴露的Content
       Content,
@@ -64,10 +78,10 @@ viewScanner({
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />
 
-    ;(route.role === 'root' ? rootRoutes : normalRoutes).push({
+    sortRoute({
       route,
       Content
-    })
+    }, route.role)
   },
 })
 
@@ -79,11 +93,13 @@ const flatRoutesOptions = {
 }
 // 扁平化方式组织路由
 // normalRoutes = flatRoutes(normalRoutes, flatRoutesOptions)
+widgetRoutes = flatRoutes(widgetRoutes, flatRoutesOptions)
 // 嵌套方式组织路由
 normalRoutes = arrRoutesToNestingRoutes(normalRoutes, flatRoutesOptions)
 export {
   routes,
   normalRoutes,
+  widgetRoutes,
 }
 
 /**
