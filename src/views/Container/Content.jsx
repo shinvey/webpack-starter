@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch } from 'react-router-dom'
-import { normalRoutes, routes } from '../PluggableRouter'
+import { selectRoutes, routes } from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
 
 /**
@@ -12,7 +12,7 @@ export default function Content ({ children }) {
   return (
     <ErrorBoundary routes={routes}>
       <Switch>
-        {normalRoutes}
+        {selectRoutes()}
         {children}
       </Switch>
     </ErrorBoundary>
