@@ -1,7 +1,5 @@
-import { Route } from 'react-router-dom'
 import { compile } from 'path-to-regexp'
 import viewScanner, { modulePathToDirPath } from './viewScanner'
-import AuthRoute from '../Auth/AuthRoute'
 import { arrRoutesToFlatRoutes } from './flatRoutes'
 import { arrRoutesToNestingRoutes } from './nestingRoutes'
 
@@ -13,14 +11,16 @@ const routes = {}
 export { routes }
 
 // 收集路由角色信息
-const roles = {}
+let roles = {}
 /**
  * 保存或读取route role信息
- * @param {string} [role=normal] 如果不传则默认返回normal
+ * @param {string} [role] 如果不传则默认返回normal
  * @returns {string}
  */
 function routeRole (role = 'normal') {
-  roles[role] = undefined
+  if (roles) {
+    roles[role] = undefined
+  }
   return role
 }
 
@@ -33,12 +33,13 @@ const RouteShelves = {}
  * @property {function} Content
  */
 /**
- * 根据路由角色选择该角色分组下路由
+ * 根据路由角色选择该角色分组下路由集合
  * @param {string} [role]
- * @returns {RouteParcel[] | ReactNode[]}
+ * @returns {RouteParcel[] | ReactNode[]} 如果路由配置集合已经被渲染成路由组件，则会返回路由组件集合
  */
 export function selectRoutes (role = routeRole()) {
-  return RouteShelves[role + 'Routes'] || []
+  transform()
+  return RouteShelves[role] || []
 }
 /**
  * 存放路由集合
@@ -48,7 +49,7 @@ export function selectRoutes (role = routeRole()) {
  */
 function shelveRoutes (parcels, role = routeRole()) {
   if (role && parcels) {
-    RouteShelves[role + 'Routes'] = parcels
+    RouteShelves[role] = parcels
   }
   return parcels || []
 }
@@ -59,7 +60,7 @@ function shelveRoutes (parcels, role = routeRole()) {
  * @returns {RouteParcel[]}
  */
 function sortRoute (parcel, role = routeRole()) {
-  const target = RouteShelves[role + 'Routes'] = RouteShelves[role + 'Routes'] || []
+  const target = RouteShelves[role] = RouteShelves[role] || []
   if (parcel.route && parcel.Content) {
     target.push(parcel)
   }
@@ -117,18 +118,39 @@ viewScanner({
  */
 const transformOptions = {
   props: { routes },
-  pickRoute (route) {
-    return route.auth ? AuthRoute : Route
-  }
+  pickRoute () {}
 }
-// 根据路由角色进行遍历，并将路由配置信息转换成路由组件
-Object.keys(roles).forEach(role => {
-  /**
-   * 默认用嵌套路由，其他使用扁平路由
-   */
-  const arrRoutesToReactRoutes = (role === routeRole() ? arrRoutesToNestingRoutes : arrRoutesToFlatRoutes)
-  shelveRoutes(
-    arrRoutesToReactRoutes(selectRoutes(role), transformOptions),
-    role
-  )
-})
+/**
+ * 返回自定义路由
+ * @callback pickRoute
+ * @param route 路由配置属性对象
+ * @returns {Route|function|undefined}
+ */
+/**
+ * 告诉路由模块使用自定义路由
+ * @param {pickRoute} pickRoute
+ */
+export function useCustomRoute (pickRoute = () => {}) {
+  transformOptions.pickRoute = pickRoute
+}
+/**
+ * 将路由配置信息转换成路由组件
+ */
+export default function transform () {
+  // 根据路由角色进行遍历，并将路由配置信息转换成路由组件
+  roles && Object.keys(roles).forEach(role => {
+    const parcels = RouteShelves[role]
+    if (Array.isArray(parcels)) {
+      /**
+       * 默认用嵌套路由，其他使用扁平路由
+       */
+      const arrRoutesToReactRoutes = (role === routeRole() ? arrRoutesToNestingRoutes : arrRoutesToFlatRoutes)
+      shelveRoutes(
+        arrRoutesToReactRoutes(parcels, transformOptions),
+        role
+      )
+    }
+  })
+  // 转换完成后清空，避免外部重复调用
+  roles = undefined
+}

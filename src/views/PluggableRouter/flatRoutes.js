@@ -10,7 +10,7 @@ import { Route } from 'react-router-dom'
  * @returns {*}
  */
 export function arrRoutesToFlatRoutes (arrRoutes, options) {
-  const { props: crossProps = {}, pickRoute = route => route && Route } = options
+  const { props: crossProps = {}, pickRoute } = options
   return arrRoutes.map(({ route, Content }, index) => {
     /**
      * 批量创建Route
@@ -20,7 +20,7 @@ export function arrRoutesToFlatRoutes (arrRoutes, options) {
      *
      * 关于嵌套路由的生成请移至readme.md文档 [如何生成嵌套路由？](./readme.md#nested-routes)
      */
-    return createElement(pickRoute(route), {
+    return createElement(pickRoute(route) || Route, {
       ...crossProps,
       route,
       key: index,

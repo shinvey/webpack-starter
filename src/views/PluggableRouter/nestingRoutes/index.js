@@ -123,7 +123,7 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
  * @returns {{ arrRouteComponents: ReactNode[], objRouteComponents: object }}
  */
 export function generateNestingRoutes (treeRoutes, options) {
-  const { props: crossProps = {}, pickRoute = route => route && Route } = options
+  const { props: crossProps = {}, pickRoute } = options
 
   // 存放组装好的Route组件列表
   const arrRouteComponents = []
@@ -155,7 +155,7 @@ export function generateNestingRoutes (treeRoutes, options) {
           // 搬运来自父组件的自定义参数
           ...transferProps
         }) => {
-          return createElement(pickRoute(route), {
+          return createElement(pickRoute(route) || Route, {
             // 嵌套关系下的组件都能够收到的自定参数，我用来传递路由信息表
             ...crossProps,
             route,
