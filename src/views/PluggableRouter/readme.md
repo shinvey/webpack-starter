@@ -272,3 +272,18 @@ export const route = {
   nest: '/parentBrother',
 }
 ```
+# 如何实现breadcrumbs面包屑组件？
+两种用例
+- 根据视图嵌套关系自动生成
+  - 遍历树形结构的路由配置
+- 使用者自定义一个路由配置信息的一维数组
+  - 使用route key组成数组
+  - 使用route组成数组
+
+可定制：
+- 自定义面包屑渲染方式
+  - 默认使用route name
+  - 使用函数接受路由参数，自定义面包屑输出内容
+
+相关讨论：
+- [Breadcrumbs Example in V4 Documentation](https://github.com/ReactTraining/react-router/issues/4556)
