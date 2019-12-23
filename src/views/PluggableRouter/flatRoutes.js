@@ -9,8 +9,8 @@ import { Route } from 'react-router-dom'
  * @param {function} [options.pickRoute] 路由选择器
  * @returns {*}
  */
-export function flatRoutes (arrRoutes, options) {
-  const { props: crossProps = {}, pickRoute = route => Route } = options
+export function arrRoutesToFlatRoutes (arrRoutes, options) {
+  const { props: crossProps = {}, pickRoute = route => route && Route } = options
   return arrRoutes.map(({ route, Content }, index) => {
     /**
      * 批量创建Route

@@ -3,42 +3,69 @@ import { Router, Route, Switch as RouterSwitch, Redirect } from 'react-router-do
 import { compile } from 'path-to-regexp'
 import history from './history'
 import viewScanner, { modulePathToDirPath } from './viewScanner'
-// import viewScanner, { routerPath } from '@/views/viewScanner'
 import AuthRoute from '../Auth/AuthRoute'
-import { flatRoutes } from './flatRoutes'
+import { arrRoutesToFlatRoutes } from './flatRoutes'
 import { arrRoutesToNestingRoutes } from './nestingRoutes'
 
 /**
- * 载入当前page下所有视图索引，创建routes and normalRoutes
- * 这里完全可决定是否要把所有路由信息以怎样的数据结构传给所有视图
- */
-// const routes = []
-/**
- * 如果想以对象形式创建路由表
- * 可以考虑在视图接口的route上添加key属性作为对象的key
+ * 集合了所有路由配置信息，以它们的key作为键名
+ * 没有key的路由配置默认使用视图文件路径，如parent/childView/index.js会返回parent/child
  */
 const routes = {}
+export { routes }
+
+// 收集路由角色信息
+const roles = {}
 /**
- * 根结点Route组件列表
- * @type {Array}
- * @deprecated
+ * 保存或读取route role信息
+ * @param {string} [role=normal] 如果不传则默认返回normal
+ * @returns {string}
  */
-let rootRoutes = []
-// 默认Route组件列表
-let normalRoutes = []
-// 用于添加页面小部件的路由，无嵌套关系，不受路由Switch组件约束
-let widgetRoutes = []
+function routeRole (role = 'normal') {
+  roles[role] = undefined
+  return role
+}
+
+// 分类存放路由集合
+const RouteShelves = {}
+/**
+ * 定义路由配置集合类型
+ * @typedef {object} RouteParcel
+ * @property {object} route
+ * @property {function} Content
+ */
+/**
+ * 根据路由角色选择该角色分组下路由
+ * @param {string} [role]
+ * @returns {RouteParcel[] | ReactNode[]}
+ */
+export function selectRoutes (role = routeRole()) {
+  return RouteShelves[role + 'Routes'] || []
+}
+/**
+ * 存放路由集合
+ * @param {ReactNode[] | RouteParcel[]} parcels
+ * @param {string} [role]
+ * @returns {ReactNode[] | RouteParcel[]} parcels
+ */
+function shelveRoutes (parcels, role = routeRole()) {
+  if (role && parcels) {
+    RouteShelves[role + 'Routes'] = parcels
+  }
+  return parcels || []
+}
 /**
  * 分拣路由
+ * @param {RouteParcel} parcel
+ * @param {string} role
+ * @returns {RouteParcel[]}
  */
-function sortRoute (parcel, role = 'normal') {
-  const obj = {
-    rootRoutes,
-    widgetRoutes,
-    normalRoutes
+function sortRoute (parcel, role = routeRole()) {
+  const target = RouteShelves[role + 'Routes'] = RouteShelves[role + 'Routes'] || []
+  if (parcel.route && parcel.Content) {
+    target.push(parcel)
   }
-  const target = obj[role + 'Routes']
-  target && target.push(parcel)
+  return target
 }
 viewScanner({
   iteratee (ViewModule, modulePath) {
@@ -74,6 +101,8 @@ viewScanner({
     // 收集路由配置信息，如果没有设置key，则使用目录路径作为key
     route.key = route.key || dir
     routes[route.key] = route
+    // 收集路由角色信息，便于后续批量创建经过role分组的路由集合
+    routeRole(route.role)
 
     // 如果想把每个视图接口文件的路径作为router path，可以考虑处理ViewModule.modulePath路径信息
     // return <Route path={routerPath(modulePath)} component={Content} />
@@ -85,29 +114,26 @@ viewScanner({
   },
 })
 
-const flatRoutesOptions = {
+/**
+ * 将路由配置信息集合转换成路由组件
+ */
+const transformOptions = {
   props: { routes },
   pickRoute (route) {
     return route.auth ? AuthRoute : Route
   }
 }
-// 扁平化方式组织路由
-// normalRoutes = flatRoutes(normalRoutes, flatRoutesOptions)
-widgetRoutes = flatRoutes(widgetRoutes, flatRoutesOptions)
-// 嵌套方式组织路由
-normalRoutes = arrRoutesToNestingRoutes(normalRoutes, flatRoutesOptions)
-export {
-  routes,
-  normalRoutes,
-  widgetRoutes,
-}
-
-/**
- * Note:
- * 筛选根结点的路由是因老应用有嵌套路由组合的需要。如果是全新开发，不需要以下两行代码
- */
-rootRoutes = flatRoutes(rootRoutes, flatRoutesOptions)
-export { rootRoutes }
+// 根据路由角色进行遍历，并将路由配置信息转换成路由组件
+Object.keys(roles).forEach(role => {
+  /**
+   * 默认用嵌套路由，其他使用扁平路由
+   */
+  const arrRoutesToReactRoutes = (role === routeRole() ? arrRoutesToNestingRoutes : arrRoutesToFlatRoutes)
+  shelveRoutes(
+    arrRoutesToReactRoutes(selectRoutes(role), transformOptions),
+    role
+  )
+})
 
 /**
  * 可拔插路由
