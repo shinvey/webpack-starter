@@ -8,3 +8,5 @@ const route = {
   component: import(''),
 }
 ```
+
+- [ ] 处理路由path [sensitive](https://reacttraining.com/react-router/web/api/Route/sensitive-bool)，大小写敏感问题
