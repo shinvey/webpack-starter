@@ -1,8 +1,21 @@
 const { isDev } = require('./env')
 module.exports = (env, args) => ({
+  /**
+   * cacheGroups保持vendors、default的默认值已经是最优配置
+   * @see https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks
+   *
+   * cacheGroup中的配置并不会帮你降低首屏脚本初始下载总量（单位kb）
+   *
+   * cacheGroups可以让你对默认配置不满意时，有选择性的选择合并或分离策略来达到size、cache与requests之间的平衡。
+   * https://webpack.js.org/plugins/split-chunks-plugin/#configuration
+   *
+   * 改善应用的引用关系是降低首屏脚本初始下载总量的努力方向。
+   *
+   * 以下属性配置加上debug开关，仅仅是为了调试场景使用
+   */
   vendors: {
-    test: /[\\/]node_modules[\\/]/,
-    chunks: 'initial',
+    // test: /[\\/]node_modules[\\/]/,
+    // chunks: 'initial',
     name: args.debug
       /**
        * 方便审查载入了哪些npm包
@@ -20,7 +33,10 @@ module.exports = (env, args) => ({
        * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunksname
        */
       : isDev(args.mode),
-    // 本规则使用split chunk的默认设置，但排除调试模式场景
+    /**
+     * 本规则使用split chunk的默认设置，但排除调试模式场景
+     * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupenforce
+     */
     enforce: args.debug
   },
   /**
@@ -41,18 +57,18 @@ module.exports = (env, args) => ({
    * 为文件夹带上critical关键词
    * xxx-critical/*.*
    */
-  critical: {
-    test: /critical|inline/i,
-    // 排除async模块。async module通常是import()方式分离出按需加载的异步模块
-    // 实测就算写成chunks: all，async模块也不会受到影响
-    chunks: 'initial',
-    // 本规则不受split chunk默认设置影响。see https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupenforce
-    enforce: true
-
-    // see https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupreuseexistingchunk
-    // reuseExistingChunk设置为true和false但区别 https://github.com/webpack/webpack.js.org/issues/2122#issuecomment-388609306
-    // reuseExistingChunk: true
-  }
+  // critical: {
+  //   test: /critical|inline/i,
+  //   // 排除async模块。async module通常是import()方式分离出按需加载的异步模块
+  //   // 实测就算写成chunks: all，async模块也不会受到影响
+  //   chunks: 'initial',
+  //   // 本规则不受split chunk默认设置影响。see https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupenforce
+  //   enforce: true
+  //
+  //   // see https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupreuseexistingchunk
+  //   // reuseExistingChunk设置为true和false但区别 https://github.com/webpack/webpack.js.org/issues/2122#issuecomment-388609306
+  //   // reuseExistingChunk: true
+  // }
 
   // 还可以根据加载性能优化策略（Loading performance optimal strategy），定义更合理的分离配置
 })

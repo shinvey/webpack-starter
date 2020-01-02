@@ -87,7 +87,10 @@ module.exports = (env, args) => {
         args
       }
     }
-    // 内嵌关键js和css。See https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2#basic-usage
+    /**
+     * 内嵌关键js和css。See https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2#basic-usage
+     * critical js and css includes initial bundle and initial style
+     */
     // htmlWebpackPluginOptions.inlineSource = /(runtime|critical|inline|entry).*\.(js|css)$/.source
     htmlWebpackPluginOptions.inlineSource = '.(js|css)$' // embed all javascript and css inline
     arrHtmlWebpackPlugin.push(new HtmlWebpackPlugin(htmlWebpackPluginOptions))
