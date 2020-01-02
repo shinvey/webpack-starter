@@ -73,9 +73,10 @@ module.exports = (env, args) => {
     if (!template) { throw new Error(`A template ejs file for ${filename} is required.`) }
 
     const htmlWebpackPluginOptions = {
+      // Note: html-webpack-inline-source-plugin暂时无法使用../index.html这种形式url
       filename: filename,
       template: template,
-      chunks: ['runtime', 'vendors', 'critical', chunk],
+      // chunks: ['runtime', 'vendors', 'critical', chunk],
       // meta: {
       //   viewport: 'width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no',
       //   charset: {
@@ -87,7 +88,8 @@ module.exports = (env, args) => {
       }
     }
     // 内嵌关键js和css。See https://www.npmjs.com/package/html-webpack-inline-source-plugin/v/1.0.0-beta.2#basic-usage
-    htmlWebpackPluginOptions.inlineSource = /(runtime|critical|inline|entry).*\.(js|css)$/.source
+    // htmlWebpackPluginOptions.inlineSource = /(runtime|critical|inline|entry).*\.(js|css)$/.source
+    htmlWebpackPluginOptions.inlineSource = '.(js|css)$' // embed all javascript and css inline
     arrHtmlWebpackPlugin.push(new HtmlWebpackPlugin(htmlWebpackPluginOptions))
   })
 
