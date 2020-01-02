@@ -28,7 +28,10 @@
      "@/*": ["src/*"]
     },
     // Import non-ES modules as default imports.
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    // 类似babel runtime helper，开启可能减少bundle的大小。TypeScript Import Helpers https://webhint.io/docs/user-guide/hints/hint-typescript-config/import-helpers/
+    // 对比后再确认是否开启
+    // "importHelpers": true
   },
   "include": [
     "src"

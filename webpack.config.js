@@ -36,7 +36,32 @@ module.exports = (env = {}, args = {}) => {
     // Chunk splitting see https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-2
     splitChunks: {
       cacheGroups: require('./build/cache-groups')(env, args)
-    }
+    },
+    // 我对 splitChunks 默认值的理解
+    // splitChunks: {
+    //   chunks: 'async', // 作用于async按需加载的chunk
+    //   minSize: 30000, // 新chunk可能大于30k
+    //   minRemainingSize: 0,
+    //   maxSize: 0,
+    //   minChunks: 1,
+    //   maxAsyncRequests: 6, // 按需加载的并行请求不可以超过6个
+    //   maxInitialRequests: 4, // HTML中用来初始化的应用的请求（例如插入HTML的css、js），不可以超过4个
+    //   automaticNameDelimiter: '~',
+    //   automaticNameMaxLength: 30,
+    //   cacheGroups: {
+    //     vendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       priority: -10
+    //     },
+    //     default: {
+    //       minChunks: 2, // 至少两个以上的chunk在共享一个es module，才考虑分离
+    //       priority: -20,
+    //       // 部分es module可能因6 async and 4 initial parallel requests规则而选择不分离，则牺牲缓存利用率，换来更少的请求
+    //       // https://webpack.js.org/plugins/split-chunks-plugin/#defaults
+    //       reuseExistingChunk: true,
+    //     }
+    //   }
+    // }
   }
   /**
    * Caching. See https://webpack.js.org/guides/caching/
