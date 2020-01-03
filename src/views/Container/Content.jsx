@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { routes, useCustomRoute, useRoutes } from '../PluggableRouter'
+import { useRoutes, useCustomRoute, useRouteComponents } from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
 import AuthRoute from '../Auth/AuthRoute'
 
@@ -20,9 +20,9 @@ useCustomRoute(route => {
  */
 export default function Content ({ children }) {
   return (
-    <ErrorBoundary routes={routes}>
+    <ErrorBoundary routes={useRoutes()}>
       <Switch>
-        {useRoutes()}
+        {useRouteComponents()}
         {children}
       </Switch>
     </ErrorBoundary>

@@ -8,7 +8,14 @@ import { arrRoutesToNestingRoutes } from './nestingRoutes'
  * 没有key的路由配置默认使用视图文件路径，如parent/childView/index.js会返回parent/child
  */
 const routes = {}
-export { routes }
+/**
+ * 访问所有路由配置信息表
+ * @param {string} [key] 如果提供key，则返回制定route key的路由配置信息
+ * @returns {object}
+ */
+export function useRoutes (key) {
+  return key ? routes[key] : routes
+}
 
 // 收集路由角色信息
 let roles = {}
@@ -34,10 +41,10 @@ const RouteShelves = {}
  */
 /**
  * 根据路由角色选择该角色分组下路由集合
- * @param {string} [role]
+ * @param {string} [role=normal]
  * @returns {RouteParcel[] | ReactNode[]} 如果路由配置集合已经被渲染成路由组件，则会返回路由组件集合
  */
-export function useRoutes (role = routeRole()) {
+export function useRouteComponents (role = routeRole()) {
   transform()
   return RouteShelves[role] || []
 }

@@ -1,6 +1,6 @@
 import store from '../Container/store'
 // import { store } from '../../index'
-import { routes } from '../PluggableRouter'
+import { useRoutes } from '../PluggableRouter'
 import { propBy } from 'sunny-js/util/object'
 import './story'
 
@@ -35,5 +35,5 @@ export function userRoute () {
   //   key: 'login',
   //   path: '/login',
   // }
-  return routes.login
+  return useRoutes('login')
 }
