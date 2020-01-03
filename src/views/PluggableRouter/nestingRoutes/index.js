@@ -6,6 +6,7 @@ import { createElement } from 'react'
  * @typedef {object} routeProps
  * @property {string} path for example: parent/child/grandchild
  * @property {string} [nest] like path 可选，用于重写默认嵌套规则
+ * @property {boolean} [sensitive] 可选，大小写是否敏感
  */
 
 /**
@@ -15,13 +16,20 @@ import { createElement } from 'react'
  * @returns {array} 返回一维嵌套关系数组
  */
 function routeToNestedSegments (route) {
-  const regexp = /^[\w-]+$/i
   // 优先使用nest属性，随后是path。nest属性用来改写嵌套关系。
   let nest = route.nest || route.path
   // 如果path/rest是数组只用第一个元素
   nest = Array.isArray(nest) ? nest[0] : nest
   if (!nest) throw new Error('There must be a nest(like path) or path property in your ' + JSON.stringify(route) + ' at least')
-  const segments = nest.split('/').filter(segment => regexp.test(segment))
+  const segments = []
+  const regexp = /^[\w-]+$/i
+  nest.split('/').forEach(segment => {
+    if (!regexp.test(segment)) return // continue
+    segments.push(
+      // 处理路由path [sensitive](https://reacttraining.com/react-router/web/api/Route/sensitive-bool)，大小写敏感问题
+      route.sensitive ? segment : segment.toLowerCase()
+    )
+  })
   // 我层级结构视为孤立或独立无嵌套关系视图
   if (segments.length === 0) segments.push('_orphan_')
   // console.debug('segments', segments)
