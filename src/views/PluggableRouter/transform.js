@@ -37,7 +37,7 @@ const RouteShelves = {}
  * @param {string} [role]
  * @returns {RouteParcel[] | ReactNode[]} 如果路由配置集合已经被渲染成路由组件，则会返回路由组件集合
  */
-export function selectRoutes (role = routeRole()) {
+export function useRoutes (role = routeRole()) {
   transform()
   return RouteShelves[role] || []
 }

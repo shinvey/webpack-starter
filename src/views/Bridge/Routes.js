@@ -1,1 +1,1 @@
-export { selectRoutes } from '../PluggableRouter'
+export { useRoutes } from '../PluggableRouter'
