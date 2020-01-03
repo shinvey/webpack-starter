@@ -1,6 +1,7 @@
 // 树形结构路由信息
 import { Route } from 'react-router-dom'
 import { createElement } from 'react'
+import { flatRoutesByPath } from '../flatRoutes'
 
 /**
  * @typedef {object} routeProps
@@ -60,7 +61,7 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
     routeByPath[route.path] = route
   }
 
-  arrRoutes.forEach(({ route, Content }, routeIndex) => {
+  const plantTree = ({ route, Content }, routeIndex) => {
     conflictDetect(route)
 
     // 开始创建树
@@ -110,14 +111,16 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
         return leaf.children = leaf.children || {}
       }
     }, treeRoutes)
-  })
+  }
+  flatRoutesByPath(arrRoutes, plantTree)
+
   return treeRoutes
 }
 
 /**
- * @typedef {object} nestingRoutesOptions
- * @property {object} [props] 给路由组件和子组件传递的参数
- * @property {function} [pickRoute] 路由选择器
+ * @typedef {Object} nestingRoutesOptions
+ * @property {Object} [props] 给路由组件和子组件传递的参数
+ * @property {Function} [pickRoute] 路由选择器
  */
 
 /**

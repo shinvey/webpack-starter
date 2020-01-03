@@ -94,7 +94,13 @@ viewScanner({
      * routes.nav.toPath({ welcome: 'hello' })
      * // => /app/nav/hello
      */
-    route.toPath = compile(route.path, { encode: encodeURIComponent })
+    route.toPath = function (...args) {
+      route.toPath.compiledPath = route.toPath.compiledPath || compile(
+        Array.isArray(this.path) ? this.path[0] : this.path,
+        { encode: encodeURIComponent }
+      )
+      return this.toPath.compiledPath(...args)
+    }
 
     /**
      * 存放ViewModule路径（不包含View后缀），也是生成嵌套路由重要依赖属性
