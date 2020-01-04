@@ -162,7 +162,35 @@ export default function View ({ children }) {
 }
 ```
 
-不同路由组件共享同一个视图
+不同路由组件共享同一个视图。可以通过两种方式来声明。实现类似视图多重继承。
+- 第一种：使用route path以数组值类型，
+```jsx harmony
+export const route = {
+  key: 'son',
+  name: '儿子',
+  path: ['/parent/son', '/parent/brother/son'],
+}
+export const Content = loadable({
+  loader: () => import(/* webpackChunkName: "son" */'./View'),
+  loading: Loading
+})
+// 注意：path和nest（用来重写path继承规则）属性同时使用时，会有如下情况需要注意
+export const route = {
+  key: 'son',
+  name: '儿子',
+  path: ['/parent/son', '/parent/brother/son'],
+  nest: '/parent/son/index', // 仅仅只影响route.path[0]
+  // nest: ['/parent/son/index'] // 等同于以上写法
+}
+export const route = {
+  key: 'son',
+  name: '儿子',
+  path: ['/parent/son', '/parent/brother/son'],
+  // 如果nest也是数组，就比较容易理解。nest[0]作用于path[0]，往后以此类推
+  nest: ['/parent/son/index', '/parent/brother/son/index']
+}
+```
+- 第二种：使用import()引用同一个视图View
 ```jsx harmony
 import React from 'react'
 // 第一个视图接口 ParentView/SonView/index.js
