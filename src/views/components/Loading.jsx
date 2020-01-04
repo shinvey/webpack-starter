@@ -1,10 +1,13 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { render } from 'react-dom'
 import { useElement } from 'sunny-js/util/DOM'
 
-function Loading ({ error, show, retry }) {
+/**
+ * @return {null|ReactNode}
+ */
+function Loading ({ error, toggle = true, retry }) {
   error && console.error(error)
-  if (!show) {
+  if (!toggle) {
     return null
   }
 
@@ -15,10 +18,20 @@ function Loading ({ error, show, retry }) {
   }
 }
 
-export default Loading
+/**
+ * 对外共享loading实例，不再重复创建Loading，避免在视觉上出现loading叠加
+ * @return {null}
+ */
+export default function ReuseLoading ({ toggle, ...props }) {
+  useEffect(() => {
+    loading(toggle, props)
+    return hide
+  }, [toggle, props.error])
+  return null
+}
 
-export function loading (bool = true) {
-  render(<Loading show={bool} />, useElement('#loading-container', () => {
+export function loading (bool = true, options = {}) {
+  render(<Loading toggle={bool} {...options} />, useElement('#loading-container', () => {
     const node = document.createElement('div')
     node.setAttribute('id', 'loading-container')
     return node
