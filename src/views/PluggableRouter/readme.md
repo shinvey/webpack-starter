@@ -81,6 +81,26 @@ React Router 相关逻辑<a name="react-router-match"></a>
 path，directory分析嵌套关系方案的共同点
 1. 要求`Route path`、`UI视觉`的嵌套关系是一致的
 
+## 声明路由配置的两种方式
+```jsx harmony
+import loadable from 'react-loadable'
+import Loading from '../components/Loading'
+
+// 第一种 创建 path/route.js 文件内容为
+export default {
+  path: '/home',
+  content: import('./View')
+}
+
+// 第二种 创建 pathView/index.js 文件内容为
+export const route = {
+  path: '/home'
+}
+export const Content = loadable({
+  loader: () => import(/* webpackChunkName: "son" */'./View'),
+  loading: Loading
+})
+```
 ## 嵌套路由的使用案例
 代码中的children均代表子一级路由组件数组，可以被react直接渲染
 

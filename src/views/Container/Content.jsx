@@ -1,9 +1,19 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { useRoutes, useCustomRoute, useRouteComponents } from '../PluggableRouter'
+import {
+  useRoutes,
+  useCustomRoute,
+  useRouteComponents,
+  useCustomLoading
+} from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
 import AuthRoute from '../Auth/AuthRoute'
+import Loading from '../components/Loading'
 
+/**
+ * 使用自定义loading组件
+ */
+useCustomLoading(Loading)
 /**
  * 为PluggableRouter模块，使用自定义路由组件
  * 自定义选择路由组件的逻辑，可以为路由增加特别功能
