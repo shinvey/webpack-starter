@@ -1,5 +1,5 @@
 import React, { Children, cloneElement, useState } from 'react'
-import { Switch } from 'react-router-dom'
+import { Switch } from 'react-router'
 
 export const ParentContent = props => {
   console.debug('ParentContent', props)

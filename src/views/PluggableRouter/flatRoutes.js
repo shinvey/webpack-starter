@@ -1,5 +1,5 @@
 import { createElement } from 'react'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 
 /**
  * 生成扁平化的路由组件数组

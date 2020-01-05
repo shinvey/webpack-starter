@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { isLogin } from './index'
 import { requestLogin } from './channel'
 

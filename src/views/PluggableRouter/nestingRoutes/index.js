@@ -1,5 +1,5 @@
 // 树形结构路由信息
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { createElement } from 'react'
 import { flatRoutesByPath } from '../flatRoutes'
 

@@ -146,7 +146,7 @@ export default function View ({ childrenRoutes }) {
 嵌套Switch组件
 ```jsx harmony
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Switch } from 'react-router'
 export default function View ({ children }) {
   return <Switch>{children}</Switch>
 }
@@ -388,7 +388,7 @@ export default {
 ```jsx harmony
 import React from 'react'
 import { useRouteComponents } from '../PluggableRouter'
-import { Switch } from 'react-router-dom'
+import { Switch } from 'react-router'
 export default function Content () {
   return <>
     <Switch>

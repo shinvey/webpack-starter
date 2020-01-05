@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Router, Switch as RouterSwitch } from 'react-router-dom'
+import { Redirect, Router, Switch as RouterSwitch } from 'react-router'
 import history from './history'
 export * from './transform'
 
