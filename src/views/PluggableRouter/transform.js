@@ -7,9 +7,11 @@ import { arrRoutesToNestingRoutes } from './nestingRoutes'
 /**
  * @type {Function} loading函数组件
  */
-let Loading
+let Loading = () => null
 /**
- * 使用自定义Loading组件
+ * 使用自定义Loading组件，将会在动态加载module时，为用户展示Loading UI
+ *
+ * 这个Loading组件将会被loadable所用，组件的入参可以参考[LoadingComponent](https://github.com/jamiebuilds/react-loadable#loadingcomponent)
  * @param {Function} fn
  */
 export function useCustomLoading (fn) {

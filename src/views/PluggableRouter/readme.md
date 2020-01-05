@@ -81,7 +81,7 @@ React Router 相关逻辑<a name="react-router-match"></a>
 path，directory分析嵌套关系方案的共同点
 1. 要求`Route path`、`UI视觉`的嵌套关系是一致的
 
-## 声明路由配置的两种方式
+# 声明路由配置的两种方式
 ```jsx harmony
 import loadable from 'react-loadable'
 import Loading from '../components/Loading'
@@ -101,7 +101,7 @@ export const Content = loadable({
   loading: Loading
 })
 ```
-## 嵌套路由的使用案例
+# 嵌套路由的使用案例
 代码中的children均代表子一级路由组件数组，可以被react直接渲染
 
 常规嵌套
@@ -237,11 +237,11 @@ export const Content = loadable({
 // 如果需要组件级更细致的控制，将共享视图抽象成组件会是更合适的解决方案
 ```
 
-### 改写视图嵌套关系的应对方法
+## 改写视图嵌套关系的应对方法
 
 通常默认规则已经能够解决大部分问题，而下列路由规则的之间的关系则很微妙
 
-#### 场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
+### 场景一：两个兄弟路由的path前缀是相同的，UI视觉上也不是嵌套关系
 ```jsx harmony
 export const route = {
   key: 'parent',
@@ -257,7 +257,7 @@ export const route = {
 }
 ```
 
-#### 场景二：为有父子嵌套关系的视图，单独创建独立的落地页
+### 场景二：为有父子嵌套关系的视图，单独创建独立的落地页
 ```jsx harmony
 export const route = {
   key: 'parent',
@@ -299,7 +299,7 @@ export const route = {
 }
 ```
 
-#### 场景三：父级路由和其他子级路由有嵌套关系，但其中一个路由对应的视图在UI视觉上没有嵌套关系
+### 场景三：父级路由和其他子级路由有嵌套关系，但其中一个路由对应的视图在UI视觉上没有嵌套关系
 ```jsx harmony
 export const route = {
   key: 'parent',
@@ -335,3 +335,68 @@ export const route = {
 
 相关讨论：
 - [Breadcrumbs Example in V4 Documentation](https://github.com/ReactTraining/react-router/issues/4556)
+
+# API Docs
+## useCustomLoading
+使用自定义Loading组件，将会在动态加载module时，为用户展示Loading UI
+
+这个Loading组件将会被loadable所用，组件的入参可以参考[LoadingComponent](https://github.com/jamiebuilds/react-loadable#loadingcomponent)
+```js
+import { useCustomLoading } from '../PluggableRouter'
+import Loading from '../components/Loading'
+useCustomLoading(Loading)
+```
+## useCustomRoute
+为PluggableRouter模块，使用自定义路由组件。
+自定义选择路由组件的逻辑，可以为路由增加特别功能。
+这里我们为路由配置增加了一个auth认证功能。
+```js
+import { useCustomRoute } from '../PluggableRouter'
+import AuthRoute from '../Auth/AuthRoute'
+useCustomRoute(route => {
+  return route.auth ? AuthRoute : Route
+})
+```
+## useRoutes
+访问路由配置信息
+```js
+import { useRoutes } from '../PluggableRouter'
+// 返回所有路由配置信息
+useRoutes()
+// 访问一个key为login的路由配置信息
+useRoutes('login')
+```
+## useRouteComponents
+为了演示useRouteComponents所有用法，我们需要至少定义两种角色的路由
+```js
+// home/route.js
+export default {
+  path: '/home',
+  // role: 'normal', // 路由角色默认为normal，是内置角色
+}
+```
+为站点右下角添加一个小挂件，可以是客服链接。
+```js
+// CustomerService/route.js
+export default {
+  path: '/', // 设定组件可以展示的作用域。这里表示为全局作用域
+  // path: '/home', // 表示组件只可以在/home路径下展示
+  role: 'widget', // 除了内置角色normal，其他角色均由你来自定义。很像是对路由组件进行分组
+}
+```
+根据role角色分组好的路由，将由你来决定它们该如何使用
+```jsx harmony
+import React from 'react'
+import { useRouteComponents } from '../PluggableRouter'
+import { Switch } from 'react-router-dom'
+export default function Content () {
+  return <>
+    <Switch>
+      {/* 角色默认为normal的一组路由，可以受控于Switch组件。这是常规用例 */}
+      {useRouteComponents()}
+    </Switch>
+    {/* 角色为widget路由组件，用来展示为站点设计的挂件。由于使用目的不同，不能放入Switch组件中。 */}
+    {useRouteComponents('widget')}
+  </>
+}
+```
