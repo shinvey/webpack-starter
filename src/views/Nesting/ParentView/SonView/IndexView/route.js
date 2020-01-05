@@ -1,7 +1,4 @@
-import loadable from 'react-loadable'
-import Loading from '../../../../components/Loading'
-
-export const route = {
+export default {
   key: 'sonHome',
   name: '儿子首页',
   // 重用了SonView的path
@@ -15,10 +12,6 @@ export const route = {
   // nest也可以声明为数组与path一一对应
   nest: '/app/parent/son/index',
   // 因为重用了SonView的path，这里需要精确匹配
-  exact: true
+  exact: true,
+  content: import('./View'),
 }
-
-export const Content = loadable({
-  loader: () => import('./View'),
-  loading: Loading
-})
