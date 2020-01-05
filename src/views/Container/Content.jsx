@@ -1,27 +1,8 @@
 import React from 'react'
-import { Route, Switch } from 'react-router'
-import {
-  useRoutes,
-  useCustomRoute,
-  useRouteComponents,
-  useCustomLoading
-} from '../PluggableRouter'
+import { Switch } from 'react-router'
+import { useRouteComponents, useRoutes } from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
-import AuthRoute from '../Auth/AuthRoute'
-import Loading from '../components/Loading'
-
-/**
- * 使用自定义loading组件
- */
-useCustomLoading(Loading)
-/**
- * 为PluggableRouter模块，使用自定义路由组件
- * 自定义选择路由组件的逻辑，可以为路由增加特别功能
- * 这里我们为路由配置增加了一个auth认证功能
- */
-useCustomRoute(route => {
-  return route.auth ? AuthRoute : Route
-})
+import './router.settings'
 
 /**
  * Container内容部分
