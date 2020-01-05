@@ -49,8 +49,8 @@ export function arrRoutesToTreeRoutes (arrRoutes) {
   // 重复route path检测
   const conflictWaring = (a, b) => {
     console.error('Warning: ', a, ' and ', b, ' appear to be in' +
-      ' conflict with each other. The one of them should be changed in' +
-      ' different path/nest property')
+      ' conflict with each other. The one of them should',
+    a.exact ? 'be changed in different path' : 'use exact property')
   }
   const routeByPath = {}
   const conflictDetect = route => {
