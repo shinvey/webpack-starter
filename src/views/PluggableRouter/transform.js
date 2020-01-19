@@ -37,21 +37,13 @@ const NORMAL_ROLE = 'normal'
 
 // 分类存放路由集合
 const RouteShelves = {}
+
 /**
  * 定义路由配置集合类型
  * @typedef {object} RouteParcel
  * @property {object} route
  * @property {function} Content
  */
-/**
- * 根据路由角色选择该角色分组下路由集合
- * @param {string} [role=normal]
- * @returns {RouteParcel[] | ReactNode[]} 如果路由配置集合已经被渲染成路由组件，则会返回路由组件集合
- */
-export function useRouteComponents (role = NORMAL_ROLE) {
-  transform()
-  return RouteShelves[role] || []
-}
 
 /**
  * 存放路由集合
@@ -191,4 +183,14 @@ function transform () {
       }
     })
   }
+}
+
+/**
+ * 根据路由角色选择该角色分组下路由集合
+ * @param {string} [role=normal]
+ * @returns {RouteParcel[] | ReactNode[]} 如果路由配置集合已经被渲染成路由组件，则会返回路由组件集合
+ */
+export function useRouteComponents (role = NORMAL_ROLE) {
+  transform()
+  return RouteShelves[role] || []
 }
