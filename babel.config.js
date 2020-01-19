@@ -81,8 +81,12 @@ module.exports = {
      */
     // '@babel/plugin-transform-runtime'
 
-    // 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
-    '@babel/plugin-syntax-dynamic-import',
+    /**
+     * 支持使用import() see https://babeljs.io/docs/en/next/babel-plugin-syntax-dynamic-import.html
+     * Note: @babel/preset-env v7.5.0 已经开始内置支持import() https://github.com/babel/babel/pull/10109
+     */
+    // '@babel/plugin-syntax-dynamic-import',
+
     // 支持 export * as namespace 语法 https://babeljs.io/docs/en/next/babel-plugin-proposal-export-namespace-from.html
     '@babel/plugin-proposal-export-namespace-from',
     /**
