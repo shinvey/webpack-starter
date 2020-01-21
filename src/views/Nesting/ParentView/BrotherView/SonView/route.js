@@ -6,5 +6,5 @@ export default {
   key: 'brotherSon',
   name: '兄弟的儿子',
   path: '/app/parent/brother/grandchild',
-  content: import('../../Child/GrandchildView/View.jsx'),
+  content: () => import('../../Child/GrandchildView/View.jsx'),
 }

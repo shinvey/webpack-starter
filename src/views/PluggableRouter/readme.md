@@ -89,7 +89,7 @@ import Loading from '../components/Loading'
 // 第一种 创建 path/route.js 文件内容为
 export default {
   path: '/home',
-  content: import('./View')
+  content: () => import('./View')
 }
 
 // 第二种 创建 pathView/index.js 文件内容为

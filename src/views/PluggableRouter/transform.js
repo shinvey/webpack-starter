@@ -80,10 +80,10 @@ function packRoute (ESModule, modulePath) {
   if (ESModule.default) {
     route = ESModule.default
     // 如果传入content参数为import()实例，则用loadable封装
-    Content = route.content instanceof Promise ? loadable({
-      loader: () => route.content,
+    Content = loadable({
+      loader: route.content || route.Content,
       loading: Loading,
-    }) : route.content
+    })
   } else {
     // 视图接口暴露的route配置
     route = ESModule.route

@@ -5,7 +5,7 @@
 // 路由配置
 const route = {
   path: '',
-  content: import(''),
+  content: () => import(''),
 }
 ```
 

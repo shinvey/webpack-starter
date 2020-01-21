@@ -9,5 +9,5 @@ export default {
   name: 'EGameListView',
   path: '/app/pcGame/:id',
   exact: true,
-  content: import(/* webpackChunkName: "NestingEGameListView" */'./View')
+  content: () => import(/* webpackChunkName: "NestingEGameListView" */'./View')
 }

@@ -13,5 +13,5 @@ export default {
   nest: '/app/parent/son/index',
   // 因为重用了SonView的path，这里需要精确匹配
   exact: true,
-  content: import('./View'),
+  content: () => import('./View'),
 }
