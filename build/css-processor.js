@@ -77,6 +77,14 @@ module.exports = (env, args) => {
          * source map see https://github.com/webpack-contrib/sass-loader#sourcemap
          * Default: depends on the compiler.devtool value
          */
+        /**
+         * 处理url(path/to/file)相对路径问题
+         * Problems with url(...)
+         * https://github.com/webpack-contrib/sass-loader#problems-with-url
+         *
+         * Workaround:
+         * - 添加相对路径之前添加./。如url(./path/to/file)
+         */
         // ..._options
       }
     }),
