@@ -378,6 +378,14 @@ module.exports = (env = {}, args = {}) => {
         '.ts'
       ],
       alias: {
+        /**
+         * sass中引用webpack alias路径别名的方式
+         * @example @import '~@/src/path/to/file'
+         * 引用node_modules
+         * @example @import '~library/path/to/file'
+         * 同时还要确保在intellij系列IDE中能够正确解析webpack配置文件
+         * 如果你的webpack配置文件不在项目根目录，可以参照 https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000903779/comments/360000985559
+         */
         '@': path.resolve('src')
       }
     },
