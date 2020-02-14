@@ -400,3 +400,44 @@ export default function Content () {
   </>
 }
 ```
+## props.route
+```jsx harmony
+import React from 'react'
+export default function Component ({
+  route // 当前路由信息
+}) {
+  return <>{route.path}</>
+}
+```
+## props.routes
+```jsx harmony
+import React from 'react'
+export default function Component ({
+  routes // 所有路由信息表。以route.key为键名，路由信息为键值
+}) {
+  // 比如我们访问key为login的路由信息
+  return <>{routes.login.path}</>
+}
+```
+## props.children
+```jsx harmony
+import React from 'react'
+export default function Component ({
+  // @type {Array}
+  children // 如果当前组件为父级路由关联的组件，将会返回所有子一级路由
+}) {
+  return <>{children}</>
+}
+```
+## props.childrenRoutes
+```jsx harmony
+import React from 'react'
+export default function Component ({
+  // @type {Object}
+  childrenRoutes // 所有子一级路由，以route.key为键名，对应路由组件为键值
+}) {
+  // 比如当前组件为父级路由组件/app
+  // login路由组件为子一级路由/app/login
+  return <>{childrenRoutes.login}</>
+}
+```
