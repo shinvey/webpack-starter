@@ -12,8 +12,15 @@ module.exports = (env = {}, args = {}) => {
   const merge = require('webpack-merge')
   const webpack = require('webpack')
   const packageJSON = require('./package.json')
-  const { isDev, isPrd, svcEnv } = require('./build/env')
+  const { isDev, isPrd, svcEnv, level } = require('./build/env')
   const SVC_ENV = svcEnv(args)
+
+  /**
+   * APP配置管理
+   * 将会把APP配置在编译时传递给应用
+   */
+  const Config = require('sunny-js/cjs/class/Config').default
+  const config = (new Config(require('./build/app.config'))).section(SVC_ENV, 'inherit').get()
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
@@ -318,15 +325,14 @@ module.exports = (env = {}, args = {}) => {
   // todo 可以从process.env读取 version 变量信息
   // const { version } = process.env
   plugins.push(
-    new webpack.DefinePlugin({
-      env: {
-        APP_VERSION: JSON.stringify(packageJSON.version),
-        // webpack cli可以设置--env.SVC_ENV选项
-        SVC_ENV: JSON.stringify(SVC_ENV),
-        isDev: isDev(args.mode),
-        isPrd: isPrd(args.mode),
-        hot: args.hot
-      }
+    new webpack.EnvironmentPlugin({
+      PKG_VERSION: JSON.stringify(packageJSON.version),
+      // 设置web service environment和environment level
+      SVC_ENV,
+      SVC_ENV_LEVEL: level(SVC_ENV),
+      IS_DEV: isDev(args.mode),
+      IS_PRD: isPrd(args.mode),
+      ...config
     })
   )
 
