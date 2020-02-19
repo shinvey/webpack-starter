@@ -1,0 +1,22 @@
+// 共有样式
+[data-page=SwitchTheme] {
+  .combined-component {
+    color: #000;
+  }
+}
+
+[data-theme=dark] {
+  [data-page=SwitchTheme] {
+    .combined-component {
+      background: #ccc;
+    }
+  }
+}
+
+[data-theme=light] {
+  [data-page=SwitchTheme] {
+    .combined-component {
+      background: #a1deff;
+    }
+  }
+}

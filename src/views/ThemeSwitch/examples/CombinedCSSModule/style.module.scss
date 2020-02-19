@@ -1,0 +1,18 @@
+// 共有样式
+.component {
+  color: #000;
+}
+
+// 暗黑
+[data-theme=dark] {
+  .component {
+    background: #ccc;
+  }
+}
+
+// 明亮
+[data-theme=light] {
+  .component {
+    background: #a1deff;
+  }
+}
