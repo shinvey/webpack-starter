@@ -451,16 +451,16 @@ module.exports = (env = {}, args = {}) => {
         // 添加scss支持
         {
           test: cssPreprocessor.sassLoader.test,
-          // exclude: cssPreprocessor.sassLoader.moduleTest,
+          exclude: cssPreprocessor.sassLoader.moduleTest,
+          include: directoryWhiteList,
+          use: sassPreprocessors
+        },
+        // 添加scss module支持
+        {
+          test: cssPreprocessor.sassLoader.moduleTest,
           include: directoryWhiteList,
           use: sassModulePreprocessors
         },
-        // 添加scss module支持
-        // {
-        //   test: cssPreprocessor.sassLoader.moduleTest,
-        //   include: directoryWhiteList,
-        //   use: sassModulePreprocessors
-        // },
         // 添加less支持
         {
           test: cssPreprocessor.lessLoader.test,
