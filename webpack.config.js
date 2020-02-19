@@ -12,8 +12,15 @@ module.exports = (env = {}, args = {}) => {
   const merge = require('webpack-merge')
   const webpack = require('webpack')
   const packageJSON = require('./package.json')
-  const { isDev, isPrd, svcEnv } = require('./build/env')
+  const { isDev, isPrd, svcEnv, level } = require('./build/env')
   const SVC_ENV = svcEnv(args)
+
+  /**
+   * APP配置管理
+   * 将会把APP配置在编译时传递给应用
+   */
+  const Config = require('sunny-js/cjs/class/Config').default
+  const config = (new Config(require('./build/app.config'))).section(SVC_ENV, 'inherit').get()
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
@@ -330,15 +337,14 @@ module.exports = (env = {}, args = {}) => {
   // todo 可以从process.env读取 version 变量信息
   // const { version } = process.env
   plugins.push(
-    new webpack.DefinePlugin({
-      env: {
-        APP_VERSION: JSON.stringify(packageJSON.version),
-        // webpack cli可以设置--env.SVC_ENV选项
-        SVC_ENV: JSON.stringify(SVC_ENV),
-        isDev: isDev(args.mode),
-        isPrd: isPrd(args.mode),
-        hot: args.hot
-      }
+    new webpack.EnvironmentPlugin({
+      PKG_VERSION: JSON.stringify(packageJSON.version),
+      // 设置web service environment和environment level
+      SVC_ENV,
+      SVC_ENV_LEVEL: level(SVC_ENV),
+      IS_DEV: isDev(args.mode),
+      IS_PRD: isPrd(args.mode),
+      ...config
     })
   )
 
@@ -405,10 +411,18 @@ module.exports = (env = {}, args = {}) => {
       ],
       alias: {
         /**
+         * sass中引用webpack alias路径别名的方式
+         * @example @import '~@/src/path/to/file'
+         * 引用node_modules
+         * @example @import '~library/path/to/file'
+         * 同时还要确保在intellij系列IDE中能够正确解析webpack配置文件
+         * 如果你的webpack配置文件不在项目根目录，可以参照 https://intellij-support.jetbrains.com/hc/en-us/community/posts/360000903779/comments/360000985559
+         */
+        /**
          * Tip:Consider using the faster and smaller ES6 build if targetting a modern environment
          * https://github.com/mobxjs/mobx#installation
          */
-        mobx: path.resolve('node_modules/mobx/lib/mobx.es6.js'),
+        // mobx: path.resolve('node_modules/mobx/lib/mobx.es6.js'),
         '@': path.resolve('src')
         // react-dom - hot-loader https://github.com/hot-loader/react-dom
         // 'react-dom': '@hot-loader/react-dom'
