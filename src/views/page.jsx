@@ -3,8 +3,8 @@ import { hot } from 'react-hot-loader/root'
 import React from 'react'
 import { render } from 'react-dom'
 import Container from './Container'
+import { useElement } from 'sunny-js/util/DOM'
 
 const App = module.hot ? hot(() => <Container />) : Container
-
-const wrapper = document.getElementById('app')
-wrapper && render(<App />, wrapper)
+const containerID = 'app-container'
+render(<App />, useElement('#' + containerID, { id: containerID }))

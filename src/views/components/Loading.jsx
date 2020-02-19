@@ -31,11 +31,8 @@ export default function ReuseLoading ({ toggle, ...props }) {
 }
 
 export function loading (bool = true, options = {}) {
-  render(<Loading toggle={bool} {...options} />, useElement('#loading-container', () => {
-    const node = document.createElement('div')
-    node.setAttribute('id', 'loading-container')
-    return node
-  }))
+  const loadingContainerID = 'loading-container'
+  render(<Loading toggle={bool} {...options} />, useElement('#' + loadingContainerID, { id: loadingContainerID }))
 }
 export const show = () => loading(true)
 export const hide = () => loading(false)
