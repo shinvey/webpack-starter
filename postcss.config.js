@@ -3,6 +3,7 @@ module.exports = ({ options }) => {
   const { args } = options
   const env = args.env || {}
   const plugins = {}
+  const isPrd = args.mode === 'production'
 
   // 如果开启了--env.lint则在编译时开启检查
   if (env.lint) {
@@ -39,7 +40,7 @@ module.exports = ({ options }) => {
       },
 
       // css minimizer
-      cssnano: args.mode === 'production' ? {
+      cssnano: isPrd ? {
         // cssnano preset configuration
         // see https://cssnano.co/guides/presets
         // see https://cssnano.co/guides/optimisations
@@ -49,6 +50,19 @@ module.exports = ({ options }) => {
             removeAll: true
           }
         }]
+      } : false,
+
+      /**
+       * px to viewport
+       * https://github.com/evrone/postcss-px-to-viewport#usage
+       * Note: 开发阶段建议保持默认px单位，便于在浏览器中对px单位进行微调
+       */
+      'postcss-px-to-viewport': isPrd ? {
+        // viewportWidth: 320, // 默认值320px
+        // 定义忽略的class类名，支持定义字符串关键词或正则表达式
+        selectorBlackList: [
+          'ignore' // will match .ignore, .ignore-class, .class-ignore
+        ],
       } : false,
 
       ...plugins

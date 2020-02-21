@@ -56,6 +56,23 @@ npm run build:production:clean
 npm run serve:spa
 ```
 
+# 可伸缩布局（scalable interface）
+在项目开始之前，你需要确认是否启用“可伸缩布局”方案，并设定好相关参数
+定位到[postcss.config.js](./postcss.config.js)
+```js
+module.exports = {
+  plugins: {
+    'postcss-px-to-viewport': {
+      // viewportWidth: 320, // 视窗宽度，默认值320px
+      // 定义忽略的class类名，支持定义字符串关键词或正则表达式
+      selectorBlackList: [
+        'ignore' // will match .ignore, .ignore-class, .class-ignore
+      ],
+    }
+  }
+}
+```
+
 # 集成SonarLint
 VSCode
  - 安装[SonarLint](https://www.sonarlint.org/vscode/)插件
