@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh" class="<%= args.env.SVC_ENV %>">
 <head>
-  <meta charset="UTF-8">
-  <title>Hello world</title>
+  <!-- 更多head配置信息 https://github.com/joshbuchea/HEAD -->
+  <meta charset="utf-8">
   <!-- 让网页适配屏幕并且不可缩放 -->
-  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1, user-scalable=no">
-
-  <meta name="screen-orientation" content="portrait" />
-
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <link rel="icon" href="<%= require('./favicon.ico').default %>"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="<%= require('./favicon.ico').default %>">
 </head>
 <body>
-<!-- polyfill 支持， feature default -->
-<script src="https://polyfill.io/v3/polyfill.min.js"></script>
+<!-- polyfill 支持， 默认feature default,es2015,es2016,es2017,es2018,es5,es6,es7 -->
+<script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=default%2Ces2015%2Ces2016%2Ces2017%2Ces2018%2Ces5%2Ces6%2Ces7"></script>
 <!-- 载入rem.js -->
-<script src="<%= require('file-loader!../library/rem').default %>"></script>
+<!--<script src="<%= require('file-loader!../library/rem').default %>"></script>-->
 
 <!--
 Webpack cli parameters
