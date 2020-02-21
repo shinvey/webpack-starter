@@ -358,21 +358,7 @@ module.exports = (env = {}, args = {}) => {
   )
 
   // web dev server spa
-  const devServer = {
-    port: 8080,
-    proxy: [
-      {
-        context: [
-          '/assets'
-        ],
-        target: 'http://h5.fgry45iy.com',
-        changeOrigin: true
-        // pathRewrite: {
-        //   '^/assets': ''
-        // }
-      }
-    ]
-  }
+  const devServer = require('./build/dev-server')
   // 单页应用路由模式
   if (env.spa) {
     if (typeof env.spa === 'string') {
