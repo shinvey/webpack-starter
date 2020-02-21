@@ -346,9 +346,7 @@ module.exports = (env = {}, args = {}) => {
   )
 
   // web dev server spa
-  const devServer = {
-    port: 8080
-  }
+  const devServer = require('./build/dev-server')
   // 单页应用路由模式
   if (env.spa) {
     if (typeof env.spa === 'string') {
