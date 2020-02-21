@@ -4,10 +4,15 @@
  * @param {object} env 为args.env， see https://webpack.js.org/api/cli/#environment-options
  * @param {boolean} env.lint 是否对代码进行lint
  * @param {boolean} env.clean 是否清除缓存
+ * @param {boolean} env.zip
+ * @param {boolean} env.spa
+ * @param {boolean} env.inspect
+ * @param {boolean} env.analyze
  * @param args 命令行参数列表
  * @returns Object
  */
 module.exports = (env = {}, args = {}) => {
+  const fs = require('fs')
   const path = require('path')
   const merge = require('webpack-merge')
   const webpack = require('webpack')
@@ -20,7 +25,11 @@ module.exports = (env = {}, args = {}) => {
    * 将会把APP配置在编译时传递给应用
    */
   const Config = require('sunny-js/cjs/class/Config').default
-  const config = (new Config(require('./build/app.config'))).section(SVC_ENV, 'inherit').get()
+  const appConfigFile = './src/app.config.js'
+  let config = {}
+  if (fs.existsSync(appConfigFile)) {
+    config = (new Config(require(appConfigFile))).section(SVC_ENV, 'inherit').get()
+  }
 
   // 将被loader处理的源码目录白名单
   const directoryWhiteList = [
