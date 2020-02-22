@@ -73,6 +73,16 @@ module.exports = {
 }
 ```
 
+# 设置好项目要支持的浏览器版本
+定位到[package.json](./package.json)，根据实际情况，修改配置
+```json
+{
+  "browserslist": [
+    "current node"
+  ]
+}
+```
+
 # 集成SonarLint
 VSCode
  - 安装[SonarLint](https://www.sonarlint.org/vscode/)插件

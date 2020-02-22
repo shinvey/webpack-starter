@@ -46,9 +46,15 @@ module.exports = {
            * 语法则可以选择不使用regenerator转换async/await/generator语法
            */
 
+          // async转为generator需要的库regenerator-runtime https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime
+
           // 转换async为generator语法
-          'transform-async-to-generator',
+          // 'transform-async-to-generator',
           // '@babel/plugin-transform-async-to-generator',
+          // 'proposal-async-generator-functions',
+          // '@babel/plugin-proposal-async-generator-functions',
+          // 'syntax-async-generators',
+          // '@babel/plugin-syntax-async-generators',
 
           /**
            * 转换generator为低版本浏览器能够运行的代码
@@ -87,6 +93,12 @@ module.exports = {
      * Note: @babel/preset-env v7.5.0 已经开始内置支持import() https://github.com/babel/babel/pull/10109
      */
     // '@babel/plugin-syntax-dynamic-import',
+
+    /**
+     * 转换 async/await 为 promise chain
+     * https://github.com/rpetrich/babel-plugin-transform-async-to-promises
+     */
+    'babel-plugin-transform-async-to-promises',
 
     // 支持 export * as namespace 语法 https://babeljs.io/docs/en/next/babel-plugin-proposal-export-namespace-from.html
     '@babel/plugin-proposal-export-namespace-from',
