@@ -66,14 +66,15 @@ Bundle分析webpack bundle analyzer
 React渲染性能优化
 * [ ] [why-did-you-update](https://github.com/maicki/why-did-you-update)
 
-兼容性处理
-- [x] 在编译时应用可伸缩布局方案px to vw/vh
-- [x] 有名字的RDM使用require.context装载成全局RDM
+常规代办事项
+- [ ] 集成antd-pro-layout到管理后台启动模板
+- [ ] 集成Access Control List
+- [ ] 为切换Router集成转场动效，动效库react-awesome-slider
 - [ ] 满足常规ajax请求Loading交互场景
 - [ ] 启用js、dom、bom api兼容性检查，为定制polyfill服务提供参考
-- [ ] 为切换Router集成转场动效
 - [ ] 新框架Demo设计
-- [ ] 集成Access Control List
+- [x] 在编译时应用可伸缩布局方案px to vw/vh
+- [x] 有名字的RDM使用require.context装载成全局RDM
 - [x] app.config.js移动到src目录下，如果有则载入，没有则略过
 
 [其他代办任务](https://www.processon.com/mindmap/5dc2e7a6e4b0ea86c424c7cb)
