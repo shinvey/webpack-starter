@@ -5,6 +5,10 @@
   "compilerOptions": {
     // Target latest version of ECMAScript.
     "target": "esnext",
+    // dynamic import 类型检查需要设置 module
+    "module": "esnext", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+    // lib保持默认值就好，文档见 https://www.typescriptlang.org/docs/handbook/compiler-options.html
+    "lib": ["dom", "esnext"], /* Specify library files to be included in the compilation. */
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
     // Process & infer types from .js files.
