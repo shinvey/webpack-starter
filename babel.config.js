@@ -137,9 +137,9 @@ module.exports = {
      */
     // ['import', {
     //   libraryName: '@ant-design/pro-layout',
-    //   style: name => {
-    //     return `${name}.less`
-    //   },
+    //   libraryDirectory: 'es',
+    //   style: false,
+    //   // style: true,
     //   camel2DashComponentName: false
     // }, 'ant-design-pro-layout'],
     ['import', {
