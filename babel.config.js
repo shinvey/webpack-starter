@@ -118,8 +118,9 @@ module.exports = {
     // 按需加载UI组件库 https://github.com/ant-design/babel-plugin-import#options
     ['import', {
       libraryName: 'antd',
-      style: true
-    }, 'antd'],
+      libraryDirectory: 'es',
+      style: true // `style: true` 会加载 less 文件
+    }],
     // ['import', {
     //   libraryName: 'antd-mobile',
     //   style: true
