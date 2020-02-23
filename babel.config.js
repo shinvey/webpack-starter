@@ -116,14 +116,14 @@ module.exports = {
     // 支持类定义私有字段和方法。目前babel-eslint 10还没能很好支持
     // ['@babel/plugin-proposal-private-methods', { 'loose': true }]
     // 按需加载UI组件库 https://github.com/ant-design/babel-plugin-import#options
-    // ['import', {
-    //   libraryName: 'antd',
-    //   style: true
-    // }, 'antd'],
     ['import', {
-      libraryName: 'antd-mobile',
+      libraryName: 'antd',
       style: true
-    }, 'antd-mobile'],
+    }, 'antd'],
+    // ['import', {
+    //   libraryName: 'antd-mobile',
+    //   style: true
+    // }, 'antd-mobile'],
     // for ant-design-pro
     // ['import', {
     //   libraryName: 'ant-design-pro',
