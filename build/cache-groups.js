@@ -1,4 +1,4 @@
-const { isDev } = require('./env')
+// const { isDev } = require('./env')
 module.exports = (env, args) => ({
   /**
    * cacheGroups保持vendors、default的默认值已经是最优配置
@@ -13,32 +13,32 @@ module.exports = (env, args) => ({
    *
    * 以下属性配置加上debug开关，仅仅是为了调试场景使用
    */
-  vendors: {
-    // test: /[\\/]node_modules[\\/]/,
-    // chunks: 'initial',
-    name: args.debug
-      /**
-       * 方便审查载入了哪些npm包
-       */
-      ? (module, chunks, cacheGroupKey) => {
-      // get the name. E.g. node_modules/packageName/not/this/part.js
-      // or node_modules/packageName
-        const matches = module.context.match(/([\\/]node_modules[\\/]|[\\/]\.registry\.npmjs\.org[\\/])([@a-z\-~]+)([\\/][\d.\-_]+)?/i)
-        const packageName = matches[2]
-        // npm package names are URL-safe, but some servers don't like @ symbols
-        return `npm.${packageName.replace(/@/g, '').replace(/[\\/]/g, '_')}`
-      }
-      /**
-       * It is recommended to set splitChunks.name to false for production builds so that it doesn't change names unnecessarily.
-       * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunksname
-       */
-      : isDev(args.mode),
-    /**
-     * 本规则使用split chunk的默认设置，但排除调试模式场景
-     * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupenforce
-     */
-    enforce: args.debug
-  },
+  // vendors: {
+  //   // test: /[\\/]node_modules[\\/]/,
+  //   // chunks: 'initial',
+  //   name: args.debug
+  //     /**
+  //      * 方便审查载入了哪些npm包
+  //      */
+  //     ? (module, chunks, cacheGroupKey) => {
+  //     // get the name. E.g. node_modules/packageName/not/this/part.js
+  //     // or node_modules/packageName
+  //       const matches = module.context.match(/([\\/]node_modules[\\/]|[\\/]\.registry\.npmjs\.org[\\/])([@a-z\-~]+)([\\/][\d.\-_]+)?/i)
+  //       const packageName = matches[2]
+  //       // npm package names are URL-safe, but some servers don't like @ symbols
+  //       return `npm.${packageName.replace(/@/g, '').replace(/[\\/]/g, '_')}`
+  //     }
+  //     /**
+  //      * It is recommended to set splitChunks.name to false for production builds so that it doesn't change names unnecessarily.
+  //      * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunksname
+  //      */
+  //     : isDev(args.mode),
+  //   /**
+  //    * 本规则使用split chunk的默认设置，但排除调试模式场景
+  //    * https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroupscachegroupenforce
+  //    */
+  //   enforce: args.debug
+  // },
   /**
    * 关键资源分离规则
    * 优先级最高，配合html-webpack-plugin的插件
