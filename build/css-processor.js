@@ -105,6 +105,7 @@ module.exports = (env, args) => {
   processors.sassLoader.moduleTest = /module\.s[ca]ss$/
 
   processors.lessLoader.test = /\.less$/
+  processors.lessLoader.moduleTest = /module\.less$/
 
   return processors
 }

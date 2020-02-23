@@ -166,6 +166,13 @@ module.exports = (env = {}, args = {}) => {
       javascriptEnabled: true
     })
   ]
+  const lessModulePreprocessors = Array.from(lessPreprocessors)
+  lessModulePreprocessors[1] = cssPreprocessor.cssLoader({
+    importLoaders: 2,
+    modules: {
+      localIdentName: cssModuleLocalIdentName
+    }
+  })
 
   // 媒体资源处理
   const assetProcessor = require('./build/asset-processor')(env, args)
@@ -438,8 +445,15 @@ module.exports = (env = {}, args = {}) => {
         // 添加less支持
         {
           test: cssPreprocessor.lessLoader.test,
+          exclude: cssPreprocessor.lessLoader.moduleTest,
           // include: directoryWhiteList,
           use: lessPreprocessors
+        },
+        // 添加less module支持
+        {
+          test: cssPreprocessor.lessLoader.moduleTest,
+          include: directoryWhiteList,
+          use: lessModulePreprocessors
         },
         // 小于8k的小资源内嵌，反之则返回图像路径
         {
