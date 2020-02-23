@@ -13,5 +13,6 @@ useCustomLoading(Loading)
  * 这里我们为路由配置增加了一个auth认证功能
  */
 useCustomRoute(route => {
-  return route.auth ? AuthRoute : Route
+  // 后台管理项目默认启用认证路由
+  return route.auth === false ? Route : AuthRoute
 })
