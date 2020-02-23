@@ -5,7 +5,7 @@ export const route = {
   key: 'login',
   name: '用户登录',
   path: '/user/login',
-  // custom: true,
+  auth: false,
 }
 
 export const Content = loadable({
