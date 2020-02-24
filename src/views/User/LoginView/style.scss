@@ -1,0 +1,12 @@
+[data-page="login3"] {
+  display: flex;
+  height: 100%;
+
+  .login-form {
+    margin: auto;  /* Magic! */
+  }
+
+  .login-form-button {
+    width: 100%;
+  }
+}
