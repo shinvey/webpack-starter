@@ -9,8 +9,9 @@ import { FormComponentProps } from 'antd/es/form'
 import './style.scss'
 
 import { loginSVC } from './service'
-
-type NormalLoginFormProps = RouteChildrenProps<{}, { from: string }> & FormComponentProps
+import { PluggableRouteProps } from '../../PluggableRouter'
+type NormalLoginFormProps = RouteChildrenProps<{}, { from: string }>
+  & FormComponentProps & PluggableRouteProps
 
 const NormalLoginForm: FC<NormalLoginFormProps> = (props) => {
   const {
