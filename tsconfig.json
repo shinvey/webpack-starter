@@ -10,11 +10,11 @@
     "lib": ["dom", "esnext"], /* Specify library files to be included in the compilation. */
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
-    // Process & infer types from .js files.
-    // Allow JavaScript files to be compiled.
-    // 允许在.js中的业务代码不使用typescript
-    // 不用编译.js文件
-    // "allowJs": true,
+    /*
+    Process & infer types from .js files.
+    在typescript文件中能够识别js文件和类型
+    */
+    "allowJs": true,
     // Don't emit; allow Babel to transform files.
     "noEmit": true,
     // Enable strictest settings like strictNullChecks & noImplicitAny.

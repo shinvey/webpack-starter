@@ -31,5 +31,11 @@
     // https://github.com/buzinas/tslint-eslint-rules
     // 支持的rules列表 https://github.com/buzinas/tslint-eslint-rules#rules-copied-from-the-eslint-website
     "node_modules/tslint-eslint-rules/dist/rules"
-  ]
+  ],
+  "linterOptions": {
+    "exclude": [
+      // js jsx文件交给eslint检查
+      "**/*.js*"
+    ]
+  }
 }
