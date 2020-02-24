@@ -1,5 +1,5 @@
-import React from 'react'
-import { Redirect, Router, Switch as RouterSwitch } from 'react-router'
+import React, { Attributes } from 'react'
+import { Redirect, Router, Switch as RouterSwitch, RouteProps } from 'react-router'
 import history from './history'
 export * from './transform'
 
@@ -19,4 +19,17 @@ export function Switch ({ children, noMatch = '/404', ...props }) {
     {children}
     <Redirect to={noMatch} />
   </RouterSwitch>
+}
+
+export interface PluggableRoute extends Attributes, RouteProps {
+  name?: string
+}
+
+export interface PluggableRoutes {
+  [key: string]: PluggableRoute
+}
+
+export interface PluggableRouteProps {
+  route: PluggableRoute,
+  routes: PluggableRoutes
 }
