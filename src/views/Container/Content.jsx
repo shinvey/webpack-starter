@@ -3,6 +3,7 @@ import { Switch } from 'react-router'
 import { useRouteComponents, useRoutes } from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
 import './router.settings'
+import './style.scss'
 
 /**
  * Container内容部分
