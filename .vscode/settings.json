@@ -1,4 +1,8 @@
 {
   // Enable/disable JavaScript validation.
-  "javascript.validate.enable": false
+  // 禁用vs code内置js 验证器，因为项目中已经启用了eslint
+  // https://code.visualstudio.com/docs/languages/javascript#_how-do-i-disable-syntax-validation-when-using-nones6-constructs
+  "javascript.validate.enable": false,
+  // 使用项目中typescript版本
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
