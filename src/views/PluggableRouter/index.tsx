@@ -1,4 +1,4 @@
-import React, { Attributes } from 'react'
+import React, { Attributes, ReactNode } from 'react'
 import { Redirect, Router, Switch as RouterSwitch, RouteProps } from 'react-router'
 import history from './history'
 export * from './transform'
@@ -23,13 +23,34 @@ export function Switch ({ children, noMatch = '/404', ...props }) {
 
 export interface PluggableRoute extends Attributes, RouteProps {
   name?: string
+  /**
+   * 默认会使用path属性确定路由嵌套关系。该属性在不影响path原有功能的情况下，重定义路由嵌套关系。
+   * Note:
+   * - 运行时会始终为string类型
+   * - 默认从path取值
+   */
+  nest?: string | string[]
+  // 跟兄弟节点排序
+  sort?: number,
+  // route path中的动态参数由params替换
+  toPath(params: object): string,
+  getNest(): string
 }
 
 export interface PluggableRoutes {
-  [key: string]: PluggableRoute
+  [RouteKey: string]: PluggableRoute
 }
 
 export interface PluggableRouteProps {
-  route: PluggableRoute,
+  // 当前路由配置
+  route: PluggableRoute
+  // 所有路由配置。通过route key访问
   routes: PluggableRoutes
+}
+
+export interface PluggableRouteComponentProps extends PluggableRouteProps {
+  // 当前路由的子路由组件集合。通过route key访问
+  childrenRoutes: {
+    [RouteKey: string]: ReactNode
+  }
 }
