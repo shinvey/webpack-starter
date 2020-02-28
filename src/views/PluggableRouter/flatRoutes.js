@@ -74,6 +74,10 @@ export function flatRoutesByPath (arrRoutes, iteratee) {
         } else if (route.nest && pathIndex === 0) {
           // 如果nest属性不是数组，那么将只会应用到第一个path
           derivedRoute.nest = route.nest
+        } else {
+          // 如果nest未定义，则把path作为nest的默认值
+          // derivedRoute.nest = path
+          // 不可以设定默认值，nest有无与否，会影响treeRoutes的创建
         }
         iteratee({
           route: derivedRoute,
@@ -81,6 +85,9 @@ export function flatRoutesByPath (arrRoutes, iteratee) {
         }, ['route', arrRoutesIndex, '-', 'path', pathIndex].join(''))
       })
     } else {
+      // 如果nest未定义，则把path作为nest的默认值
+      // route.nest = route.nest || route.path
+      // 不可以设定默认值，nest有无与否，会影响treeRoutes的创建
       iteratee(config, ['route', arrRoutesIndex].join(''))
     }
 

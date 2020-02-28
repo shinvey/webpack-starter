@@ -114,6 +114,9 @@ function packRoute (ESModule, modulePath) {
     return this.toPath.compiledPath(...args)
   }
 
+  // 读取嵌套属性
+  route.getNest = () => route.nest || route.path
+
   /**
    * 存放ViewModule路径（不包含View后缀），也是生成嵌套路由重要依赖属性
    * 默认以route.path来分析嵌套关系。
