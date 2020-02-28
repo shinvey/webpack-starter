@@ -8,7 +8,8 @@
  * @param {boolean} env.spa
  * @param {boolean} env.inspect
  * @param {boolean} env.analyze
- * @param args 命令行参数列表
+ * @param {Object} args 命令行参数列表
+ * @param {boolean} args.open
  * @returns Object
  */
 module.exports = (env = {}, args = {}) => {
@@ -513,7 +514,7 @@ module.exports = (env = {}, args = {}) => {
       host: '0.0.0.0',
 
       // 如果使用--open选项，则使用本机IP
-      useLocalIp: true,
+      useLocalIp: 'open' in args,
 
       // cors
       headers: {
