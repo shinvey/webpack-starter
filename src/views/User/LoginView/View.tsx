@@ -4,7 +4,7 @@ import { RouteChildrenProps } from 'react-router'
 import { loginSuccess } from '../../Auth/channel'
 import { updateUserInfoAction } from '../userRDM/userActions'
 
-import { Form, Icon, Input, Button, Checkbox } from 'antd'
+import { Form, Icon, Input, Button, Checkbox, Select } from 'antd'
 import { FormComponentProps } from 'antd/es/form'
 import './style.scss'
 
@@ -12,6 +12,8 @@ import { loginSVC } from './service'
 import { PluggableRouteProps } from '../../PluggableRouter'
 type NormalLoginFormProps = RouteChildrenProps<{}, { from: string }>
   & FormComponentProps & PluggableRouteProps
+
+const { Option } = Select
 
 const NormalLoginForm: FC<NormalLoginFormProps> = (props) => {
   const {
@@ -26,7 +28,7 @@ const NormalLoginForm: FC<NormalLoginFormProps> = (props) => {
         console.log('Received values of form: ', values)
         loginSVC(values).then(({ token }) => {
           // 更新用户信息
-          dispatch(updateUserInfoAction({ token }))
+          dispatch(updateUserInfoAction({ token, role: values.role }))
           // 发送登录成功事件
           loginSuccess(from)
         })
@@ -57,6 +59,19 @@ const NormalLoginForm: FC<NormalLoginFormProps> = (props) => {
             type="password"
             placeholder="Password"
           />,
+        )}
+      </Form.Item>
+      <Form.Item>
+        {getFieldDecorator('role', {
+          rules: [{ required: true, message: '选择登录角色!' }],
+          initialValue: 'guest'
+        })(
+          <Select>
+            <Option value="guest">访客</Option>
+            <Option value="member">会员</Option>
+            <Option value="manager">管理员</Option>
+            <Option value="admin">超级管理员</Option>
+          </Select>,
         )}
       </Form.Item>
       <Form.Item>

@@ -1,5 +1,6 @@
 import produce from 'immer'
 import { UPDATE_USER_INFO } from './userActions'
+import { loadFromStorage, saveToSession } from 'sunny-js/util/storage'
 // import { addActionTranslator } from '../../Bridge/SyncState'
 
 // const getUserInfoReducer = 'app/getUserInfoReducer'
@@ -21,10 +22,12 @@ import { UPDATE_USER_INFO } from './userActions'
 const userReducer = produce((draft, action) => {
   switch (action.type) {
     case UPDATE_USER_INFO: {
-      Object.assign(draft, action.payload)
+      const userInfo = action.payload
+      Object.assign(draft, userInfo)
+      saveToSession({ userInfo }, true)
       break
     }
   }
-}, {})
+}, loadFromStorage('userInfo') || {})
 
 export default userReducer
