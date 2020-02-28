@@ -22,8 +22,15 @@ export function isLogin () {
 }
 
 /**
+ * 用户信息对象
+ * @typedef {object} UserInfo
+ * @property {string} [token] 用户token
+ * @property {string} [role] 用户角色
+ */
+
+/**
  * 为js纯函数提供userInfo信息访问接口
- * @returns {object}
+ * @returns {UserInfo}
  */
 export function userInfo () {
   return propBy('user', store.getState()) || {}

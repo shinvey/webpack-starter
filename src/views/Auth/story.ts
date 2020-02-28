@@ -1,5 +1,5 @@
 import history from '../PluggableRouter/history'
-import { onLoginSuccess, onRequestLogin } from './channel'
+import { onBlocked, onLoginSuccess, onRequestLogin } from './channel'
 import { onSessionError } from '../Request/channel'
 import { userRoute } from './index'
 
@@ -18,7 +18,7 @@ function forwardToLoginView (from = history.location) {
   }
   // 如果将登录事件绑定到请求上，可能会多次发送登录事件，加上是否已经在登录界面到判断
   // 如果已经在登录界面，还接收到登录事件，则可以忽略
-  if (to.path !== history.location.pathname) {
+  if (to.path !== from.pathname) {
     console.debug('request login, so forward to ', to.path, ' from ', from)
     history.push(to.path, { from })
   }
@@ -32,7 +32,12 @@ onSessionError(error => {
 })
 // 监听登录成功通知
 onLoginSuccess(from => {
-  console.debug('login success, now go back to', from)
+  console.debug('login success, now go back to', from || 'last page')
   // history.replace(from)
+  history.goBack()
+})
+// 监听 用户被阻止访问 通知
+onBlocked(() => {
+  console.debug('The visitor is not allowed to go', history.location, '. Then go back.')
   history.goBack()
 })
