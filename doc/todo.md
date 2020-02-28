@@ -67,8 +67,8 @@ React渲染性能优化
 * [ ] [why-did-you-update](https://github.com/maicki/why-did-you-update)
 
 常规代办事项
-- [ ] 集成antd-pro-layout到管理后台启动模板
-- [ ] 集成Access Control List
+- [x] 集成antd-pro-layout到管理后台启动模板
+- [x] 集成Access Control List
 - [ ] 为切换Router集成转场动效，动效库react-awesome-slider
 - [ ] 满足常规ajax请求Loading交互场景
 - [ ] 启用js、dom、bom api兼容性检查，为定制polyfill服务提供参考

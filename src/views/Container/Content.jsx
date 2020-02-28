@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch } from 'react-router'
 import { useRouteComponents, useRoutes } from '../PluggableRouter'
 import ErrorBoundary from '../components/ErrorBoundary'
-import './router.settings'
+import './settings'
 import './style.scss'
 
 /**

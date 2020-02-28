@@ -1,2 +1,2 @@
-import '../Container/router.settings'
+import '../Container/settings'
 export { useRouteComponents } from '../PluggableRouter'
