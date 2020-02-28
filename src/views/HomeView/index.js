@@ -6,6 +6,7 @@ export const route = {
   name: 'Home',
   path: '/',
   exact: true,
+  resource: 'home',
   icon: 'home'
 }
 
