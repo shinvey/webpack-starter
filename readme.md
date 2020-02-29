@@ -1,8 +1,9 @@
 # 使用 VSCode 需要安装的插件 （可选）
-
+如果不想手动为本项目安装开发所需的辅助扩展，你可以尝试如下步骤：
 1. 安装[Settings Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync)
-2. 进入[Settings Sync欢迎页](./doc/img/settings-sync-enter-gist-id.png)后，使用公用Gist ID 1442bbd235249fbc76b2b09e7b21994b 同步配置
+2. 进入[Settings Sync欢迎页](./doc/img/settings-sync-enter-gist-id.png)后，使用公用Gist ID [1442bbd235249fbc76b2b09e7b21994b](https://gist.github.com/shinvey/1442bbd235249fbc76b2b09e7b21994b) 同步配置
 
+如果想了解这个Gist ID包含了哪些扩展，点击这个[Gist](https://gist.github.com/shinvey/1442bbd235249fbc76b2b09e7b21994b#file-extensions-json)了解
 # 安装
 
 > 在项目根目录执行
@@ -12,7 +13,7 @@
 # npm、yarn、pnpm测评 https://pnpm.js.org/en/benchmark
 npm i -g pnpm
 pnpm i
-# 如果你的webstorm对typescript的类型检索支持的不太好还是用回yarn吧
+# 如果你的webstorm对一些库的类型检索，类型支持的不太好，可以尝试换回yarn
 yarn install
 ```
 
